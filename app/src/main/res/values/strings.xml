@@ -4,6 +4,7 @@
     //NavigationBar labels
     <string name="dashboard_menu">Dashboard</string>
     <string name="history_menu">History</string>
+    <string name="placeholder_menu"> </string>
 
 
     //Snackbar messages
@@ -22,8 +23,10 @@
     <string name="total_mileage_label">Total mileage</string>
     <string name="vehicle_label">Vehicle</string>
     <string name="fab_service_label">Service</string>
-    <string name="fab_add_trip_label">Add trip</string>
+    <string name="add_trip_label">Add trip</string>
     <string name="last_trip_label">Last trip:</string>
+    <string name="dash_label">Dashboard</string>
+    <string name="trips_history_label">Trips history</string>
 
     //Names of vehicles
     <string-array name="vehicle_names">
@@ -41,4 +44,6 @@
         <item>Mileage High -> Low</item>
         <item>Mileage Low -> High</item>
     </string-array>
+
+
 </resources>

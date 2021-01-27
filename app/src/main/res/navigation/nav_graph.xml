@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
+    app:startDestination="@id/dashboardFragment">
+
+    <action
+        android:id="@+id/action_to_addTripFragment"
+        app:destination="@+id/addTripFragment"
+        app:popUpTo="@id/dashboardFragment"/>
+
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="dev.psuchanek.jonsfueltracker_v_1_1.ui.dash.DashboardFragment"
+        android:label="@string/dash_label" />
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="dev.psuchanek.jonsfueltracker_v_1_1.ui.history.HistoryFragment"
+        android:label="@string/trips_history_label" />
+    <fragment
+        android:id="@+id/addTripFragment"
+        android:name="dev.psuchanek.jonsfueltracker_v_1_1.ui.add.AddTripFragment"
+        android:label="@string/add_trip_label" />
+</navigation>

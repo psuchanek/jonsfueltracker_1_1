@@ -11,7 +11,7 @@ data class FuelTrackerTrip(
     val fuelVolume: Float,
     val fuelCost: Float,
     val tripMileage: Float,
-    val currentMileage: Float,
+    val currentMileage: Int,
     val costPerLitre: Float,
     val gasStationName: String
 ) {
@@ -24,6 +24,7 @@ fun FuelTrackerTrip.asDatabaseModel()= LocalFuelTrackerTrip(
         fuelVolume = this.fuelVolume,
         fuelCost = this.fuelCost,
         tripMileage = this.tripMileage,
+    currentMileage = this.currentMileage,
         costPerLitre = this.costPerLitre,
         gasStationName = this.gasStationName,
         timestamp = this.timestamp

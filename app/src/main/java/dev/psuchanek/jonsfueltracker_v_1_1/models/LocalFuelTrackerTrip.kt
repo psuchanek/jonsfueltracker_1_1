@@ -25,6 +25,9 @@ data class LocalFuelTrackerTrip(
     @ColumnInfo(name = "trip_mileage")
     val tripMileage: Float,
 
+    @ColumnInfo(name = "current_mileage")
+    val currentMileage: Int,
+
     @ColumnInfo(name = "cost_per_litre")
     val costPerLitre: Float,
 
@@ -46,6 +49,7 @@ fun List<LocalFuelTrackerTrip>.asFuelTrackerTripModel(): List<FuelTrackerTrip> {
             fuelVolume = it.fuelVolume,
             fuelCost = it.fuelCost,
             tripMileage = it.tripMileage,
+            currentMileage = it.currentMileage,
             costPerLitre = it.costPerLitre,
             gasStationName = it.gasStationName,
         )

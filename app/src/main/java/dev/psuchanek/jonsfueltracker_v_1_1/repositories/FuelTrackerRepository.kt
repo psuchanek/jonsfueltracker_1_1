@@ -1,6 +1,5 @@
 package dev.psuchanek.jonsfueltracker_v_1_1.repositories
 
-import dev.psuchanek.jonsfueltracker_v_1_1.models.FuelTrackerModels
 import dev.psuchanek.jonsfueltracker_v_1_1.models.FuelTrackerTrip
 import dev.psuchanek.jonsfueltracker_v_1_1.models.asDatabaseModel
 import dev.psuchanek.jonsfueltracker_v_1_1.models.asDomainModel

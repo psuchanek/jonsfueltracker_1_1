@@ -3,7 +3,7 @@ package dev.psuchanek.jonsfueltracker_v_1_1.models
 import com.squareup.moshi.Json
 import dev.psuchanek.jonsfueltracker_v_1_1.other.convertDateStringToTimestamp
 
-data class FuelTrackerModels(
+data class NetworkDataResponse(
     val networkTrips: List<NetworkFuelTrackerTrip>
 )
 
@@ -27,7 +27,7 @@ data class NetworkFuelTrackerTrip(
     val tripMileage: Float,
 
     @Json(name = "mileage")
-    val currentMileage: Float,
+    val currentMileage: Int,
 
     @Json(name = "pence_per_litre")
     val costPerLitre: Float,
@@ -36,7 +36,7 @@ data class NetworkFuelTrackerTrip(
     val gasStationName: String
 )
 
-fun FuelTrackerModels.asDatabaseModel(): List<LocalFuelTrackerTrip> {
+fun NetworkDataResponse.asDatabaseModel(): List<LocalFuelTrackerTrip> {
     return this.networkTrips.map {
         LocalFuelTrackerTrip(
             id = it.id!!,
@@ -45,6 +45,7 @@ fun FuelTrackerModels.asDatabaseModel(): List<LocalFuelTrackerTrip> {
             fuelVolume = it.fuelVolume,
             fuelCost = it.fuelCost,
             tripMileage = it.tripMileage,
+            currentMileage = it.currentMileage,
             costPerLitre = it.costPerLitre,
             gasStationName = it.gasStationName,
             timestamp = it.date.convertDateStringToTimestamp()

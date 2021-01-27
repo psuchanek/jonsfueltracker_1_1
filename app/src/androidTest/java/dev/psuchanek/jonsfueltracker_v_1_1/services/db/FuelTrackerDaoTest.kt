@@ -7,6 +7,9 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dev.psuchanek.jonsfueltracker_v_1_1.getOrAwaitValue
 import dev.psuchanek.jonsfueltracker_v_1_1.listOFTrips
+import dev.psuchanek.jonsfueltracker_v_1_1.other.TimePeriod
+import dev.psuchanek.jonsfueltracker_v_1_1.other.getTimePeriodTimestamp
+import dev.psuchanek.jonsfueltracker_v_1_1.tripFour
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.After
@@ -58,6 +61,19 @@ class FuelTrackerDaoTest {
     }
 
     @Test
+    fun insertSingleFuelTrackerTrip_expectSucces() = runBlockingTest {
+        //When
+        fuelTrackerDao.insertFuelTrackerHistory(listOFTrips)
+        fuelTrackerDao.insertFuelTrackerTrip(tripFour)
+        val result = fuelTrackerDao.getAllTripsSortedById()
+
+        //Then
+        assertThat(result.size).isEqualTo(listOFTrips.size + 1)
+
+
+    }
+
+    @Test
     fun insertSameListOfTripsTwice_retrieveList_resultNoDuplicates() = runBlockingTest {
         //Given
         val listToAdd = listOFTrips
@@ -86,6 +102,29 @@ class FuelTrackerDaoTest {
 
         //Then
         assertThat(result[2].date).isEqualTo(updateTrip.date)
+    }
+
+    @Test
+    fun insertFuelTrackerTripListWithTimeStamp_retrieveByTimestampRange() = runBlockingTest {
+
+        //When
+        fuelTrackerDao.insertFuelTrackerHistory(listOFTrips)
+        val result = fuelTrackerDao.getAllTripsByTimestampRange(
+            getTimePeriodTimestamp(TimePeriod.ONE_YEAR),
+            System.currentTimeMillis()
+        )
+        //Then
+        assertThat(result.size).isEqualTo(2)
+    }
+
+    @Test
+    fun insertFuelTrackerTripList_retrieveLastInserted() = runBlockingTest {
+        //When
+        fuelTrackerDao.insertFuelTrackerHistory(listOFTrips)
+        val result = fuelTrackerDao.getMostRecentTripRecord()
+
+        //Then
+        assertThat(result.timestamp).isEqualTo(listOFTrips[0].timestamp)
     }
 
 }

@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "fuel_tracker_history_table")
-data class Trip(
+data class LocalFuelTrackerTrip(
     @PrimaryKey
     @ColumnInfo(name = "id")
     val id: Int,
@@ -29,7 +29,25 @@ data class Trip(
     val costPerLitre: Float,
 
     @ColumnInfo(name = "gas_station_name")
-    val gasStationName: String
+    val gasStationName: String,
+
+    @ColumnInfo(name = "timestamp")
+    val timestamp: Long? = 0L
 ) {
 
+}
+
+fun List<LocalFuelTrackerTrip>.asFuelTrackerTripModel(): List<FuelTrackerTrip> {
+    return this.map {
+        FuelTrackerTrip(
+            id = it.id,
+            vehicleId = it.vehicleId,
+            timestamp = it.timestamp,
+            fuelVolume = it.fuelVolume,
+            fuelCost = it.fuelCost,
+            tripMileage = it.tripMileage,
+            costPerLitre = it.costPerLitre,
+            gasStationName = it.gasStationName,
+        )
+    }
 }

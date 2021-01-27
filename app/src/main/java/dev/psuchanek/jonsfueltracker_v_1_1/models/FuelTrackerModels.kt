@@ -1,12 +1,13 @@
 package dev.psuchanek.jonsfueltracker_v_1_1.models
 
 import com.squareup.moshi.Json
+import dev.psuchanek.jonsfueltracker_v_1_1.other.convertDateStringToTimestamp
 
 data class FuelTrackerModels(
-    val history: List<FuelTrackerHistory>
+    val networkTrips: List<NetworkFuelTrackerTrip>
 )
 
-data class FuelTrackerHistory(
+data class NetworkFuelTrackerTrip(
     @Json(name = "record_id")
     val id: Int,
 
@@ -35,9 +36,9 @@ data class FuelTrackerHistory(
     val gasStationName: String
 )
 
-fun FuelTrackerModels.asDatabaseModel(): List<Trip> {
-    return this.history.map {
-        Trip(
+fun FuelTrackerModels.asDatabaseModel(): List<LocalFuelTrackerTrip> {
+    return this.networkTrips.map {
+        LocalFuelTrackerTrip(
             id = it.id,
             vehicleId = it.vehicleID,
             date = it.date,
@@ -45,7 +46,8 @@ fun FuelTrackerModels.asDatabaseModel(): List<Trip> {
             fuelCost = it.fuelCost,
             tripMileage = it.tripMileage,
             costPerLitre = it.costPerLitre,
-            gasStationName = it.gasStationName
+            gasStationName = it.gasStationName,
+            timestamp = it.date.convertDateStringToTimestamp()
         )
     }
 }

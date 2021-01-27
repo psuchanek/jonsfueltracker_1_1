@@ -6,6 +6,6 @@ import retrofit2.http.GET
 
 
 interface FuelTrackerService {
-@GET("history")
+@GET("networkFuelTrackerTrip")
 suspend fun getFuelTrackerHistory(): Response<FuelTrackerModels>
 }

@@ -27,13 +27,14 @@
     <string name="last_trip_label">Last trip:</string>
     <string name="dash_label">Dashboard</string>
     <string name="trips_history_label">Trips history</string>
+    <string name="mpg">MPG</string>
 
     //Names of vehicles
-    <string-array name="vehicle_names">
-        <item>Nissan Micra</item>
-        <item>Midget</item>
-        <item>Mercedes Sprinter</item>
-    </string-array>
+    <string name="nissan_micra">Nissan Micra</string>
+    <string name="midget">Midget</string>
+    <string name="mercedes_sprinter">Mercedes Sprinter</string>
+    <string name="unknown_car">Unknown car</string>
+    <string name="sort_by">Sort by:</string>
 
     //Sorting options
     <string-array name="sort_by">
@@ -44,6 +45,5 @@
         <item>Mileage High -> Low</item>
         <item>Mileage Low -> High</item>
     </string-array>
-
 
 </resources>

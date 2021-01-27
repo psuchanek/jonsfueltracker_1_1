@@ -9,3 +9,6 @@ const val FUEL_TRACKER_DB_NAME = "fuel_tracker_database"
 // OkHttpClient timeouts
 const val READ_TIMEOUT = 10L
 const val CALL_TIMEOUT = 3L
+
+//Units
+const val LITRES_IN_GALLON = 4.546f

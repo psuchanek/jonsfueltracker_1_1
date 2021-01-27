@@ -13,4 +13,13 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="LabelsStyle" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textColor">?attr/colorOnSecondary</item>
+    </style>
+
+    <style name="MainValuesDisplayed" parent="TextAppearance.MaterialComponents.Headline5"/>
+
+
+
 </resources>

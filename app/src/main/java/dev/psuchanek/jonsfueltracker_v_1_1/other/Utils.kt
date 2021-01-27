@@ -1,13 +1,20 @@
 package dev.psuchanek.jonsfueltracker_v_1_1.other
 
+
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.round
 
 fun String.convertDateStringToTimestamp() = Timestamp.valueOf(this).time
 
 fun Long.convertTimestampToDateString(): String {
     val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+    return dateFormat.format(this).toString()
+}
+
+fun Long.formatDateForUI(): String {
+    val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
     return dateFormat.format(this).toString()
 }
 
@@ -43,4 +50,14 @@ fun getTimePeriodTimestamp(timePeriod: TimePeriod): Long {
     calendar.add(timeFormat, numberOf)
     return calendar.time.time
 }
+
+//Round-up
+fun Float.round(decimals: Int): Float {
+    var multiplier = 1.0f
+    repeat(decimals) { multiplier *= 10}
+    return round(this * multiplier) / multiplier
+}
+
+//Convert litres to gallons
+fun Float.convertToGallons() = this / LITRES_IN_GALLON
 

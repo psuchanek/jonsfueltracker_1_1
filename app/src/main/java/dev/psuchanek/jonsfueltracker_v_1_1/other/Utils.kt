@@ -1,9 +1,7 @@
 package dev.psuchanek.jonsfueltracker_v_1_1.other
 
-import androidx.core.text.trimmedLength
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
-import java.time.Instant
 import java.util.*
 
 fun String.convertDateStringToTimestamp() = Timestamp.valueOf(this).time
@@ -39,9 +37,9 @@ fun getTimePeriodTimestamp(timePeriod: TimePeriod): Long {
             numberOf = -3
         }
     }
-    val dateRefrence = Date()
+    val dateReference = Date()
     val calendar = Calendar.getInstance()
-    calendar.time = dateRefrence
+    calendar.time = dateReference
     calendar.add(timeFormat, numberOf)
     return calendar.time.time
 }

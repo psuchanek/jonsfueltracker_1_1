@@ -9,7 +9,7 @@ data class FuelTrackerModels(
 
 data class NetworkFuelTrackerTrip(
     @Json(name = "record_id")
-    val id: Int,
+    val id: Int? = null,
 
     @Json(name = "vehicle_id")
     val vehicleID: Int,
@@ -39,7 +39,7 @@ data class NetworkFuelTrackerTrip(
 fun FuelTrackerModels.asDatabaseModel(): List<LocalFuelTrackerTrip> {
     return this.networkTrips.map {
         LocalFuelTrackerTrip(
-            id = it.id,
+            id = it.id!!,
             vehicleId = it.vehicleID,
             date = it.date,
             fuelVolume = it.fuelVolume,

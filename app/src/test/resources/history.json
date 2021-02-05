@@ -1,0 +1,165 @@
+{
+  "vehicles": [
+    {
+      "vehicle_id": "1",
+      "vehicle_name": "Nissan Micra",
+      "miles_per_litre_avg": 8.703165039130134,
+      "miles_per_gallon_avg": 39.56458826788559,
+      "pence_per_litre_avg": 128.56,
+      "pence_per_mile_avg": 14.771637607925834,
+      "last_known_mileage": "148002"
+    },
+    {
+      "vehicle_id": "2",
+      "vehicle_name": "Midget",
+      "miles_per_litre_avg": 0,
+      "miles_per_gallon_avg": 0,
+      "pence_per_litre_avg": 0,
+      "pence_per_mile_avg": 0,
+      "last_known_mileage": 0
+    },
+    {
+      "vehicle_id": "3",
+      "vehicle_name": "Mercedes Sprinter",
+      "miles_per_litre_avg": 5.927635064690903,
+      "miles_per_gallon_avg": 26.947029004084847,
+      "pence_per_litre_avg": 116,
+      "pence_per_mile_avg": 19.569355861830342,
+      "last_known_mileage": "100480"
+    }
+  ],
+  "history": [
+    {
+      "record_id": "191",
+      "vehicle_id": "3",
+      "record_date": "2020-10-05 00:00:00",
+      "litres": "56.66",
+      "cost": "65.67",
+      "trip": "330.8",
+      "mileage": "100480",
+      "pence_per_litre": "115.9",
+      "station": "Tesco - Church Langely"
+    },
+    {
+      "record_id": "190",
+      "vehicle_id": "3",
+      "record_date": "2020-09-22 00:00:00",
+      "litres": "69.86",
+      "cost": "82.36",
+      "trip": "421.7",
+      "mileage": "100149",
+      "pence_per_litre": "117.9",
+      "station": "Harvest - North Weald"
+    },
+    {
+      "record_id": "189",
+      "vehicle_id": "3",
+      "record_date": "2020-09-09 00:00:00",
+      "litres": "52.45",
+      "cost": "63.94",
+      "trip": "310.2",
+      "mileage": "99728",
+      "pence_per_litre": "121.9",
+      "station": "BP - Ashford"
+    },
+    {
+      "record_id": "188",
+      "vehicle_id": "3",
+      "record_date": "2020-09-04 00:00:00",
+      "litres": "70.29",
+      "cost": "81.47",
+      "trip": "403.4",
+      "mileage": "99417",
+      "pence_per_litre": "115.9",
+      "station": "Tesco - Edinburgh Way"
+    },
+    {
+      "record_id": "187",
+      "vehicle_id": "3",
+      "record_date": "2020-08-21 00:00:00",
+      "litres": "66.86",
+      "cost": "79.5",
+      "trip": "414.6",
+      "mileage": "99014",
+      "pence_per_litre": "118.9",
+      "station": "Harvest - North Weald"
+    },
+    {
+      "record_id": "186",
+      "vehicle_id": "3",
+      "record_date": "2020-08-09 00:00:00",
+      "litres": "63.81",
+      "cost": "76.51",
+      "trip": "390.2",
+      "mileage": "98589",
+      "pence_per_litre": "119.9",
+      "station": "Shell - Stamford"
+    },
+    {
+      "record_id": "185",
+      "vehicle_id": "3",
+      "record_date": "2020-08-05 00:00:00",
+      "litres": "60.47",
+      "cost": "71.9",
+      "trip": "394.5",
+      "mileage": "98199",
+      "pence_per_litre": "118.9",
+      "station": "Harvest - North Weald"
+    },
+    {
+      "record_id": "184",
+      "vehicle_id": "3",
+      "record_date": "2020-07-28 00:00:00",
+      "litres": "29.33",
+      "cost": "33.7",
+      "trip": "155.3",
+      "mileage": "97805",
+      "pence_per_litre": "114.9",
+      "station": "Tesco - Edinburgh Way"
+    },
+    {
+      "record_id": "183",
+      "vehicle_id": "3",
+      "record_date": "2020-06-24 00:00:00",
+      "litres": "49.61",
+      "cost": "54.52",
+      "trip": "281.3",
+      "mileage": "97150",
+      "pence_per_litre": "109.9",
+      "station": "Tesco - Edinburgh Way"
+    },
+    {
+      "record_id": "182",
+      "vehicle_id": "3",
+      "record_date": "2020-05-14 00:00:00",
+      "litres": "65.75",
+      "cost": "69.63",
+      "trip": "366.2",
+      "mileage": "96056",
+      "pence_per_litre": "105.9",
+      "station": "Tesco - Edinburgh Way"
+    },
+    {
+      "record_id": "181",
+      "vehicle_id": "3",
+      "record_date": "2020-04-16 00:00:00",
+      "litres": "47.51",
+      "cost": "53.16",
+      "trip": "188.4",
+      "mileage": "95690",
+      "pence_per_litre": "111.9",
+      "station": "Tesco - Edinburgh Way"
+    },
+    {
+      "record_id": "180",
+      "vehicle_id": "3",
+      "record_date": "2020-03-28 00:00:00",
+      "litres": "71.7",
+      "cost": "80.23",
+      "trip": "306.5",
+      "mileage": "95502",
+      "pence_per_litre": "111.9",
+      "station": "Tesco - Edinburgh Way"
+    }
+  ]
+}

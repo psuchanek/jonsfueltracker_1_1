@@ -27,20 +27,26 @@ class HistoryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_history, container, false)
-subscribeObservers()
+        subscribeObservers()
 
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setupRefresher()
         setupSpinner()
         setupRecyclerView()
     }
 
+    private fun setupRefresher() {
+        binding.swipeRefresher.setOnRefreshListener {
+
+        }
+    }
+
     private fun setupRecyclerView() {
-        TODO("Not yet implemented")
+
     }
 
     private fun setupSpinner() {
@@ -56,18 +62,18 @@ subscribeObservers()
     }
 
     private fun onItemSelectedListener(): AdapterView.OnItemSelectedListener? =
-        object: AdapterView.OnItemSelectedListener {
+        object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(p0: AdapterView<*>?) {
 
             }
 
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                TODO("Not yet implemented")
+
             }
 
         }
 
     private fun subscribeObservers() {
-        TODO("Not yet implemented")
+
     }
 }

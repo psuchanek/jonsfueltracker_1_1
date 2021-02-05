@@ -1,25 +1,30 @@
 package dev.psuchanek.jonsfueltracker_v_1_1
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
+import dagger.hilt.android.AndroidEntryPoint
 import dev.psuchanek.jonsfueltracker_v_1_1.databinding.ActivityMainBinding
-import kotlinx.android.synthetic.main.activity_main.*
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var navHostFragment: NavHostFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         setSupportActionBar(binding.toolbar)
+        navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
+
         binding.toolbar.setupWithNavController(navHostFragment.findNavController())
         binding.bottomNavigationView.apply {
             background = null
@@ -41,13 +46,19 @@ class MainActivity : AppCompatActivity() {
         NavController.OnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.dashboardFragment, R.id.historyFragment -> {
-                    binding.bottomAppBar.visibility = View.VISIBLE
-                    binding.fabAddTrip.show()
+                    with(binding) {
+                        bottomAppBar.visibility = View.VISIBLE
+                        fabAddTrip.show()
+                    }
+
                 }
                 else -> {
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)
-                    binding.bottomAppBar.visibility = View.GONE
-                    binding.fabAddTrip.hide()
+                    with(binding) {
+                        bottomAppBar.visibility = View.GONE
+                        fabAddTrip.hide()
+                    }
+
                 }
 
 

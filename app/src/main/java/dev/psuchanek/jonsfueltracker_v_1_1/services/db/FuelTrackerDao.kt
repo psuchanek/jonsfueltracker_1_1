@@ -16,6 +16,9 @@ interface FuelTrackerDao {
     @Update
     suspend fun updateTrip(localFuelTrackerTrip: LocalFuelTrackerTrip)
 
+    @Query("SELECT current_mileage FROM fuel_tracker_history_table WHERE vehicle_id=:vehicleId ORDER BY id DESC LIMIT 1")
+    suspend fun getLastKnownMileage(vehicleId: Int): Long
+
     @Query("SELECT * FROM fuel_tracker_history_table ORDER BY id DESC")
     fun getAllTripsSortedById(): List<LocalFuelTrackerTrip>
 

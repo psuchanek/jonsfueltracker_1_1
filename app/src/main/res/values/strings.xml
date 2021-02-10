@@ -10,7 +10,7 @@
     //Snackbar messages
     <string name="fields_missing">Please fill in all fields.</string>
     <string name="trip_added_successfully">Trip added successfully.</string>
-    <string name="trip_added_error">Something went wrong! Please try again.</string>
+    <string name="something_went_wrong">Something went wrong! Please try again.</string>
 
 
     //View Labels
@@ -35,6 +35,7 @@
     <string name="mercedes_sprinter">Mercedes Sprinter</string>
     <string name="unknown_car">Unknown car</string>
     <string name="sort_by">Sort by:</string>
+    <string name="fileds_missing">All fields are required.</string>
 
     //Sorting options
     <string-array name="sort_by">
@@ -44,6 +45,13 @@
         <item>Price Low -> High</item>
         <item>Mileage High -> Low</item>
         <item>Mileage Low -> High</item>
+    </string-array>
+
+    //Vehicles string array
+    <string-array name="vehicle_names">
+        <item>Nissan Micra</item>
+        <item>Midget</item>
+        <item>Mercedes Sprinter</item>
     </string-array>
 
 </resources>

@@ -13,6 +13,9 @@ import dev.psuchanek.jonsfueltracker_v_1_1.other.BASE_URL
 import dev.psuchanek.jonsfueltracker_v_1_1.other.CALL_TIMEOUT
 import dev.psuchanek.jonsfueltracker_v_1_1.other.FUEL_TRACKER_DB_NAME
 import dev.psuchanek.jonsfueltracker_v_1_1.other.READ_TIMEOUT
+import dev.psuchanek.jonsfueltracker_v_1_1.repositories.FuelTrackerRepository
+import dev.psuchanek.jonsfueltracker_v_1_1.repositories.Repository
+import dev.psuchanek.jonsfueltracker_v_1_1.services.db.FuelTrackerDao
 import dev.psuchanek.jonsfueltracker_v_1_1.services.db.FuelTrackerDatabase
 import dev.psuchanek.jonsfueltracker_v_1_1.services.network.FuelTrackerService
 import okhttp3.OkHttpClient
@@ -29,7 +32,7 @@ object AppModule {
     @Singleton
     @Provides
     fun provideMoshi() = Moshi.Builder()
-        .add(KotlinJsonAdapterFactory::class)
+        .add(KotlinJsonAdapterFactory())
         .build()
 
     @Singleton
@@ -65,5 +68,12 @@ object AppModule {
     @Singleton
     @Provides
     fun provideFuelTrackerDao(database: FuelTrackerDatabase) = database.fuelTrackerDao()
+
+    @Singleton
+    @Provides
+    fun provideFuelTrackerRepository(
+        fuelTrackerDao: FuelTrackerDao,
+        apiService: FuelTrackerService
+    ) = FuelTrackerRepository(fuelTrackerDao, apiService) as Repository
 
 }

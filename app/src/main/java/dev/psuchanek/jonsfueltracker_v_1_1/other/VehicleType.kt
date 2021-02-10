@@ -1,0 +1,5 @@
+package dev.psuchanek.jonsfueltracker_v_1_1.other
+
+enum class VehicleType {
+    MICRA, MIDGET, SPRINTER
+}

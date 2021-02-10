@@ -22,12 +22,23 @@ class FuelTrackerRepository @Inject constructor(
     private val apiService: FuelTrackerService
 ) : Repository {
 
-    override val getTripsSortedById = fuelTrackerDao.getAllTripsSortedById()
-    val getAllTripsSortedByTimeStamp = fuelTrackerDao.getAllTripsSortedByTimeStamp()
-    val getAllTripsSortedByFuelVolume = fuelTrackerDao.getAllTripsSortedByFuelVolume()
-    val getAllTripsSortedByFuelCost = fuelTrackerDao.getAllTripsSortedByFuelCost()
-    val getAllTripsSortedByTripMileage = fuelTrackerDao.getAllTripsSortedByTripMileage()
-    override val getMostRecentTripRecord = fuelTrackerDao.getMostRecentTripRecord()
+    override suspend fun getTripsSortedById() =
+        withContext(Dispatchers.IO) { fuelTrackerDao.getAllTripsSortedById() }
+
+    suspend fun getAllTripsSortedByTimeStamp() =
+        withContext(Dispatchers.IO) { fuelTrackerDao.getAllTripsSortedByTimeStamp() }
+
+    suspend fun getAllTripsSortedByFuelVolume() =
+        withContext(Dispatchers.IO) { fuelTrackerDao.getAllTripsSortedByFuelVolume() }
+
+    suspend fun getAllTripsSortedByFuelCost() =
+        withContext(Dispatchers.IO) { fuelTrackerDao.getAllTripsSortedByFuelCost() }
+
+    suspend fun getAllTripsSortedByTripMileage() =
+        withContext(Dispatchers.IO) { fuelTrackerDao.getAllTripsSortedByTripMileage() }
+
+    override suspend fun getMostRecentTripRecord() =
+        withContext(Dispatchers.IO) { fuelTrackerDao.getMostRecentTripRecord() }
 
     override suspend fun fetchData() = insertListFromNetworkCall()
 
@@ -78,8 +89,13 @@ class FuelTrackerRepository @Inject constructor(
         }
     }
 
+    override suspend fun getLastKnownMileage(vehicleId: Int) =
+        withContext(Dispatchers.IO) {
+            fuelTrackerDao.getLastKnownMileage(vehicleId)
+        }
 
-    override fun getAllTripsSortedByTimestampRange(start: Long, end: Long) =
+
+    override suspend fun getAllTripsSortedByTimestampRange(start: Long, end: Long) =
         fuelTrackerDao.getAllTripsByTimestampRange(start, end)
 
     private suspend fun postToService(trip: FuelTrackerTrip, shouldPost: Boolean = false): Status {

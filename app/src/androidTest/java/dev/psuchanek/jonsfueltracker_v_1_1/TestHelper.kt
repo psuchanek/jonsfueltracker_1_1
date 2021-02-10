@@ -13,7 +13,8 @@ val tripOne = LocalFuelTrackerTrip(
     tripMileage = 0.0f,
     costPerLitre = 0.0f,
     gasStationName = "",
-    timestamp = getTimePeriodTimestamp(TimePeriod.THREE_MONTHS)
+    timestamp = getTimePeriodTimestamp(TimePeriod.THREE_MONTHS),
+    currentMileage = 123
 )
 
 val tripTwo = LocalFuelTrackerTrip(
@@ -25,7 +26,8 @@ val tripTwo = LocalFuelTrackerTrip(
     tripMileage = 0.0f,
     costPerLitre = 0.0f,
     gasStationName = "",
-    timestamp = getTimePeriodTimestamp(TimePeriod.SIX_MONTHS)
+    timestamp = getTimePeriodTimestamp(TimePeriod.SIX_MONTHS),
+    currentMileage = 125
 )
 
 val tripThree = LocalFuelTrackerTrip(
@@ -37,7 +39,8 @@ val tripThree = LocalFuelTrackerTrip(
     tripMileage = 0.0f,
     costPerLitre = 0.0f,
     gasStationName = "",
-    timestamp = getTimePeriodTimestamp(TimePeriod.ONE_YEAR)
+    timestamp = getTimePeriodTimestamp(TimePeriod.ONE_YEAR),
+    currentMileage = 130
 )
 
 val tripFour = LocalFuelTrackerTrip(
@@ -49,8 +52,11 @@ val tripFour = LocalFuelTrackerTrip(
     tripMileage = 0.0f,
     costPerLitre = 0.0f,
     gasStationName = "",
-    timestamp = null
+    timestamp = null,
+    currentMileage = 135
 )
+
+
 
 val listOFTrips = listOf<LocalFuelTrackerTrip>(
     tripOne, tripTwo, tripThree

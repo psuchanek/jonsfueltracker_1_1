@@ -51,7 +51,7 @@ fun List<LocalFuelTrackerTrip>.asFuelTrackerTripModel(): List<FuelTrackerTrip> {
             tripMileage = it.tripMileage,
             currentMileage = it.currentMileage,
             costPerLitre = it.costPerLitre,
-            gasStationName = it.gasStationName,
+            gasStationName = it.gasStationName
         )
     }
 }

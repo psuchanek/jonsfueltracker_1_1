@@ -1,11 +1,19 @@
 package dev.psuchanek.jonsfueltracker_v_1_1.other
 
 
+import android.view.View
+import com.google.android.material.snackbar.Snackbar
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.round
 
+//Snackbar utility
+fun View.showSnackbar(message: String) {
+    Snackbar.make(this, message, Snackbar.LENGTH_SHORT).show()
+}
+
+//Convert date string to timeInMillis in format yyyy-mm-dd hh:mm:ss
 fun String.convertDateStringToTimestamp() = Timestamp.valueOf(this).time
 
 fun Long.convertTimestampToDateString(): String {
@@ -13,9 +21,22 @@ fun Long.convertTimestampToDateString(): String {
     return dateFormat.format(this).toString()
 }
 
+//Convert date string to timeInMillis in format dd/MM/yyyy
+fun String.convertToTimeInMillis(): Long {
+    val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    return sdf.parse(this).time
+}
+
 fun Long.formatDateForUI(): String {
     val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
     return dateFormat.format(this).toString()
+}
+
+// Get vehicle id from type
+fun getVehicleId(vehicleType: VehicleType) = when(vehicleType) {
+    VehicleType.MICRA -> 1
+    VehicleType.MIDGET -> 2
+    VehicleType.SPRINTER -> 3
 }
 
 
@@ -24,7 +45,7 @@ enum class TimePeriod {
     THREE_MONTHS, SIX_MONTHS, ONE_YEAR, THREE_YEARS
 }
 fun getTimePeriodTimestamp(timePeriod: TimePeriod): Long {
-    var timeFormat: Any
+    var timeFormat: Int = 0
     var numberOf: Int = 0
     when(timePeriod) {
         TimePeriod.THREE_MONTHS -> {
@@ -51,6 +72,9 @@ fun getTimePeriodTimestamp(timePeriod: TimePeriod): Long {
     return calendar.time.time
 }
 
+
+
+
 //Round-up
 fun Float.round(decimals: Int): Float {
     var multiplier = 1.0f
@@ -60,4 +84,9 @@ fun Float.round(decimals: Int): Float {
 
 //Convert litres to gallons
 fun Float.convertToGallons() = this / LITRES_IN_GALLON
+
+//Calculate pence per litre
+fun calculatePencePerLitre(price: Float, litres: Float): Float {
+    return round((price / litres) * 1000) / 10
+}
 

@@ -30,4 +30,20 @@ class UtilsTest {
         assertThat(result).isEqualTo(stringDate)
     }
 
+    @Test
+    fun `test getTimePeriodTimestamp works`() {
+        val one = getTimePeriodTimestamp(TimePeriod.THREE_MONTHS)
+        val two = getTimePeriodTimestamp(TimePeriod.SIX_MONTHS)
+        val three = getTimePeriodTimestamp(TimePeriod.ONE_YEAR)
+        val four = getTimePeriodTimestamp(TimePeriod.THREE_YEARS)
+        println(one)
+        println(two)
+        println(three)
+        println(four)
+
+        //Then
+        assertThat((one > two) && (two > three) && (three > four)).isTrue()
+    }
+
+
 }

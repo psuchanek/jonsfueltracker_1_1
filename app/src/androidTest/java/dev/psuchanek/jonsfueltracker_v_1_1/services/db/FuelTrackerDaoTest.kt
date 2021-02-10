@@ -61,7 +61,7 @@ class FuelTrackerDaoTest {
     }
 
     @Test
-    fun insertSingleFuelTrackerTrip_expectSucces() = runBlockingTest {
+    fun insertSingleFuelTrackerTrip_expectSuccess() = runBlockingTest {
         //When
         fuelTrackerDao.insertFuelTrackerHistory(listOFTrips)
         fuelTrackerDao.insertFuelTrackerTrip(tripFour)
@@ -124,7 +124,17 @@ class FuelTrackerDaoTest {
         val result = fuelTrackerDao.getMostRecentTripRecord()
 
         //Then
-        assertThat(result.timestamp).isEqualTo(listOFTrips[0].timestamp)
+        assertThat(result.id).isEqualTo(listOFTrips[0].id)
+    }
+
+    @Test
+    fun insertFuelTrackerTripList_getLastKnownMileage() = runBlockingTest {
+        //When
+        fuelTrackerDao.insertFuelTrackerHistory(listOFTrips)
+        val result = fuelTrackerDao.getLastKnownMileage(3)
+
+        //Then
+        assertThat(result).isEqualTo(listOFTrips[listOFTrips.lastIndex].currentMileage)
     }
 
 }

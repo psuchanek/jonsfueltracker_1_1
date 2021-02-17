@@ -39,6 +39,21 @@ fun getVehicleId(vehicleType: VehicleType) = when(vehicleType) {
     VehicleType.SPRINTER -> 3
 }
 
+//Day and month help functions
+fun getDay(dayOfMonth: Int) = when (dayOfMonth) {
+    in 1..9 -> {
+        "0$dayOfMonth"
+    }
+    else -> "$dayOfMonth"
+}
+
+fun getMonth(month: Int) = when (month) {
+    in 1..9 -> {
+        "0$month"
+    }
+    else -> "$month"
+}
+
 
 //Date ranges
 enum class TimePeriod {

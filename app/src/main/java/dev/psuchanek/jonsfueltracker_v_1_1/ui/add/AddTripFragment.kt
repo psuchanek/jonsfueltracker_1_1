@@ -1,5 +1,6 @@
 package dev.psuchanek.jonsfueltracker_v_1_1.ui.add
 
+import android.app.DatePickerDialog
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,6 +17,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.psuchanek.jonsfueltracker_v_1_1.R
 import dev.psuchanek.jonsfueltracker_v_1_1.databinding.FragmentAddTripBinding
 import dev.psuchanek.jonsfueltracker_v_1_1.other.Status
+import dev.psuchanek.jonsfueltracker_v_1_1.other.getDay
+import dev.psuchanek.jonsfueltracker_v_1_1.other.getMonth
 import dev.psuchanek.jonsfueltracker_v_1_1.other.showSnackbar
 import java.util.*
 
@@ -83,7 +86,25 @@ class AddTripFragment : Fragment() {
     }
 
     private fun launchDatePickerDialog() {
+        val calendar = Calendar.getInstance()
+        val yearFromCalendar = calendar.get(Calendar.YEAR)
+        val monthFromCalendar = calendar.get(Calendar.MONTH)
+        val dayFromCalendar = calendar.get(Calendar.DAY_OF_MONTH)
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+                setDateString(year, monthOfYear, dayOfMonth)
+            },
+            yearFromCalendar,
+            monthFromCalendar,
+            dayFromCalendar
+        )
+        datePickerDialog.show()
+    }
 
+    private fun setDateString(year: Int, monthOfYear: Int, dayOfMonth: Int) {
+        val dateString = "${getDay(dayOfMonth)}/${getMonth(monthOfYear)}/$year"
+        binding.evDate.setText(dateString)
     }
 
 

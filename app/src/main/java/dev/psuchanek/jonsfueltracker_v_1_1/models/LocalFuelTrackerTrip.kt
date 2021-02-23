@@ -35,7 +35,10 @@ data class LocalFuelTrackerTrip(
     val gasStationName: String,
 
     @ColumnInfo(name = "timestamp")
-    val timestamp: Long? = 0L
+    val timestamp: Long,
+
+    @ColumnInfo(name = "is_synced")
+    var isSynced: Boolean = false
 ) {
 
 }
@@ -51,7 +54,22 @@ fun List<LocalFuelTrackerTrip>.asFuelTrackerTripModel(): List<FuelTrackerTrip> {
             tripMileage = it.tripMileage,
             currentMileage = it.currentMileage,
             costPerLitre = it.costPerLitre,
-            gasStationName = it.gasStationName
+            gasStationName = it.gasStationName,
+            isSynced = it.isSynced
         )
     }
+}
+
+fun LocalFuelTrackerTrip.asFuelTrackerTrip(): FuelTrackerTrip {
+    return FuelTrackerTrip(
+        id = this.id,
+        vehicleId = this.vehicleId,
+        timestamp = this.timestamp,
+        fuelVolume = this.fuelVolume,
+        fuelCost = this.fuelCost,
+        tripMileage = this.tripMileage,
+        currentMileage = this.currentMileage,
+        costPerLitre = this.costPerLitre,
+        gasStationName = this.gasStationName
+    )
 }

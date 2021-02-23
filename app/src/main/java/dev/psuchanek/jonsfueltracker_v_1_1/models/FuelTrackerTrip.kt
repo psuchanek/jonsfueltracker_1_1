@@ -9,13 +9,14 @@ import dev.psuchanek.jonsfueltracker_v_1_1.utils.round
 data class FuelTrackerTrip(
     val id: Int,
     val vehicleId: Int,
-    var timestamp: Long? = 0L,
+    var timestamp: Long,
     val fuelVolume: Float,
     val fuelCost: Float,
     val tripMileage: Float,
     val currentMileage: Int,
     val costPerLitre: Float,
-    val gasStationName: String
+    val gasStationName: String,
+    var isSynced: Boolean = false
 ) {
 
     val vehicleName = when (vehicleId) {
@@ -25,7 +26,7 @@ data class FuelTrackerTrip(
         else -> R.string.unknown_car
     }
 
-    val date = timestamp?.formatDateForUI()
+    val date = timestamp.formatDateForUI()
     val fillUpCost = "£${this.fuelCost}"
     val lastTripDistance = "${this.tripMileage}"
     val milesPerGallon = (tripMileage / fuelVolume.convertToGallons()).round(2).toString()
@@ -34,20 +35,21 @@ data class FuelTrackerTrip(
 fun FuelTrackerTrip.asDatabaseModel() = LocalFuelTrackerTrip(
     id = this.id,
     vehicleId = this.vehicleId,
-    date = this.timestamp!!.convertTimestampToDateString(),
+    date = this.timestamp.convertTimestampToDateString(),
     fuelVolume = this.fuelVolume,
     fuelCost = this.fuelCost,
     tripMileage = this.tripMileage,
     currentMileage = this.currentMileage,
     costPerLitre = this.costPerLitre,
     gasStationName = this.gasStationName,
-    timestamp = this.timestamp
+    timestamp = this.timestamp,
+    isSynced = this.isSynced
 )
 
 
 fun FuelTrackerTrip.asDomainModel() = NetworkFuelTrackerTrip(
     vehicleID = this.vehicleId,
-    date = this.timestamp!!.convertTimestampToDateString(),
+    date = this.timestamp.convertTimestampToDateString(),
     fuelVolume = this.fuelVolume,
     fuelCost = this.fuelCost,
     tripMileage = this.tripMileage,

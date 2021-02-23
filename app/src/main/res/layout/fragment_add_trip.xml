@@ -180,7 +180,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:background="@drawable/rouded_border_shape"
-            app:layout_constraintTop_toBottomOf="@+id/tiLayoutTripMileage" />
+            android:layout_marginBottom="8dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

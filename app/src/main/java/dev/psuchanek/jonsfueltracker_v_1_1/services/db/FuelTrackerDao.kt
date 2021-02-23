@@ -1,5 +1,6 @@
 package dev.psuchanek.jonsfueltracker_v_1_1.services.db
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -17,26 +18,38 @@ interface FuelTrackerDao {
     suspend fun insertFuelTrackerTrip(trip: LocalFuelTrackerTrip)
 
     @Query("SELECT * FROM fuel_tracker_history_table ORDER BY id DESC")
-    fun getAllTripsSortedById(): List<LocalFuelTrackerTrip>
+    fun getAllById(): List<LocalFuelTrackerTrip>
 
     @Query("SELECT * FROM fuel_tracker_history_table ORDER BY timestamp DESC")
-    fun getAllTripsSortedByTimeStamp(): Flow<List<LocalFuelTrackerTrip>>
+    fun getAllByTimestamp(): Flow<List<LocalFuelTrackerTrip>>
+
+
+    @Query("SELECT * FROM fuel_tracker_history_table WHERE is_synced = 0")
+    fun getAllUnsyncedTrips(): List<LocalFuelTrackerTrip>
+
+    @Query("DELETE FROM fuel_tracker_history_table")
+    fun deleteAllTrips()
+
+    @Query("SELECT * FROM fuel_tracker_history_table WHERE id = :tripId")
+    fun observerTripById(tripId: Int): LiveData<LocalFuelTrackerTrip>?
+
+    //TODO: Focus on the rest here after refactoring
 
     @Query("SELECT * FROM fuel_tracker_history_table ORDER BY fuel_volume DESC")
-    fun getAllTripsSortedByFuelVolume(): List<LocalFuelTrackerTrip>
+    fun getAllByFuelVolume(): List<LocalFuelTrackerTrip>
 
     @Query("SELECT * FROM fuel_tracker_history_table ORDER BY fuel_cost DESC")
-    fun getAllTripsSortedByFuelCost(): List<LocalFuelTrackerTrip>
+    fun getAllByFuelCost(): List<LocalFuelTrackerTrip>
 
     @Query("SELECT * FROM fuel_tracker_history_table ORDER BY trip_mileage DESC")
-    fun getAllTripsSortedByTripMileage(): List<LocalFuelTrackerTrip>
+    fun getAllByTripMileage(): List<LocalFuelTrackerTrip>
 
     @Query("SELECT * FROM fuel_tracker_history_table WHERE timestamp BETWEEN :start AND :end ORDER BY timestamp ASC")
-    fun getAllTripsByTimestampRange(start: Long, end: Long): List<LocalFuelTrackerTrip>
+    fun getAllByTimestampRange(start: Long, end: Long): List<LocalFuelTrackerTrip>
 
     @Query("SELECT * FROM fuel_tracker_history_table ORDER by timestamp DESC LIMIT 1")
     fun getMostRecentTripRecord(): LocalFuelTrackerTrip
 
     @Query("SELECT current_mileage FROM fuel_tracker_history_table WHERE vehicle_id=:vehicleId ORDER BY id DESC LIMIT 1")
-    suspend fun getLastKnownMileage(vehicleId: Int): Long
+    suspend fun getLastKnownMileage(vehicleId: Int): Long?
 }

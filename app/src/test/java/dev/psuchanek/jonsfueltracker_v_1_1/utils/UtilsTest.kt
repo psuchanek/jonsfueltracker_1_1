@@ -6,6 +6,21 @@ import org.junit.Test
 class UtilsTest {
 
     @Test
+    fun `test the change in a timestamp`() {
+        //Given
+        val stringDate = "2021-01-27 01:20:23"
+        val splitDateString = stringDate.split(" ")
+        val firstHalf = splitDateString[0]
+        val newDate = firstHalf + " 00:00:00"
+
+        //When
+        val result = newDate.convertDateStringToTimestamp()
+
+        //Then
+        println(result)
+    }
+
+    @Test
     fun testStringToTimestampConverter() {
         //Given
         val stringDate = "2021-01-27 00:00:00"

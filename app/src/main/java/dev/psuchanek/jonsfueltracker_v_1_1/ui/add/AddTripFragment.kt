@@ -41,7 +41,7 @@ class AddTripFragment : BaseFragment(R.layout.fragment_add_trip) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_trip, container, false)
         binding.apply {
             evDate.setOnClickListener { launchDatePickerDialog() }
-            btnSubmit.setOnClickListener { submitTrip() }
+            btnSubmit.setOnClickListener { insertTrip() }
         }
         subscribeObservers()
         return binding.root
@@ -61,20 +61,20 @@ class AddTripFragment : BaseFragment(R.layout.fragment_add_trip) {
             addTripViewModel.getCurrentMileage(vehicleId)
         }
 
-    private fun submitTrip() {
+    private fun insertTrip() {
         val date = binding.evDate.text.toString()
         val stationName = binding.evPetrolStation.text.toString()
         val price = binding.evPrice.text.toString()
         val fuelVolume = binding.evLitres.text.toString()
-        addTripViewModel.submitTrip(
+        addTripViewModel.insertTrip(
             date = date,
             stationName = stationName,
             vehicleId = vehicleId,
             price = price,
-            ppl = "",
+            ppl = "123",
             fuelVolume = fuelVolume,
-            tripMileage = "",
-            totalMileage = ""
+            tripMileage = "123",
+            totalMileage = "123"
         )
     }
 
@@ -92,6 +92,7 @@ class AddTripFragment : BaseFragment(R.layout.fragment_add_trip) {
         val datePickerDialog = DatePickerDialog(
             requireContext(),
             DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+
                 setDateString(year, monthOfYear, dayOfMonth)
             },
             yearFromCalendar,
@@ -132,6 +133,10 @@ class AddTripFragment : BaseFragment(R.layout.fragment_add_trip) {
                 }
                 Status.SUCCESS -> {
                     findNavController().navigate(R.id.action_addTripFragment_to_dashboardFragment)
+                    showSnackbar(getString(R.string.trip_added_successfully))
+                }
+                Status.LOADING -> {
+                    /* NO-OP */
                 }
 
             }

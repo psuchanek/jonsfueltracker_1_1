@@ -1,8 +1,6 @@
 package dev.psuchanek.jonsfueltracker_v_1_1.utils
 
 
-import android.view.View
-import com.google.android.material.snackbar.Snackbar
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*

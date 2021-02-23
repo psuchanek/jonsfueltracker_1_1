@@ -1,5 +1,6 @@
 package dev.psuchanek.jonsfueltracker_v_1_1.di
 
+import android.app.Application
 import android.content.Context
 import androidx.room.Room
 import com.squareup.moshi.Moshi
@@ -9,6 +10,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dev.psuchanek.jonsfueltracker_v_1_1.repositories.FuelTrackerRepository
+import dev.psuchanek.jonsfueltracker_v_1_1.repositories.Repository
+import dev.psuchanek.jonsfueltracker_v_1_1.services.db.FuelTrackerDao
 import dev.psuchanek.jonsfueltracker_v_1_1.services.db.FuelTrackerDatabase
 import dev.psuchanek.jonsfueltracker_v_1_1.services.network.FuelTrackerService
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.BASE_URL
@@ -65,5 +69,10 @@ object AppModule {
     @Singleton
     @Provides
     fun provideFuelTrackerDao(database: FuelTrackerDatabase) = database.fuelTrackerDao()
+
+    @Singleton
+    @Provides
+    fun provideRepository(apiService: FuelTrackerService, fuelTrackerDao: FuelTrackerDao, @ApplicationContext context: Context) =
+        FuelTrackerRepository(fuelTrackerDao, apiService, context as Application) as Repository
 
 }

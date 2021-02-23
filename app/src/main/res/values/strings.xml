@@ -36,6 +36,7 @@
     <string name="unknown_car">Unknown car</string>
     <string name="sort_by">Sort by:</string>
     <string name="fileds_missing">All fields are required.</string>
+    <string name="no_data">No data</string>
 
     //Sorting options
     <string-array name="sort_by">

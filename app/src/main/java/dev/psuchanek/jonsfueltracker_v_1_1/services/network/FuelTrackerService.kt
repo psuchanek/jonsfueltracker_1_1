@@ -14,6 +14,10 @@ interface FuelTrackerService {
     @GET(GET_FROM_SERVICE)
     suspend fun getFuelTrackerHistory(): Response<NetworkDataResponse>
 
-    @POST(POST_TO_SERVICE)
-    suspend fun postFuelTrackerTrip(@Body trip: NetworkFuelTrackerTrip): Response<NetworkDataResponse>
+    @POST(
+        POST_TO_SERVICE
+    )
+    fun addFuelTrackerTrip(
+        @Body trip: NetworkFuelTrackerTrip
+    ): Response<NetworkDataResponse>
 }

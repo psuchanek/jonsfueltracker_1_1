@@ -12,3 +12,5 @@ const val CALL_TIMEOUT = 3L
 
 //Units
 const val LITRES_IN_GALLON = 4.546f
+
+const val EMPTY_MILEAGE = 0L

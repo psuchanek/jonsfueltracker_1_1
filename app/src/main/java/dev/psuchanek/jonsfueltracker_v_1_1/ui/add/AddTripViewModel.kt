@@ -5,16 +5,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dev.psuchanek.jonsfueltracker_v_1_1.repositories.FuelTrackerRepository
+import dev.psuchanek.jonsfueltracker_v_1_1.models.FuelTrackerTrip
+import dev.psuchanek.jonsfueltracker_v_1_1.repositories.Repository
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.EMPTY_MILEAGE
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.Status
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.IOException
 
-class AddTripViewModel @ViewModelInject constructor(private val repository: FuelTrackerRepository) :
+class AddTripViewModel @ViewModelInject constructor(private val repository: Repository) :
     ViewModel() {
 
-    private var _lastTripId: Int = 0
+    private var _lastTripId: Int? = null
 
     private var _lastKnownMileage: MutableLiveData<Long> = MutableLiveData()
     val lastKnownMileage: LiveData<Long> = _lastKnownMileage
@@ -24,26 +27,33 @@ class AddTripViewModel @ViewModelInject constructor(private val repository: Fuel
 
 
     //TODO: Implement logic in init{} to get lastTripId even when DB is empty
-    fun getLastTripId() {
-        viewModelScope.launch {
-            var id = 0
-            try {
-                val response = repository.getTripsSortedById()[0].id
-            } catch (e: IndexOutOfBoundsException) {
-
-            }
-        }
-
-    }
+//    fun getLastTripId() {
+//        viewModelScope.launch {
+//            var id = 0
+//            try {
+//                val response = repository.getTripsSortedById()[0].id
+//            } catch (e: IndexOutOfBoundsException) {
+//
+//            }
+//        }
+//
+//    }
 
 
     fun getCurrentMileage(vehicleId: Int) {
-
-
+        viewModelScope.launch {
+            val currentMileage = repository.getLastKnownMileage(vehicleId)
+            if (currentMileage != null) {
+                _lastKnownMileage.postValue(currentMileage)
+            } else {
+                _lastKnownMileage.postValue(EMPTY_MILEAGE)
+            }
+        }
     }
 
-    fun submitTrip(
+    fun insertTrip(
         date: String,
+        timestamp: Long = 12345678,
         stationName: String,
         vehicleId: Int,
         price: String,
@@ -53,18 +63,44 @@ class AddTripViewModel @ViewModelInject constructor(private val repository: Fuel
         totalMileage: String
 
     ) {
+
+        Timber.d(
+            "DEBUG: ${listOf(
+                date,
+                stationName,
+                vehicleId.toString(),
+                price,
+                ppl,
+                fuelVolume,
+                tripMileage,
+                totalMileage
+            )}"
+        )
         if ((date.isEmpty() || date == "") || (stationName.isEmpty() || stationName == "") || (price.isEmpty() || price == "") || (tripMileage.isEmpty() || tripMileage == "")
-            && (totalMileage.isEmpty() || totalMileage == "") || (ppl.isEmpty() || ppl == "") || (fuelVolume.isEmpty() || fuelVolume == "") || (vehicleId < 0 || vehicleId > 2)
+            && (totalMileage.isEmpty() || totalMileage == "") || (ppl.isEmpty() || ppl == "") || (fuelVolume.isEmpty() || fuelVolume == "") || (vehicleId < 1 || vehicleId > 3)
         ) {
             _submitTripStatus.value = Status.ERROR
         } else {
-            viewModelScope.launch {
+            GlobalScope.launch {
                 try {
-
-                    _submitTripStatus.value = Status.SUCCESS
+                    repository.insertTrip(
+                        FuelTrackerTrip(
+                            id = 0,
+                            vehicleId = vehicleId,
+                            timestamp = timestamp,
+                            fuelVolume = 0.0f,
+                            fuelCost = 0.0f,
+                            tripMileage = 0.0f,
+                            currentMileage = 0,
+                            costPerLitre = 0.0f,
+                            gasStationName = "",
+                            isSynced = false
+                        )
+                    )
+                    _submitTripStatus.postValue(Status.SUCCESS)
                 } catch (e: IOException) {
                     Timber.d("submitTrip: SubmitFailed: ${e.printStackTrace()}")
-                    _submitTripStatus.value = Status.ERROR
+                    _submitTripStatus.postValue(Status.ERROR)
                 }
 
             }

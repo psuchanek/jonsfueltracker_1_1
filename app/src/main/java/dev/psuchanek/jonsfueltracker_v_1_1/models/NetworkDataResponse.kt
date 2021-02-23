@@ -1,7 +1,7 @@
 package dev.psuchanek.jonsfueltracker_v_1_1.models
 
 import com.squareup.moshi.Json
-import dev.psuchanek.jonsfueltracker_v_1_1.other.convertDateStringToTimestamp
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.convertDateStringToTimestamp
 
 data class NetworkDataResponse(
     val networkTrips: List<NetworkFuelTrackerTrip>

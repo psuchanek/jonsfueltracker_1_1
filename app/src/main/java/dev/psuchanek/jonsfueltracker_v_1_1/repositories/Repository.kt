@@ -2,8 +2,7 @@ package dev.psuchanek.jonsfueltracker_v_1_1.repositories
 
 import dev.psuchanek.jonsfueltracker_v_1_1.models.FuelTrackerTrip
 import dev.psuchanek.jonsfueltracker_v_1_1.models.LocalFuelTrackerTrip
-import dev.psuchanek.jonsfueltracker_v_1_1.other.Status
-import dev.psuchanek.jonsfueltracker_v_1_1.other.VehicleType
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.Status
 
 interface Repository {
     suspend fun getTripsSortedById(): List<LocalFuelTrackerTrip>

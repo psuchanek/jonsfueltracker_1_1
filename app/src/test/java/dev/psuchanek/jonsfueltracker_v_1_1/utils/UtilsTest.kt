@@ -1,4 +1,4 @@
-package dev.psuchanek.jonsfueltracker_v_1_1.other
+package dev.psuchanek.jonsfueltracker_v_1_1.utils
 
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test

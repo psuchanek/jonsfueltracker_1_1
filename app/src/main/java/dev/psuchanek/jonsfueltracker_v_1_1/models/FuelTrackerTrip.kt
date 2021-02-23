@@ -1,12 +1,10 @@
 package dev.psuchanek.jonsfueltracker_v_1_1.models
 
-import androidx.lifecycle.Transformations.map
-import androidx.room.ColumnInfo
 import dev.psuchanek.jonsfueltracker_v_1_1.R
-import dev.psuchanek.jonsfueltracker_v_1_1.other.convertTimestampToDateString
-import dev.psuchanek.jonsfueltracker_v_1_1.other.convertToGallons
-import dev.psuchanek.jonsfueltracker_v_1_1.other.formatDateForUI
-import dev.psuchanek.jonsfueltracker_v_1_1.other.round
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.convertTimestampToDateString
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.convertToGallons
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.formatDateForUI
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.round
 
 data class FuelTrackerTrip(
     val id: Int,

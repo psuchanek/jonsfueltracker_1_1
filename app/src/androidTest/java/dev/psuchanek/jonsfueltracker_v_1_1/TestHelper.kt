@@ -1,8 +1,8 @@
 package dev.psuchanek.jonsfueltracker_v_1_1
 
 import dev.psuchanek.jonsfueltracker_v_1_1.models.LocalFuelTrackerTrip
-import dev.psuchanek.jonsfueltracker_v_1_1.other.TimePeriod
-import dev.psuchanek.jonsfueltracker_v_1_1.other.getTimePeriodTimestamp
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.TimePeriod
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.getTimePeriodTimestamp
 
 val tripOne = LocalFuelTrackerTrip(
     id = 1,

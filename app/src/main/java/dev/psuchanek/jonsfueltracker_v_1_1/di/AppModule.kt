@@ -9,10 +9,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dev.psuchanek.jonsfueltracker_v_1_1.other.BASE_URL
-import dev.psuchanek.jonsfueltracker_v_1_1.other.CALL_TIMEOUT
-import dev.psuchanek.jonsfueltracker_v_1_1.other.FUEL_TRACKER_DB_NAME
-import dev.psuchanek.jonsfueltracker_v_1_1.other.READ_TIMEOUT
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.BASE_URL
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.CALL_TIMEOUT
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.FUEL_TRACKER_DB_NAME
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.READ_TIMEOUT
 import dev.psuchanek.jonsfueltracker_v_1_1.repositories.FuelTrackerRepository
 import dev.psuchanek.jonsfueltracker_v_1_1.repositories.Repository
 import dev.psuchanek.jonsfueltracker_v_1_1.services.db.FuelTrackerDao

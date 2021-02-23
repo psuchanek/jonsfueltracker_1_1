@@ -4,7 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth.assertThat
 import dev.psuchanek.jonsfueltracker_v_1_1.MainCoroutineRule
 import dev.psuchanek.jonsfueltracker_v_1_1.getOrAwaitValue
-import dev.psuchanek.jonsfueltracker_v_1_1.other.Status
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.Status
 import dev.psuchanek.jonsfueltracker_v_1_1.repositories.FakeFuelTrackerRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest

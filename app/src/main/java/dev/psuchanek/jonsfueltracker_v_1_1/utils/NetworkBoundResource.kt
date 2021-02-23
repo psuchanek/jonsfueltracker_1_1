@@ -1,0 +1,32 @@
+package dev.psuchanek.jonsfueltracker_v_1_1.utils
+
+import kotlinx.coroutines.flow.*
+import java.lang.Exception
+
+inline fun <ResultType, RequestType> networkBoundResource(
+    crossinline query: () -> Flow<ResultType>,
+    crossinline fetch: suspend () -> RequestType,
+    crossinline saveFetchResult: suspend (RequestType) -> Unit,
+    crossinline onFetchFailed: (Throwable) -> Unit = { Unit },
+    crossinline shouldFetch: (ResultType) -> Boolean = { true }
+) = flow {
+    emit(Resource.loading(null))
+    val data = query().first()
+
+    val flow = if (shouldFetch(data)) {
+        emit(Resource.loading(data))
+
+        try {
+            val fetchedResult = fetch()
+            saveFetchResult(fetchedResult)
+            query().map { Resource.success(it) }
+        } catch (t: Throwable) {
+            onFetchFailed(t)
+            query().map { Resource.error("Could not reach server. It might be down.", it) }
+        }
+    } else {
+        query().map { Resource.success(it) }
+    }
+
+    emitAll(flow)
+}

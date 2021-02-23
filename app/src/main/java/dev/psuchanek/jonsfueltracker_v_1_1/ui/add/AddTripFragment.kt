@@ -16,10 +16,10 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import dev.psuchanek.jonsfueltracker_v_1_1.R
 import dev.psuchanek.jonsfueltracker_v_1_1.databinding.FragmentAddTripBinding
-import dev.psuchanek.jonsfueltracker_v_1_1.other.Status
-import dev.psuchanek.jonsfueltracker_v_1_1.other.getDay
-import dev.psuchanek.jonsfueltracker_v_1_1.other.getMonth
-import dev.psuchanek.jonsfueltracker_v_1_1.other.showSnackbar
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.Status
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.getDay
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.getMonth
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.showSnackbar
 import java.util.*
 
 @AndroidEntryPoint

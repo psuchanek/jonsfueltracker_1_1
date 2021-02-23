@@ -1,4 +1,4 @@
-package dev.psuchanek.jonsfueltracker_v_1_1.other
+package dev.psuchanek.jonsfueltracker_v_1_1.utils
 
 //Services
 const val BASE_URL = "http://fuel.tecserv-uk.co.uk/"

@@ -5,10 +5,9 @@ import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import dev.psuchanek.jonsfueltracker_v_1_1.getOrAwaitValue
 import dev.psuchanek.jonsfueltracker_v_1_1.listOFTrips
-import dev.psuchanek.jonsfueltracker_v_1_1.other.TimePeriod
-import dev.psuchanek.jonsfueltracker_v_1_1.other.getTimePeriodTimestamp
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.TimePeriod
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.getTimePeriodTimestamp
 import dev.psuchanek.jonsfueltracker_v_1_1.tripFour
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest

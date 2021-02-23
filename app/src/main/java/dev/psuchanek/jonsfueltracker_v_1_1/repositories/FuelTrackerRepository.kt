@@ -3,8 +3,7 @@ package dev.psuchanek.jonsfueltracker_v_1_1.repositories
 import dev.psuchanek.jonsfueltracker_v_1_1.models.FuelTrackerTrip
 import dev.psuchanek.jonsfueltracker_v_1_1.models.asDatabaseModel
 import dev.psuchanek.jonsfueltracker_v_1_1.models.asDomainModel
-import dev.psuchanek.jonsfueltracker_v_1_1.other.OnSuccessCache
-import dev.psuchanek.jonsfueltracker_v_1_1.other.Status
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.Status
 import dev.psuchanek.jonsfueltracker_v_1_1.services.db.FuelTrackerDao
 import dev.psuchanek.jonsfueltracker_v_1_1.services.network.FuelTrackerService
 import kotlinx.coroutines.Dispatchers
@@ -133,13 +132,4 @@ class FuelTrackerRepository @Inject constructor(
 
         return status
     }
-
-
-    private var fuelTrackerHistoryCache = OnSuccessCache(
-        onErrorFallback = { listOf<String>() }
-    ) {
-        apiService.getFuelTrackerHistory()
-    }
-
-
 }

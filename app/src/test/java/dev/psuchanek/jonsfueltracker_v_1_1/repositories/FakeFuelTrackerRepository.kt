@@ -3,7 +3,7 @@ package dev.psuchanek.jonsfueltracker_v_1_1.repositories
 import androidx.lifecycle.MutableLiveData
 import dev.psuchanek.jonsfueltracker_v_1_1.models.FuelTrackerTrip
 import dev.psuchanek.jonsfueltracker_v_1_1.models.LocalFuelTrackerTrip
-import dev.psuchanek.jonsfueltracker_v_1_1.other.Status
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.Status
 
 class FakeFuelTrackerRepository : Repository {
 

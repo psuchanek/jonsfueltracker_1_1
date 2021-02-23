@@ -1,16 +1,12 @@
 package dev.psuchanek.jonsfueltracker_v_1_1.ui.add
 
-import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.psuchanek.jonsfueltracker_v_1_1.models.FuelTrackerTrip
-import dev.psuchanek.jonsfueltracker_v_1_1.models.LocalFuelTrackerTrip
-import dev.psuchanek.jonsfueltracker_v_1_1.models.asDatabaseModel
-import dev.psuchanek.jonsfueltracker_v_1_1.other.*
-import dev.psuchanek.jonsfueltracker_v_1_1.repositories.FuelTrackerRepository
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.*
 import dev.psuchanek.jonsfueltracker_v_1_1.repositories.Repository
 import kotlinx.coroutines.launch
 import timber.log.Timber

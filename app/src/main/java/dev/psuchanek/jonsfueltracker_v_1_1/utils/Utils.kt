@@ -8,10 +8,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.round
 
-//Snackbar utility
-fun View.showSnackbar(message: String) {
-    Snackbar.make(this, message, Snackbar.LENGTH_SHORT).show()
-}
+
 
 //Convert date string to timeInMillis in format yyyy-mm-dd hh:mm:ss
 fun String.convertDateStringToTimestamp() = Timestamp.valueOf(this).time
@@ -24,7 +21,7 @@ fun Long.convertTimestampToDateString(): String {
 //Convert date string to timeInMillis in format dd/MM/yyyy
 fun String.convertToTimeInMillis(): Long {
     val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-    return sdf.parse(this).time
+    return sdf.parse(this)!!.time
 }
 
 fun Long.formatDateForUI(): String {

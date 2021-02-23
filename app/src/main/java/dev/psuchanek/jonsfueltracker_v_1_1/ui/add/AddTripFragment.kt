@@ -9,21 +9,20 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import dev.psuchanek.jonsfueltracker_v_1_1.BaseFragment
 import dev.psuchanek.jonsfueltracker_v_1_1.R
 import dev.psuchanek.jonsfueltracker_v_1_1.databinding.FragmentAddTripBinding
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.Status
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.getDay
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.getMonth
-import dev.psuchanek.jonsfueltracker_v_1_1.utils.showSnackbar
 import java.util.*
 
 @AndroidEntryPoint
-class AddTripFragment : Fragment() {
+class AddTripFragment : BaseFragment(R.layout.fragment_add_trip) {
 
     private val addTripViewModel: AddTripViewModel by viewModels()
 
@@ -129,14 +128,12 @@ class AddTripFragment : Fragment() {
         addTripViewModel.submitTripStatus.observe(viewLifecycleOwner, Observer { status ->
             when (status) {
                 Status.ERROR -> {
-                    binding.addTripLayout.showSnackbar(getString(R.string.fileds_missing))
+                    showSnackbar(getString(R.string.fileds_missing))
                 }
                 Status.SUCCESS -> {
                     findNavController().navigate(R.id.action_addTripFragment_to_dashboardFragment)
                 }
-                Status.EXCEPTION -> {
-                    binding.addTripLayout.showSnackbar(getString(R.string.something_went_wrong))
-                }
+
             }
 
         })

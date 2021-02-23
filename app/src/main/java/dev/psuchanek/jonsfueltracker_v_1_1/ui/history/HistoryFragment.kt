@@ -7,16 +7,14 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
+import dev.psuchanek.jonsfueltracker_v_1_1.BaseFragment
 import dev.psuchanek.jonsfueltracker_v_1_1.R
 import dev.psuchanek.jonsfueltracker_v_1_1.databinding.FragmentHistoryBinding
-import dev.psuchanek.jonsfueltracker_v_1_1.ui.MainViewModel
-import javax.inject.Inject
 
 @AndroidEntryPoint
-class HistoryFragment : Fragment() {
+class HistoryFragment : BaseFragment(R.layout.fragment_history) {
 
     private lateinit var binding: FragmentHistoryBinding
     private val mainViewModel: HistoryViewModel by viewModels()

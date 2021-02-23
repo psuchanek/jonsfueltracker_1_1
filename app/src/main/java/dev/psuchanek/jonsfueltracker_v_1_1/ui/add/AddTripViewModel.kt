@@ -5,15 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dev.psuchanek.jonsfueltracker_v_1_1.models.FuelTrackerTrip
-import dev.psuchanek.jonsfueltracker_v_1_1.utils.*
-import dev.psuchanek.jonsfueltracker_v_1_1.repositories.Repository
+import dev.psuchanek.jonsfueltracker_v_1_1.repositories.FuelTrackerRepository
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.Status
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.IOException
-import java.lang.IndexOutOfBoundsException
 
-class AddTripViewModel @ViewModelInject constructor(private val repository: Repository) :
+class AddTripViewModel @ViewModelInject constructor(private val repository: FuelTrackerRepository) :
     ViewModel() {
 
     private var _lastTripId: Int = 0
@@ -40,17 +38,7 @@ class AddTripViewModel @ViewModelInject constructor(private val repository: Repo
 
 
     fun getCurrentMileage(vehicleId: Int) {
-        var response: Long = 0L
-        viewModelScope.launch {
-            try {
-                response = repository.getLastKnownMileage(vehicleId)
-                _lastKnownMileage.value = response
-            } catch (e: NullPointerException) {
-                Timber.d("${e.printStackTrace()}")
-                _lastKnownMileage.value = 0L
-            }
 
-        }
 
     }
 
@@ -72,23 +60,11 @@ class AddTripViewModel @ViewModelInject constructor(private val repository: Repo
         } else {
             viewModelScope.launch {
                 try {
-                    repository.insertFuelTrackerTrip(
-                        FuelTrackerTrip(
-                            id = _lastTripId,
-                            vehicleId = vehicleId,
-                            timestamp = date.convertToTimeInMillis(),
-                            fuelVolume = fuelVolume.toFloat(),
-                            fuelCost = price.toFloat(),
-                            tripMileage = tripMileage.toFloat(),
-                            currentMileage = totalMileage.toInt(),
-                            costPerLitre = ppl.toFloat(),
-                            gasStationName = stationName
-                        )
-                    )
+
                     _submitTripStatus.value = Status.SUCCESS
                 } catch (e: IOException) {
                     Timber.d("submitTrip: SubmitFailed: ${e.printStackTrace()}")
-                    _submitTripStatus.value = Status.EXCEPTION
+                    _submitTripStatus.value = Status.ERROR
                 }
 
             }

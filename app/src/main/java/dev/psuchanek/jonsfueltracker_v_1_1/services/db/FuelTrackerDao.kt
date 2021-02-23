@@ -1,8 +1,11 @@
 package dev.psuchanek.jonsfueltracker_v_1_1.services.db
 
-import androidx.lifecycle.LiveData
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import dev.psuchanek.jonsfueltracker_v_1_1.models.LocalFuelTrackerTrip
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FuelTrackerDao {
@@ -13,17 +16,11 @@ interface FuelTrackerDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFuelTrackerTrip(trip: LocalFuelTrackerTrip)
 
-    @Update
-    suspend fun updateTrip(localFuelTrackerTrip: LocalFuelTrackerTrip)
-
-    @Query("SELECT current_mileage FROM fuel_tracker_history_table WHERE vehicle_id=:vehicleId ORDER BY id DESC LIMIT 1")
-    suspend fun getLastKnownMileage(vehicleId: Int): Long
-
     @Query("SELECT * FROM fuel_tracker_history_table ORDER BY id DESC")
     fun getAllTripsSortedById(): List<LocalFuelTrackerTrip>
 
     @Query("SELECT * FROM fuel_tracker_history_table ORDER BY timestamp DESC")
-    fun getAllTripsSortedByTimeStamp(): List<LocalFuelTrackerTrip>
+    fun getAllTripsSortedByTimeStamp(): Flow<List<LocalFuelTrackerTrip>>
 
     @Query("SELECT * FROM fuel_tracker_history_table ORDER BY fuel_volume DESC")
     fun getAllTripsSortedByFuelVolume(): List<LocalFuelTrackerTrip>
@@ -39,4 +36,7 @@ interface FuelTrackerDao {
 
     @Query("SELECT * FROM fuel_tracker_history_table ORDER by timestamp DESC LIMIT 1")
     fun getMostRecentTripRecord(): LocalFuelTrackerTrip
+
+    @Query("SELECT current_mileage FROM fuel_tracker_history_table WHERE vehicle_id=:vehicleId ORDER BY id DESC LIMIT 1")
+    suspend fun getLastKnownMileage(vehicleId: Int): Long
 }

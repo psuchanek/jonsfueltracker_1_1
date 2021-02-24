@@ -5,9 +5,10 @@ import dev.psuchanek.jonsfueltracker_v_1_1.utils.convertTimestampToDateString
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.convertToGallons
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.formatDateForUI
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.round
+import java.util.*
 
 data class FuelTrackerTrip(
-    val id: String,
+    val id: String = UUID.randomUUID().toString(),
     val vehicleId: Int,
     var timestamp: Long,
     val fuelVolume: Float,

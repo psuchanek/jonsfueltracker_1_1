@@ -11,12 +11,7 @@ class FakeFuelTrackerRepository: Repository{
     private val observableFuelTrackerTrips =
         MutableLiveData<List<FuelTrackerTrip>>(fuelTrackerTrips)
 
-    fun addTrips(vararg trips: FuelTrackerTrip) {
-        for (trip in trips) {
-            fuelTrackerTrips[trip.id] = trip
-        }
-        refreshLiveData()
-    }
+
 
     private fun refreshLiveData() {
         observableFuelTrackerTrips.postValue(fuelTrackerTrips)

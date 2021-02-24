@@ -7,7 +7,6 @@ import java.util.*
 import kotlin.math.round
 
 
-
 //Convert date string to timeInMillis in format yyyy-mm-dd hh:mm:ss
 fun String.convertDateStringToTimestamp() = Timestamp.valueOf(this).time
 
@@ -28,7 +27,7 @@ fun Long.formatDateForUI(): String {
 }
 
 // Get vehicle id from type
-fun getVehicleId(vehicleType: VehicleType) = when(vehicleType) {
+fun getVehicleId(vehicleType: VehicleType) = when (vehicleType) {
     VehicleType.MICRA -> 1
     VehicleType.MIDGET -> 2
     VehicleType.SPRINTER -> 3
@@ -54,10 +53,11 @@ fun getMonth(month: Int) = when (month) {
 enum class TimePeriod {
     THREE_MONTHS, SIX_MONTHS, ONE_YEAR, THREE_YEARS
 }
+
 fun getTimePeriodTimestamp(timePeriod: TimePeriod): Long {
     var timeFormat: Int = 0
     var numberOf: Int = 0
-    when(timePeriod) {
+    when (timePeriod) {
         TimePeriod.THREE_MONTHS -> {
             timeFormat = Calendar.MONTH
             numberOf = -3
@@ -83,12 +83,10 @@ fun getTimePeriodTimestamp(timePeriod: TimePeriod): Long {
 }
 
 
-
-
 //Round-up
 fun Float.round(decimals: Int): Float {
     var multiplier = 1.0f
-    repeat(decimals) { multiplier *= 10}
+    repeat(decimals) { multiplier *= 10 }
     return round(this * multiplier) / multiplier
 }
 
@@ -97,6 +95,8 @@ fun Float.convertToGallons() = this / LITRES_IN_GALLON
 
 //Calculate pence per litre
 fun calculatePencePerLitre(price: Float, litres: Float): Float {
+    if (litres == 0f || price == 0f) return 0.0f
     return round((price / litres) * 1000) / 10
 }
+
 

@@ -64,18 +64,7 @@ class AddTripViewModel @ViewModelInject constructor(private val repository: Repo
 
     ) {
 
-        Timber.d(
-            "DEBUG: ${listOf(
-                date,
-                stationName,
-                vehicleId.toString(),
-                price,
-                ppl,
-                fuelVolume,
-                tripMileage,
-                totalMileage
-            )}"
-        )
+
         if ((date.isEmpty() || date == "") || (stationName.isEmpty() || stationName == "") || (price.isEmpty() || price == "") || (tripMileage.isEmpty() || tripMileage == "")
             && (totalMileage.isEmpty() || totalMileage == "") || (ppl.isEmpty() || ppl == "") || (fuelVolume.isEmpty() || fuelVolume == "") || (vehicleId < 1 || vehicleId > 3)
         ) {
@@ -85,7 +74,6 @@ class AddTripViewModel @ViewModelInject constructor(private val repository: Repo
                 try {
                     repository.insertTrip(
                         FuelTrackerTrip(
-                            id = 0,
                             vehicleId = vehicleId,
                             timestamp = timestamp,
                             fuelVolume = fuelVolume.toFloat(),

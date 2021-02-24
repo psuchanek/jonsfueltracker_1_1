@@ -3,6 +3,8 @@ package dev.psuchanek.jonsfueltracker_v_1_1.ui.add
 import android.app.DatePickerDialog
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,8 +19,10 @@ import dev.psuchanek.jonsfueltracker_v_1_1.BaseFragment
 import dev.psuchanek.jonsfueltracker_v_1_1.R
 import dev.psuchanek.jonsfueltracker_v_1_1.databinding.FragmentAddTripBinding
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.Status
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.calculatePencePerLitre
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.getDay
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.getMonth
+import timber.log.Timber
 import java.util.*
 
 @AndroidEntryPoint
@@ -30,8 +34,10 @@ class AddTripFragment : BaseFragment(R.layout.fragment_add_trip) {
 
     private var vehicleId = 0
     private var lastKnownMileage = 0L
-    private var priceInFloat = 0.0f
-    private var litres = 0.0f
+    private var price: String = ""
+    private var litres: String = ""
+    private var timestamp: Long = 0L
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,6 +48,9 @@ class AddTripFragment : BaseFragment(R.layout.fragment_add_trip) {
         binding.apply {
             evDate.setOnClickListener { launchDatePickerDialog() }
             btnSubmit.setOnClickListener { insertTrip() }
+            evTripMileage.addTextChangedListener(textWatcher(evTripMileage.id))
+            evPrice.addTextChangedListener(textWatcher(evPrice.id))
+            evLitres.addTextChangedListener(textWatcher(evLitres.id))
         }
         subscribeObservers()
         return binding.root
@@ -62,6 +71,7 @@ class AddTripFragment : BaseFragment(R.layout.fragment_add_trip) {
         }
 
     private fun insertTrip() {
+        Timber.d("TIMESTAMP: now:${System.currentTimeMillis()}, chosen: $timestamp")
         val date = binding.evDate.text.toString()
         val stationName = binding.evPetrolStation.text.toString()
         val price = binding.evPrice.text.toString()
@@ -69,6 +79,7 @@ class AddTripFragment : BaseFragment(R.layout.fragment_add_trip) {
         addTripViewModel.insertTrip(
             date = date,
             stationName = stationName,
+            timestamp = timestamp,
             vehicleId = vehicleId,
             price = price,
             ppl = "123",
@@ -78,8 +89,69 @@ class AddTripFragment : BaseFragment(R.layout.fragment_add_trip) {
         )
     }
 
+    private fun textWatcher(viewId: Int) = object : TextWatcher {
+        override fun afterTextChanged(string: Editable?) {
+            when (viewId) {
+                binding.evPrice.id -> {
+                    price = string.toString()
+                }
+                binding.evLitres.id -> {
+                    litres = string.toString()
+                }
+            }
+
+        }
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            when (viewId) {
+                binding.evTripMileage.id -> {
+                    if (!s.isNullOrEmpty()) {
+                        val totalMileageString =
+                            (s.toString().toInt() + lastKnownMileage).toString()
+                        binding.evTotalMileage.setText(totalMileageString)
+                    }
+                }
+                binding.evLitres.id -> {
+                    s?.let {
+                        litres = it.toString()
+                    }
+                    if (s.toString().isEmpty() || price.isEmpty()) {
+                        binding.evPencePerLitre.setText("0.0")
+                    }
+                    if (!s.isNullOrEmpty() && !price.isNullOrEmpty()) {
+                        val pplString =
+                            calculatePencePerLitre(price.toFloat(), litres.toFloat()).toString()
+                        binding.evPencePerLitre.setText(pplString)
+                    }
+
+                }
+                binding.evPrice.id -> {
+                    s?.let {
+                        price = it.toString()
+                    }
+                    if (s.isNullOrEmpty() || litres.isNullOrEmpty()) {
+                        binding.evPencePerLitre.setText(0.0.toString())
+                    }
+
+                    if (!s.isNullOrEmpty() && !litres.isNullOrEmpty()) {
+                        val pplString =
+                            calculatePencePerLitre(price.toFloat(), litres.toFloat()).toString()
+                        binding.evPencePerLitre.setText(pplString)
+                    }
+                }
+            }
+
+        }
+
+    }
+
+
     private fun initDate() {
         val dateTimestamp = Calendar.getInstance().timeInMillis
+        timestamp = dateTimestamp
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         binding.evDate.setText(dateFormat.format(dateTimestamp))
     }
@@ -92,6 +164,8 @@ class AddTripFragment : BaseFragment(R.layout.fragment_add_trip) {
         val datePickerDialog = DatePickerDialog(
             requireContext(),
             DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+                calendar.set(year, monthOfYear, dayOfMonth)
+                timestamp = calendar.timeInMillis
 
                 setDateString(year, monthOfYear, dayOfMonth)
             },
@@ -121,9 +195,11 @@ class AddTripFragment : BaseFragment(R.layout.fragment_add_trip) {
     private fun subscribeObservers() {
         addTripViewModel.lastKnownMileage.observe(viewLifecycleOwner, Observer {
             lastKnownMileage = it
-            if (it != 0L) {
-                binding.evTotalMileage.setText(it.toString())
+            if (it == null) {
+                binding.evTotalMileage.setText(0)
             }
+            binding.evTotalMileage.setText(it.toString())
+
         })
 
         addTripViewModel.submitTripStatus.observe(viewLifecycleOwner, Observer { status ->

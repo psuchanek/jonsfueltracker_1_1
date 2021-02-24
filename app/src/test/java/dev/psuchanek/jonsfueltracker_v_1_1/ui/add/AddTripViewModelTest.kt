@@ -6,6 +6,8 @@ import dev.psuchanek.jonsfueltracker_v_1_1.MainCoroutineRule
 import dev.psuchanek.jonsfueltracker_v_1_1.getOrAwaitValue
 import dev.psuchanek.jonsfueltracker_v_1_1.repositories.FakeFuelTrackerRepository
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.Status
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.TimePeriod
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.getTimePeriodTimestamp
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -37,6 +39,7 @@ class AddTripViewModelTest {
         viewModel.insertTrip(
             date = "123",
             stationName = "test",
+            timestamp = getTimePeriodTimestamp(TimePeriod.SIX_MONTHS),
             vehicleId = 3,
             price = "123",
             ppl = "123",
@@ -57,6 +60,7 @@ class AddTripViewModelTest {
         viewModel.insertTrip(
             date = "123",
             stationName = "test",
+            timestamp = getTimePeriodTimestamp(TimePeriod.SIX_MONTHS),
             vehicleId = 0,
             price = "123",
             ppl = "123",

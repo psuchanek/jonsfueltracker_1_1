@@ -8,9 +8,6 @@ data class NetworkDataResponse(
 )
 
 data class NetworkFuelTrackerTrip(
-    @Json(name = "record_id")
-    val id: Int? = null,
-
     @Json(name = "vehicle_id")
     val vehicleID: Int,
 
@@ -39,7 +36,6 @@ data class NetworkFuelTrackerTrip(
 fun NetworkDataResponse.asDatabaseModel(): List<LocalFuelTrackerTrip> {
     return this.networkTrips.map {
         LocalFuelTrackerTrip(
-            id = it.id!!,
             vehicleId = it.vehicleID,
             date = it.date,
             fuelVolume = it.fuelVolume,

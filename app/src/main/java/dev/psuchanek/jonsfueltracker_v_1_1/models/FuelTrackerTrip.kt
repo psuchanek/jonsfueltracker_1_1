@@ -7,7 +7,7 @@ import dev.psuchanek.jonsfueltracker_v_1_1.utils.formatDateForUI
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.round
 
 data class FuelTrackerTrip(
-    val id: Int,
+    val id: String,
     val vehicleId: Int,
     var timestamp: Long,
     val fuelVolume: Float,
@@ -31,6 +31,8 @@ data class FuelTrackerTrip(
     val lastTripDistance = "${this.tripMileage}"
     val milesPerGallon = (tripMileage / fuelVolume.convertToGallons()).round(2).toString()
 }
+
+//TODO: Figure out the id problem in order to sync calls properly
 
 fun FuelTrackerTrip.asDatabaseModel() = LocalFuelTrackerTrip(
     id = this.id,

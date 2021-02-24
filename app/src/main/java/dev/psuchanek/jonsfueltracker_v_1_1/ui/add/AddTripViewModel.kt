@@ -53,7 +53,7 @@ class AddTripViewModel @ViewModelInject constructor(private val repository: Repo
 
     fun insertTrip(
         date: String,
-        timestamp: Long = 12345678,
+        timestamp: Long,
         stationName: String,
         vehicleId: Int,
         price: String,
@@ -88,13 +88,12 @@ class AddTripViewModel @ViewModelInject constructor(private val repository: Repo
                             id = 0,
                             vehicleId = vehicleId,
                             timestamp = timestamp,
-                            fuelVolume = 0.0f,
-                            fuelCost = 0.0f,
-                            tripMileage = 0.0f,
-                            currentMileage = 0,
-                            costPerLitre = 0.0f,
-                            gasStationName = "",
-                            isSynced = false
+                            fuelVolume = fuelVolume.toFloat(),
+                            fuelCost = price.toFloat(),
+                            tripMileage = tripMileage.toFloat(),
+                            currentMileage = tripMileage.toInt(),
+                            costPerLitre = ppl.toFloat(),
+                            gasStationName = stationName
                         )
                     )
                     _submitTripStatus.postValue(Status.SUCCESS)

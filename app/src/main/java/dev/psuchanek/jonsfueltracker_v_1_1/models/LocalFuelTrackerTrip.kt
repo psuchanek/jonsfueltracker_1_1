@@ -3,12 +3,13 @@ package dev.psuchanek.jonsfueltracker_v_1_1.models
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.*
 
 @Entity(tableName = "fuel_tracker_history_table")
 data class LocalFuelTrackerTrip(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id")
-    val id: Int,
+    val id: String = UUID.randomUUID().toString(),
 
     @ColumnInfo(name = "vehicle_id")
     val vehicleId: Int,

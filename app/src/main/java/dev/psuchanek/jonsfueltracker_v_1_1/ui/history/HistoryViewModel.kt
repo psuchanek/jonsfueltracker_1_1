@@ -1,9 +1,7 @@
 package dev.psuchanek.jonsfueltracker_v_1_1.ui.history
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import dev.psuchanek.jonsfueltracker_v_1_1.repositories.FuelTrackerRepository
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.Event
 
@@ -18,4 +16,6 @@ class HistoryViewModel @ViewModelInject constructor(private val repository: Fuel
     }
 
     val getAllTrips = _allTrips
+
+    fun syncAllTrips() = _forceFetch.postValue(true)
 }

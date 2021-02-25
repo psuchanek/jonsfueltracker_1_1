@@ -1,7 +1,6 @@
 package dev.psuchanek.jonsfueltracker_v_1_1.utils
 
 import kotlinx.coroutines.flow.*
-import java.lang.Exception
 
 inline fun <ResultType, RequestType> networkBoundResource(
     crossinline query: () -> Flow<ResultType>,

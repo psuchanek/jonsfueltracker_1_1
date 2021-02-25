@@ -25,10 +25,10 @@ interface FuelTrackerDao {
 
 
     @Query("SELECT * FROM fuel_tracker_history_table WHERE is_synced = 0")
-    fun getAllUnsyncedTrips(): List<LocalFuelTrackerTrip>
+    suspend fun getAllUnsyncedTrips(): List<LocalFuelTrackerTrip>
 
     @Query("DELETE FROM fuel_tracker_history_table")
-    fun deleteAllTrips()
+    suspend fun deleteAllTrips()
 
     @Query("SELECT * FROM fuel_tracker_history_table WHERE id = :tripId")
     fun observerTripById(tripId: Int): LiveData<LocalFuelTrackerTrip>?

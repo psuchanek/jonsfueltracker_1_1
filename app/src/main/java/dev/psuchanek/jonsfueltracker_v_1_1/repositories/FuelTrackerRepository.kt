@@ -9,6 +9,7 @@ import dev.psuchanek.jonsfueltracker_v_1_1.utils.networkBoundResource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -29,9 +30,14 @@ class FuelTrackerRepository @Inject constructor(
             syncTrips()
             currentFuelTrackerResponse
         },
+        onFetchFailed = {
+            Timber.d("DEBUG: reason for server not reached: ${it.message}")
+        },
         saveFetchResult = { response ->
             response?.body()?.let { listOfTrips ->
+
                 val localModelList = listOfTrips.asDatabaseModel()
+
                 insertTrips(localModelList.onEach { trip -> trip.isSynced = true })
             }
 
@@ -47,6 +53,7 @@ class FuelTrackerRepository @Inject constructor(
         unsyncedTrips.forEach { trip -> insertTrip(trip.asFuelTrackerTrip()) }
 
         currentFuelTrackerResponse = apiService.getFuelTrackerHistory()
+        Timber.d("DEBUG: response value: ${currentFuelTrackerResponse}")
         currentFuelTrackerResponse?.body()?.let { response ->
             fuelTrackerDao.deleteAllTrips()
             insertTrips(response.asDatabaseModel().onEach { trip -> trip.isSynced = true })

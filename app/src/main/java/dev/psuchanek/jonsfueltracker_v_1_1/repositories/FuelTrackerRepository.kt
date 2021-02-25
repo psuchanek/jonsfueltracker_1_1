@@ -53,7 +53,7 @@ class FuelTrackerRepository @Inject constructor(
         unsyncedTrips.forEach { trip -> insertTrip(trip.asFuelTrackerTrip()) }
 
         currentFuelTrackerResponse = apiService.getFuelTrackerHistory()
-        Timber.d("DEBUG: response value: ${currentFuelTrackerResponse}")
+        Timber.d("DEBUG: response value: ${currentFuelTrackerResponse?.body()}")
         currentFuelTrackerResponse?.body()?.let { response ->
             fuelTrackerDao.deleteAllTrips()
             insertTrips(response.asDatabaseModel().onEach { trip -> trip.isSynced = true })
@@ -62,9 +62,9 @@ class FuelTrackerRepository @Inject constructor(
 
 
     private suspend fun insertTrips(trips: List<LocalFuelTrackerTrip>) {
-            trips.forEach { trip ->
-                insertTrip(trip.asFuelTrackerTrip())
-            }
+        trips.forEach { trip ->
+            insertTrip(trip.asFuelTrackerTrip())
+        }
 
     }
 
@@ -79,12 +79,12 @@ class FuelTrackerRepository @Inject constructor(
         } else {
             fuelTrackerDao.insertFuelTrackerTrip(trip.asDatabaseModel())
         }
-
     }
 
     fun observeTripById(tripId: Int) = fuelTrackerDao.observerTripById(tripId)
 
-    override suspend fun getLastKnownMileage(vehicleId: Int) = withContext(Dispatchers.IO) {fuelTrackerDao.getLastKnownMileage(vehicleId) }
+    override suspend fun getLastKnownMileage(vehicleId: Int) =
+        withContext(Dispatchers.IO) { fuelTrackerDao.getLastKnownMileage(vehicleId) }
 
     suspend fun getAllTripsSortedByTimeStamp() =
         withContext(Dispatchers.IO) { fuelTrackerDao.getAllByTimestamp() }

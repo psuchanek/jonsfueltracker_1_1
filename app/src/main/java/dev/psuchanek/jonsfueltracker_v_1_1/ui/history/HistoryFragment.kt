@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -88,13 +87,11 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
                 val result = it.peekContent()
                 when (result.status) {
                     Status.SUCCESS -> {
-                        binding.historyFragmentProgressBar.isVisible = false
                         tripAdapter.submitList(result.data!!.asFuelTrackerTripModel())
                         binding.swipeRefresher.isRefreshing = false
 
                     }
                     Status.ERROR -> {
-                        binding.historyFragmentProgressBar.isVisible = false
                         it.getContentIfNotHandled()?.let { errorResource ->
                             errorResource.message?.let { errorMessage ->
                                 showSnackbar(errorMessage)
@@ -105,7 +102,6 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
 
                     }
                     Status.LOADING -> {
-                        binding.historyFragmentProgressBar.isVisible = true
                         result.data?.let { trips ->
                             tripAdapter.submitList(trips.asFuelTrackerTripModel())
                         }

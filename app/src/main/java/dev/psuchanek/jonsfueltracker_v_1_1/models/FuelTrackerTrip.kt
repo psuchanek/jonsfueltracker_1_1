@@ -31,6 +31,10 @@ data class FuelTrackerTrip(
     val fillUpCost = "£${this.fuelCost}"
     val lastTripDistance = "${this.tripMileage}"
     val milesPerGallon = (tripMileage / fuelVolume.convertToGallons()).round(2).toString()
+    val sync = when(isSynced) {
+        true -> "Synced"
+        false -> "Not Synced"
+    }
 }
 
 //TODO: Figure out the id problem in order to sync calls properly
@@ -50,6 +54,7 @@ fun FuelTrackerTrip.asDatabaseModel() = LocalFuelTrackerTrip(
 
 
 fun FuelTrackerTrip.asDomainModel() = NetworkFuelTrackerTrip(
+    id = this.id,
     vehicleID = this.vehicleId,
     date = this.timestamp.convertTimestampToDateString(),
     fuelVolume = this.fuelVolume,

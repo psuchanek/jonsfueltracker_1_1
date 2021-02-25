@@ -21,7 +21,7 @@ class FuelTrackerRepository @Inject constructor(
 
     private var currentFuelTrackerResponse: Response<NetworkDataResponse>? = null
 
-    fun getAllNotes() = networkBoundResource(
+    fun getAllTrips() = networkBoundResource(
         query = {
             fuelTrackerDao.getAllByTimestamp()
         },
@@ -55,9 +55,10 @@ class FuelTrackerRepository @Inject constructor(
 
 
     private suspend fun insertTrips(trips: List<LocalFuelTrackerTrip>) {
-        trips.forEach { trip ->
-            insertTrip(trip.asFuelTrackerTrip())
-        }
+            trips.forEach { trip ->
+                insertTrip(trip.asFuelTrackerTrip())
+            }
+
     }
 
     override suspend fun insertTrip(trip: FuelTrackerTrip) {
@@ -76,9 +77,7 @@ class FuelTrackerRepository @Inject constructor(
 
     fun observeTripById(tripId: Int) = fuelTrackerDao.observerTripById(tripId)
 
-    override suspend fun getLastKnownMileage(vehicleId: Int) = withContext(Dispatchers.IO) {
-        fuelTrackerDao.getLastKnownMileage(vehicleId)
-    }
+    override suspend fun getLastKnownMileage(vehicleId: Int) = withContext(Dispatchers.IO) {fuelTrackerDao.getLastKnownMileage(vehicleId) }
 
     suspend fun getAllTripsSortedByTimeStamp() =
         withContext(Dispatchers.IO) { fuelTrackerDao.getAllByTimestamp() }

@@ -38,7 +38,6 @@ data class FuelTrackerTrip(
 fun FuelTrackerTrip.asDatabaseModel() = LocalFuelTrackerTrip(
     id = this.id,
     vehicleId = this.vehicleId,
-    date = this.timestamp.convertTimestampToDateString(),
     fuelVolume = this.fuelVolume,
     fuelCost = this.fuelCost,
     tripMileage = this.tripMileage,

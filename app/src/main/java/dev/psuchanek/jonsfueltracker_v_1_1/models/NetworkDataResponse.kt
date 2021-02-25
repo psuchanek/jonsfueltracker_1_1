@@ -37,7 +37,6 @@ fun NetworkDataResponse.asDatabaseModel(): List<LocalFuelTrackerTrip> {
     return this.networkTrips.map {
         LocalFuelTrackerTrip(
             vehicleId = it.vehicleID,
-            date = it.date,
             fuelVolume = it.fuelVolume,
             fuelCost = it.fuelCost,
             tripMileage = it.tripMileage,

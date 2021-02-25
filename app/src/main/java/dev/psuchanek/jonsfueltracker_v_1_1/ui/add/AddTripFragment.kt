@@ -72,12 +72,10 @@ class AddTripFragment : BaseFragment(R.layout.fragment_add_trip) {
 
     private fun insertTrip() {
         Timber.d("TIMESTAMP: now:${System.currentTimeMillis()}, chosen: $timestamp")
-        val date = binding.evDate.text.toString()
         val stationName = binding.evPetrolStation.text.toString()
         val price = binding.evPrice.text.toString()
         val fuelVolume = binding.evLitres.text.toString()
         addTripViewModel.insertTrip(
-            date = date,
             stationName = stationName,
             timestamp = timestamp,
             vehicleId = vehicleId,

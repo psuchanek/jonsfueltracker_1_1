@@ -37,7 +37,6 @@ class AddTripViewModelTest {
 
         //when
         viewModel.insertTrip(
-            date = "123",
             stationName = "test",
             timestamp = getTimePeriodTimestamp(TimePeriod.SIX_MONTHS),
             vehicleId = 3,
@@ -58,7 +57,6 @@ class AddTripViewModelTest {
 
         //when
         viewModel.insertTrip(
-            date = "123",
             stationName = "test",
             timestamp = getTimePeriodTimestamp(TimePeriod.SIX_MONTHS),
             vehicleId = 0,

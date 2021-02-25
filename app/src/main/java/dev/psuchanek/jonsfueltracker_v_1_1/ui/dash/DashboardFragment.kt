@@ -5,12 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
+import dagger.hilt.android.AndroidEntryPoint
 import dev.psuchanek.jonsfueltracker_v_1_1.BaseFragment
 import dev.psuchanek.jonsfueltracker_v_1_1.R
 import dev.psuchanek.jonsfueltracker_v_1_1.databinding.FragmentDashboardBinding
+import dev.psuchanek.jonsfueltracker_v_1_1.ui.MainViewModel
 
-
+@AndroidEntryPoint
 class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
+
+    private val viewModel: MainViewModel by viewModels()
 
     private lateinit var binding: FragmentDashboardBinding
 

@@ -21,9 +21,7 @@ class FakeFuelTrackerRepository: Repository{
 
     }
 
-    override suspend fun getLastKnownMileage(vehicleId: Int): Long? {
-        return 0L
-    }
+
 
 //    override suspend fun getTripsSortedById(): List<LocalFuelTrackerTrip> {
 //        return listOf()

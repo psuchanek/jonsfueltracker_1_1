@@ -11,13 +11,15 @@ import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import dev.psuchanek.jonsfueltracker_v_1_1.BaseFragment
 import dev.psuchanek.jonsfueltracker_v_1_1.R
+import dev.psuchanek.jonsfueltracker_v_1_1.adapters.TripHistoryAdapter
 import dev.psuchanek.jonsfueltracker_v_1_1.databinding.FragmentHistoryBinding
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.CustomItemDecoration
 
 @AndroidEntryPoint
 class HistoryFragment : BaseFragment(R.layout.fragment_history) {
 
     private lateinit var binding: FragmentHistoryBinding
-    private val mainViewModel: HistoryViewModel by viewModels()
+    private val historyViewModel: HistoryViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,7 +46,11 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
     }
 
     private fun setupRecyclerView() {
-
+        val historyAdapter = TripHistoryAdapter(OnTripClickListener { })
+        binding.recyclerViewHistory.apply {
+            adapter = historyAdapter
+            addItemDecoration(CustomItemDecoration(15))
+        }
     }
 
     private fun setupSpinner() {

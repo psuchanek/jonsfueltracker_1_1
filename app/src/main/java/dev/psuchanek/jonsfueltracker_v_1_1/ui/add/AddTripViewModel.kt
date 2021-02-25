@@ -17,27 +17,13 @@ import java.io.IOException
 class AddTripViewModel @ViewModelInject constructor(private val repository: Repository) :
     ViewModel() {
 
-    private var _lastTripId: Int? = null
+    private var vehicleID: Int? = null
 
     private var _lastKnownMileage: MutableLiveData<Long> = MutableLiveData()
     val lastKnownMileage: LiveData<Long> = _lastKnownMileage
 
     private var _submitTripStatus: MutableLiveData<Status> = MutableLiveData()
     val submitTripStatus: LiveData<Status> = _submitTripStatus
-
-
-    //TODO: Implement logic in init{} to get lastTripId even when DB is empty
-//    fun getLastTripId() {
-//        viewModelScope.launch {
-//            var id = 0
-//            try {
-//                val response = repository.getTripsSortedById()[0].id
-//            } catch (e: IndexOutOfBoundsException) {
-//
-//            }
-//        }
-//
-//    }
 
 
     fun getCurrentMileage(vehicleId: Int) {
@@ -52,7 +38,6 @@ class AddTripViewModel @ViewModelInject constructor(private val repository: Repo
     }
 
     fun insertTrip(
-        date: String,
         timestamp: Long,
         stationName: String,
         vehicleId: Int,
@@ -65,7 +50,7 @@ class AddTripViewModel @ViewModelInject constructor(private val repository: Repo
     ) {
 
 
-        if ((date.isEmpty() || date == "") || (stationName.isEmpty() || stationName == "") || (price.isEmpty() || price == "") || (tripMileage.isEmpty() || tripMileage == "")
+        if ((stationName.isEmpty() || stationName == "") || (price.isEmpty() || price == "") || (tripMileage.isEmpty() || tripMileage == "")
             && (totalMileage.isEmpty() || totalMileage == "") || (ppl.isEmpty() || ppl == "") || (fuelVolume.isEmpty() || fuelVolume == "") || (vehicleId < 1 || vehicleId > 3)
         ) {
             _submitTripStatus.value = Status.ERROR
@@ -94,6 +79,4 @@ class AddTripViewModel @ViewModelInject constructor(private val repository: Repo
 
         }
     }
-
-
-}
+    }

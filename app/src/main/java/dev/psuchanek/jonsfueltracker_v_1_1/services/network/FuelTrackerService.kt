@@ -17,7 +17,7 @@ interface FuelTrackerService {
     @POST(
         POST_TO_SERVICE
     )
-    fun addFuelTrackerTrip(
+    suspend fun addFuelTrackerTrip(
         @Body trip: NetworkFuelTrackerTrip
     ): Response<NetworkDataResponse>
 }

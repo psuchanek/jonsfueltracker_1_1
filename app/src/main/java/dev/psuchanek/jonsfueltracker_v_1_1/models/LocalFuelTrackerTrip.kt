@@ -14,9 +14,6 @@ data class LocalFuelTrackerTrip(
     @ColumnInfo(name = "vehicle_id")
     val vehicleId: Int,
 
-    @ColumnInfo(name = "date")
-    var date: String,
-
     @ColumnInfo(name = "fuel_volume")
     val fuelVolume: Float,
 

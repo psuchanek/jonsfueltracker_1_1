@@ -37,6 +37,8 @@
     <string name="sort_by">Sort by:</string>
     <string name="fileds_missing">All fields are required.</string>
     <string name="no_data">No data</string>
+    <string name="undo">Undo</string>
+    <string name="trip_record_deleted">Trip record was successfully deleted.</string>
 
     //Sorting options
     <string-array name="sort_by">

@@ -3,7 +3,9 @@ package dev.psuchanek.jonsfueltracker_v_1_1.utils
 //Services
 const val BASE_URL = "http://fuel.tecserv-uk.co.uk/"
 const val GET_FROM_SERVICE = "api.php/history"
-const val POST_TO_SERVICE = "api.php/history"
+const val POST_TRIP_TO_SERVICE = "api.php?add_record"
+const val POST_VEHICLE_TO_SERVICE = "api.php?add_vehicle"
+const val DELETE_TRIP_FROM_SERVICE = "api.php?delete_record"
 const val FUEL_TRACKER_DB_NAME = "fuel_tracker_database"
 
 // OkHttpClient timeouts

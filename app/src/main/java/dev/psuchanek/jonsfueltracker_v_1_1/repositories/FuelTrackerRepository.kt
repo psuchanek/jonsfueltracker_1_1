@@ -48,6 +48,12 @@ class FuelTrackerRepository @Inject constructor(
     )
 
     private suspend fun syncTrips() {
+        //TODO:  implement once the api routes are cleared with Jon
+//        val locallyDeletedTripIDs = fuelTrackerDao.getAllLocallyDeletedTripIDs()
+//        locallyDeletedTripIDs.forEach { deletedTrip ->
+//            deleteTripByID(deletedTrip.deleteTripID)
+//        }
+
 
         val unsyncedTrips = fuelTrackerDao.getAllUnsyncedTrips()
         unsyncedTrips.forEach { trip -> insertTrip(trip.asFuelTrackerTrip()) }
@@ -81,6 +87,27 @@ class FuelTrackerRepository @Inject constructor(
         }
     }
 
+    suspend fun deleteTripByID(tripID: String) = withContext(Dispatchers.IO) {
+        //TODO: add here the service function for deletion when cleared with Jon and implement in FuelTrackerService
+//        val response = try {
+//            apiService.deleteTrip(tripID)
+//        }catch(e: Exception) {
+//            null
+//        }
+        fuelTrackerDao.deleteTripByID(tripID)
+//        if (response == null || !response.isSuccessful) {
+//            fuelTrackerDao.insertLocallyDeletedTripId(LocallyDeletedTrip(tripID))
+//        } else {
+//            fuelTrackerDao.deleteLocallyDeletedTripId(tripID)
+//        }
+    }
+
+    suspend fun deleteLocallyDeletedTripID(tripID: String) {
+        withContext(Dispatchers.IO) {
+            fuelTrackerDao.deleteLocallyDeletedTripId(tripID)
+        }
+    }
+
     fun observeTripById(tripId: Int) = fuelTrackerDao.observerTripById(tripId)
 
     override suspend fun getLastKnownMileage(vehicleId: Int) =
@@ -97,6 +124,8 @@ class FuelTrackerRepository @Inject constructor(
 
     suspend fun getAllTripsSortedByTripMileage() =
         withContext(Dispatchers.IO) { fuelTrackerDao.getAllByTripMileage() }
+
+
 }
 
 

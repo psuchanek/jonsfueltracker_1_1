@@ -19,7 +19,10 @@ class TripHistoryAdapter(private val onTripClickListener: OnTripClickListener) :
     class ViewHolder(private val binding: TripHistoryListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(trip: FuelTrackerTrip, onTripClickListener: OnTripClickListener) {
+        fun bind(
+            trip: FuelTrackerTrip,
+            onTripClickListener: OnTripClickListener
+        ) {
             binding.trip = trip
             binding.onClickListener = onTripClickListener
             binding.executePendingBindings()
@@ -53,6 +56,7 @@ class TripHistoryAdapter(private val onTripClickListener: OnTripClickListener) :
         }
 
     }
+
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

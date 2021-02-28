@@ -6,6 +6,12 @@
     <data>
 
         <variable
+            name="viewModel"
+            type="dev.psuchanek.jonsfueltracker_v_1_1.ui.history.HistoryViewModel" />
+
+        <import type="android.view.View" />
+
+        <variable
             name="trip"
             type="dev.psuchanek.jonsfueltracker_v_1_1.models.FuelTrackerTrip" />
 
@@ -17,6 +23,7 @@
     </data>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/itemCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="@{() -> onClickListener.onClick(trip)}"
@@ -26,7 +33,7 @@
             android:id="@+id/constraint_layout_list_item_"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="8dp">
+            android:padding="16dp">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvStationName"
@@ -35,7 +42,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:text="@{trip.gasStationName}"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/itemGuideline"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -50,7 +56,6 @@
                 android:text="@{trip.fillUpCost}"
                 app:layout_constraintBottom_toBottomOf="@+id/tvStationName"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/itemGuideline"
                 app:layout_constraintTop_toTopOf="@+id/tvStationName"
                 tools:hint="$232" />
 
@@ -81,8 +86,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:text="@{trip.vehicleName}"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tvDateItem"
+                app:layout_constraintTop_toTopOf="@+id/tvDateItem"
                 tools:hint="Mercedes" />
 
             <ImageView
@@ -101,8 +106,58 @@
                 android:layout_marginStart="16dp"
                 android:text="@{trip.sync}"
                 app:layout_constraintBottom_toBottomOf="@id/tvDateItem"
+                app:layout_constraintEnd_toEndOf="@+id/tvPriceItem"
+                tools:hint="Synced" />
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/expandableItemLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:padding="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                tools:hint="Mercedes" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvDateItem">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tvTripDistance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:hint="123"
+                    android:text="@{trip.lastTripDistance}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tvMPG"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:hint="123"
+                    android:text="@{trip.milesPerGallon}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tvTripDistance"
+                    app:layout_constraintTop_toTopOf="@+id/tvTripDistance" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tvLitres"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:hint="123"
+                    android:text="@{trip.litres}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvTripDistance" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tvPPL"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:hint="123"
+                    android:text="@{trip.ppl}"
+                    app:layout_constraintStart_toStartOf="@+id/tvMPG"
+                    app:layout_constraintTop_toTopOf="@+id/tvLitres" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

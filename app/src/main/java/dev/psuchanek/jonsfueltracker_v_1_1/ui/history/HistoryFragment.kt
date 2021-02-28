@@ -9,7 +9,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -29,7 +28,6 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
     private lateinit var binding: FragmentHistoryBinding
     private val historyViewModel: HistoryViewModel by viewModels()
     private lateinit var tripAdapter: TripHistoryAdapter
-    private val swipeLayout = MutableLiveData<Boolean>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,7 +35,9 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_history, container, false)
-        tripAdapter = TripHistoryAdapter((OnTripClickListener { }))
+        tripAdapter = TripHistoryAdapter((OnTripClickListener { trip ->
+//           //TODO: implement click and expandable viewholder
+        }))
         subscribeObservers()
 
         return binding.root

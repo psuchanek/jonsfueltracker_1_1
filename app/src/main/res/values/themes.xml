@@ -18,7 +18,7 @@
         <item name="android:textColor">?attr/colorOnSecondary</item>
     </style>
 
-    <style name="MainValuesDisplayed" parent="TextAppearance.MaterialComponents.Headline5"/>
+    <style name="MainValuesDisplayed" parent="TextAppearance.MaterialComponents.Headline6"/>
 
 
 

@@ -75,16 +75,17 @@ class FuelTrackerRepository @Inject constructor(
     }
 
     override suspend fun insertTrip(trip: FuelTrackerTrip) {
-        val response = try {
-            apiService.addFuelTrackerTrip(trip.asDomainModel())
-        } catch (e: Exception) {
-            null
-        }
-        if (response != null && response.isSuccessful) {
-            fuelTrackerDao.insertFuelTrackerTrip(trip.apply { isSynced = true }.asDatabaseModel())
-        } else {
-            fuelTrackerDao.insertFuelTrackerTrip(trip.asDatabaseModel())
-        }
+//        val response = try {
+//            apiService.addFuelTrackerTrip(trip.asDomainModel())
+//        } catch (e: Exception) {
+//            null
+//        }
+//        if (response != null && response.isSuccessful) {
+//            fuelTrackerDao.insertFuelTrackerTrip(trip.apply { isSynced = true }.asDatabaseModel())
+//        } else {
+//            fuelTrackerDao.insertFuelTrackerTrip(trip.asDatabaseModel())
+//        }
+        fuelTrackerDao.insertFuelTrackerTrip(trip.asDatabaseModel())
     }
 
     suspend fun deleteTripByID(tripID: String) = withContext(Dispatchers.IO) {

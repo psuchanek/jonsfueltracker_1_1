@@ -16,3 +16,8 @@ const val CALL_TIMEOUT = 3L
 const val LITRES_IN_GALLON = 4.546f
 
 const val EMPTY_MILEAGE = 0L
+
+
+//Adapter animation
+const val ARROW_ANIM_UP = 1111
+const val ARROW_ANIM_DOWN = 2222

@@ -11,23 +11,32 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import dev.psuchanek.jonsfueltracker_v_1_1.BaseFragment
 import dev.psuchanek.jonsfueltracker_v_1_1.R
 import dev.psuchanek.jonsfueltracker_v_1_1.adapters.TripHistoryAdapter
+import dev.psuchanek.jonsfueltracker_v_1_1.adapters.animations.ArrowAnimation
 import dev.psuchanek.jonsfueltracker_v_1_1.databinding.FragmentHistoryBinding
+import dev.psuchanek.jonsfueltracker_v_1_1.databinding.TripHistoryListItemBinding
+import dev.psuchanek.jonsfueltracker_v_1_1.models.FuelTrackerTrip
 import dev.psuchanek.jonsfueltracker_v_1_1.models.asFuelTrackerTripModel
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.ARROW_ANIM_DOWN
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.ARROW_ANIM_UP
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.CustomItemDecoration
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.Status
 
 @AndroidEntryPoint
-class HistoryFragment : BaseFragment(R.layout.fragment_history) {
+class HistoryFragment : BaseFragment(R.layout.fragment_history), OnTripClickListener {
+    
+    //TODO: fix animation arrow recycling behavior and implement sorting function
 
     private lateinit var binding: FragmentHistoryBinding
     private val historyViewModel: HistoryViewModel by viewModels()
     private lateinit var tripAdapter: TripHistoryAdapter
+    private lateinit var bindingTripItem: TripHistoryListItemBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,9 +44,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_history, container, false)
-        tripAdapter = TripHistoryAdapter((OnTripClickListener { trip ->
-//           //TODO: implement click and expandable viewholder
-        }))
+        tripAdapter = TripHistoryAdapter(this)
         subscribeObservers()
 
         return binding.root
@@ -53,6 +60,11 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
     private fun setupRefresher() {
         binding.swipeRefresher.setOnRefreshListener {
             historyViewModel.syncAllTrips()
+//            tripAdapter.currentList.onEach { trip ->
+//                trip.isExpanded = false
+//
+//            }
+//            tripAdapter.notifyDataSetChanged()
         }
     }
 
@@ -103,7 +115,10 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
         binding.recyclerViewHistory.apply {
             adapter = tripAdapter
             addItemDecoration(CustomItemDecoration(15))
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             ItemTouchHelper(itemTouchHelper).attachToRecyclerView(this)
+            itemAnimator = ArrowAnimation()
         }
     }
 
@@ -138,7 +153,10 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
                 val result = it.peekContent()
                 when (result.status) {
                     Status.SUCCESS -> {
-                        tripAdapter.submitList(result.data!!.asFuelTrackerTripModel())
+                        tripAdapter.submitList(
+                            result.data!!.asFuelTrackerTripModel()
+                        )
+                        tripAdapter.notifyDataSetChanged()
                         binding.swipeRefresher.isRefreshing = false
 
                     }
@@ -166,5 +184,15 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
         historyViewModel.swipeLayout.observe(viewLifecycleOwner, Observer {
             binding.swipeRefresher.isEnabled = !it
         })
+    }
+
+    override fun onClick(trip: FuelTrackerTrip, position: Int) {
+        trip.isExpanded = !trip.isExpanded
+        if (!trip.isExpanded) {
+            tripAdapter.notifyItemChanged(position, ARROW_ANIM_DOWN)
+        } else {
+            tripAdapter.notifyItemChanged(position, ARROW_ANIM_UP)
+        }
+
     }
 }

@@ -16,7 +16,7 @@ class TripHistoryAdapter(private val onTripClickListener: OnTripClickListener) :
         TripsDiffCall
     ) {
 
-    class ViewHolder(private val binding: TripHistoryListItemBinding) :
+    class ViewHolder(val binding: TripHistoryListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(
@@ -24,7 +24,10 @@ class TripHistoryAdapter(private val onTripClickListener: OnTripClickListener) :
             onTripClickListener: OnTripClickListener
         ) {
             binding.trip = trip
-            binding.onClickListener = onTripClickListener
+            binding.ivArrow.setOnClickListener {
+                onTripClickListener.onClick(trip, adapterPosition)
+            }
+
             binding.executePendingBindings()
         }
 
@@ -43,6 +46,7 @@ class TripHistoryAdapter(private val onTripClickListener: OnTripClickListener) :
         }
     }
 
+
     object TripsDiffCall : DiffUtil.ItemCallback<FuelTrackerTrip>() {
         override fun areItemsTheSame(oldItem: FuelTrackerTrip, newItem: FuelTrackerTrip): Boolean {
             return oldItem.id == newItem.id
@@ -57,6 +61,7 @@ class TripHistoryAdapter(private val onTripClickListener: OnTripClickListener) :
 
     }
 
+    override fun getItemCount() = currentList.size
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -70,5 +75,8 @@ class TripHistoryAdapter(private val onTripClickListener: OnTripClickListener) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val trip = getItem(position)
         holder.bind(trip, onTripClickListener)
+
     }
+
+
 }

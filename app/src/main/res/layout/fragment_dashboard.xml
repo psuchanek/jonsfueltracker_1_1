@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -9,7 +10,53 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="16dp"
         tools:context=".ui.dash.DashboardFragment">
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/barChart"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvSixMonths"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:text="@string/six_months_bar_chart"
+            app:layout_constraintStart_toStartOf="@+id/barChart"
+            app:layout_constraintTop_toBottomOf="@+id/barChart" />
+
+        <TextView
+            android:id="@+id/tvOneYear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/one_year_bar_chart"
+            app:layout_constraintEnd_toStartOf="@+id/tvThreeYears"
+            app:layout_constraintStart_toEndOf="@+id/tvSixMonths"
+            app:layout_constraintTop_toTopOf="@+id/tvSixMonths" />
+
+        <TextView
+            android:id="@+id/tvThreeYears"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/three_years_bar_chart"
+            app:layout_constraintEnd_toStartOf="@+id/tvAll"
+            app:layout_constraintStart_toEndOf="@+id/tvOneYear"
+            app:layout_constraintTop_toTopOf="@+id/tvSixMonths" />
+
+        <TextView
+            android:id="@+id/tvAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="@string/all_bar_chart"
+            app:layout_constraintEnd_toEndOf="@+id/barChart"
+            app:layout_constraintTop_toTopOf="@+id/tvSixMonths" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

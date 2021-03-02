@@ -57,4 +57,10 @@
         <item>Mercedes Sprinter</item>
     </string-array>
 
+    //Bar chart labels
+    <string name="six_months_bar_chart">6m</string>
+    <string name="one_year_bar_chart">1y</string>
+    <string name="three_years_bar_chart">3y</string>
+    <string name="all_bar_chart">All</string>
+
 </resources>

@@ -30,7 +30,7 @@ import dev.psuchanek.jonsfueltracker_v_1_1.utils.Status
 
 @AndroidEntryPoint
 class HistoryFragment : BaseFragment(R.layout.fragment_history), OnTripClickListener {
-    
+
     //TODO: fix animation arrow recycling behavior and implement sorting function
 
     private lateinit var binding: FragmentHistoryBinding
@@ -60,6 +60,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history), OnTripClickList
     private fun setupRefresher() {
         binding.swipeRefresher.setOnRefreshListener {
             historyViewModel.syncAllTrips()
+            tripAdapter.notifyDataSetChanged()
 //            tripAdapter.currentList.onEach { trip ->
 //                trip.isExpanded = false
 //

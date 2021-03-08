@@ -31,7 +31,7 @@ data class FuelTrackerTrip(
 
     val litres = "Fuel volume: $fuelVolume litres"
     val date = timestamp.formatDateForUI()
-    val fillUpCost = "£${this.fuelCost}"
+    val fillUpCost = "£${this.fuelCost.round(2)}"
     val lastTripDistance = "Trip distance: ${this.tripMileage} miles"
     val ppl = "PPL: $costPerLitre"
     val milesPerGallon = "MPG: ${(tripMileage / fuelVolume.convertToGallons()).round(2)}"
@@ -41,7 +41,7 @@ data class FuelTrackerTrip(
     }
 
     val dashMiles = "${this.tripMileage} Miles"
-    val dashCost = "£${this.fuelCost}"
+    val dashCost = "£${this.fuelCost.round(2)}"
     val dashMPG = "${(this.tripMileage / this.fuelVolume.convertToGallons()).round(2)}"
 }
 

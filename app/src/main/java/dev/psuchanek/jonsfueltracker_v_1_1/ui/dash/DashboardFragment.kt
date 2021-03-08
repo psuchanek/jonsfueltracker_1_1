@@ -5,7 +5,6 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
-import android.view.MotionEvent.ACTION_UP
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -15,13 +14,16 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.ChartTouchListener
 import com.github.mikephil.charting.listener.OnChartGestureListener
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import dev.psuchanek.jonsfueltracker_v_1_1.BaseFragment
 import dev.psuchanek.jonsfueltracker_v_1_1.R
 import dev.psuchanek.jonsfueltracker_v_1_1.databinding.FragmentDashboardBinding
+import dev.psuchanek.jonsfueltracker_v_1_1.models.FuelTrackerTrip
 import dev.psuchanek.jonsfueltracker_v_1_1.ui.MainViewModel
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.RIGHT_AXIS_LABEL_COUNT
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.TimePeriod
@@ -33,6 +35,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
     private val viewModel: MainViewModel by viewModels()
 
     private lateinit var binding: FragmentDashboardBinding
+    private var mostRecentTrip: FuelTrackerTrip? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,7 +57,10 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
                 btnThreeYears.setOnClickListener(onClick())
                 btnAll.setOnClickListener(onClick())
             }
-            lineChart.onChartGestureListener = lineChartListener()
+            lineChart.apply {
+                setOnChartValueSelectedListener(lineChartSelectListener())
+                onChartGestureListener = lineChartGestureListener()
+            }
             tabLayout.addOnTabSelectedListener(tabLayoutClickListener())
         }
     }
@@ -63,6 +69,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
     private fun setupLineChart() {
         binding.lineChart.apply {
             setDrawBorders(false)
+            setScaleEnabled(false)
             isClickable = true
             legend.isEnabled = false
             description.text = ""
@@ -100,7 +107,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
                     return@let
                 }
                 val listOfEntries = tripList.indices.map { i ->
-                    Entry(i.toFloat(), tripList[i].fuelCost)
+                    Entry(i.toFloat(), tripList[i].fuelCost, tripList[i])
                 }
                 val lineDataSet = getLineDataSet(listOfEntries)
                 binding.lineChart.apply {
@@ -114,6 +121,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
         })
 
         viewModel.mostRecentTrip?.observe(viewLifecycleOwner, Observer { mostRecentTrip ->
+            this.mostRecentTrip = mostRecentTrip
             binding.lastTripLayout.apply {
                 trip = mostRecentTrip
             }
@@ -298,15 +306,33 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
 
     }
 
+    private fun lineChartSelectListener() = object : OnChartValueSelectedListener {
+        override fun onNothingSelected() {
+        }
 
-    private fun lineChartListener() = object : OnChartGestureListener {
+        override fun onValueSelected(e: Entry?, h: Highlight?) {
+            e?.let {
+                binding.lastTripLayout.lastTripLabel.text = "SELECTED TRIP:"
+                binding.lastTripLayout.trip = it.data as FuelTrackerTrip
+            }
+        }
+    }
+
+    private fun lineChartGestureListener() = object : OnChartGestureListener {
         override fun onChartGestureEnd(
             me: MotionEvent?,
             lastPerformedGesture: ChartTouchListener.ChartGesture?
         ) {
-            when (lastPerformedGesture?.ordinal == ACTION_UP) {
+            if (me?.action == MotionEvent.ACTION_UP) {
+                binding.lastTripLayout.apply {
+                    trip = mostRecentTrip
+                    lastTripLabel.text = "LAST TRIP:"
+                }
+                binding.lineChart.apply {
+                    clearFocus()
+                    invalidate()
+                }
             }
-
         }
 
         override fun onChartFling(
@@ -315,6 +341,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
             velocityX: Float,
             velocityY: Float
         ) {
+
         }
 
         override fun onChartSingleTapped(me: MotionEvent?) {
@@ -324,22 +351,24 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
             me: MotionEvent?,
             lastPerformedGesture: ChartTouchListener.ChartGesture?
         ) {
+//            if (me?.action == MotionEvent.ACTION_DOWN && lastPerformedGesture == ChartTouchListener.ChartGesture.LONG_PRESS) {
+//                binding.lastTripLayout.lastTripLabel.text = "SELECTED TRIP:"
+//            }
         }
 
         override fun onChartScale(me: MotionEvent?, scaleX: Float, scaleY: Float) {
         }
 
         override fun onChartLongPressed(me: MotionEvent?) {
-            binding.lineChart.highlightValues(emptyArray())
         }
 
         override fun onChartDoubleTapped(me: MotionEvent?) {
-            binding.lineChart.highlightValues(emptyArray())
         }
 
         override fun onChartTranslate(me: MotionEvent?, dX: Float, dY: Float) {
         }
 
     }
+
 
 }

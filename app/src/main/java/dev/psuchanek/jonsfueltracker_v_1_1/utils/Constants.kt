@@ -21,3 +21,6 @@ const val EMPTY_MILEAGE = 0L
 //Adapter animation
 const val ARROW_ANIM_UP = 1111
 const val ARROW_ANIM_DOWN = 2222
+
+//Line chart
+const val RIGHT_AXIS_LABEL_COUNT = 4

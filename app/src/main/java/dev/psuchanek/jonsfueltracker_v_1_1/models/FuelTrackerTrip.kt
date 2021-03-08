@@ -1,6 +1,7 @@
 package dev.psuchanek.jonsfueltracker_v_1_1.models
 
 import dev.psuchanek.jonsfueltracker_v_1_1.R
+import dev.psuchanek.jonsfueltracker_v_1_1.models.responses.NetworkFuelTrackerTrip
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.convertTimestampToDateString
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.convertToGallons
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.formatDateForUI
@@ -38,9 +39,11 @@ data class FuelTrackerTrip(
         true -> "Synced"
         false -> "Not Synced"
     }
-}
 
-//TODO: Figure out the id problem in order to sync calls properly
+    val dashMiles = "${this.tripMileage} Miles"
+    val dashCost = "£${this.fuelCost}"
+    val dashMPG = "${(this.tripMileage / this.fuelVolume.convertToGallons()).round(2)}"
+}
 
 fun FuelTrackerTrip.asDatabaseModel() = LocalFuelTrackerTrip(
     id = this.id,
@@ -56,14 +59,15 @@ fun FuelTrackerTrip.asDatabaseModel() = LocalFuelTrackerTrip(
 )
 
 
-fun FuelTrackerTrip.asDomainModel() = NetworkFuelTrackerTrip(
-    id = this.id,
-    vehicleID = this.vehicleId,
-    date = this.timestamp.convertTimestampToDateString(),
-    fuelVolume = this.fuelVolume,
-    fuelCost = this.fuelCost,
-    tripMileage = this.tripMileage,
-    currentMileage = this.currentMileage,
-    costPerLitre = this.costPerLitre,
-    gasStationName = this.gasStationName
-)
+fun FuelTrackerTrip.asDomainModel() =
+    NetworkFuelTrackerTrip(
+        id = this.id,
+        vehicleID = this.vehicleId,
+        date = this.timestamp.convertTimestampToDateString(),
+        fuelVolume = this.fuelVolume,
+        fuelCost = this.fuelCost,
+        tripMileage = this.tripMileage,
+        currentMileage = this.currentMileage,
+        costPerLitre = this.costPerLitre,
+        gasStationName = this.gasStationName
+    )

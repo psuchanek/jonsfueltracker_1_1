@@ -68,6 +68,7 @@ fun LocalFuelTrackerTrip.asFuelTrackerTrip(): FuelTrackerTrip {
         tripMileage = this.tripMileage,
         currentMileage = this.currentMileage,
         costPerLitre = this.costPerLitre,
-        gasStationName = this.gasStationName
+        gasStationName = this.gasStationName,
+        isSynced = this.isSynced
     )
 }

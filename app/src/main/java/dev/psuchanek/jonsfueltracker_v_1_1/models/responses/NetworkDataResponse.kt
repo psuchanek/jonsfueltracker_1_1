@@ -1,9 +1,13 @@
-package dev.psuchanek.jonsfueltracker_v_1_1.models
+package dev.psuchanek.jonsfueltracker_v_1_1.models.responses
 
 import com.squareup.moshi.Json
+import dev.psuchanek.jonsfueltracker_v_1_1.models.LocalFuelTrackerTrip
+import dev.psuchanek.jonsfueltracker_v_1_1.models.Vehicle
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.convertDateStringToTimestamp
 
 data class NetworkDataResponse(
+    @Json(name = "vehicles")
+    val vehicles: List<Vehicle>,
     @Json(name = "history")
     val networkTrips: List<NetworkFuelTrackerTrip>
 )

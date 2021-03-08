@@ -17,4 +17,6 @@
     <style name="LabelsStyle" parent="TextAppearance.MaterialComponents.Caption">
         <item name="android:textColor">?attr/colorOnSecondary</item>
     </style>
+
+   
 </resources>

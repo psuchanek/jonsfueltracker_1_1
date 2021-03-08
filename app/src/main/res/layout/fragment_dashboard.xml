@@ -10,53 +10,96 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
         tools:context=".ui.dash.DashboardFragment">
 
-        <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/barChart"
+        <include
+            android:id="@+id/lastTripLayout"
+            layout="@layout/dash_last_trip"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tvSixMonths"
-            android:layout_width="wrap_content"
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/lineChart"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/dashGuideline"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lastTripLayout" />
+
+        <include
+            android:id="@+id/lineChartButtonLayout"
+            layout="@layout/line_chart_buttons_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lineChart"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/dashGuideline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.4" />
+
+        <View
+            android:id="@+id/dashViewSeparator"
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
             android:layout_marginTop="4dp"
-            android:text="@string/six_months_bar_chart"
-            app:layout_constraintStart_toStartOf="@+id/barChart"
-            app:layout_constraintTop_toBottomOf="@+id/barChart" />
+            android:background="@color/grey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lineChartButtonLayout" />
 
-        <TextView
-            android:id="@+id/tvOneYear"
-            android:layout_width="wrap_content"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/one_year_bar_chart"
-            app:layout_constraintEnd_toStartOf="@+id/tvThreeYears"
-            app:layout_constraintStart_toEndOf="@+id/tvSixMonths"
-            app:layout_constraintTop_toTopOf="@+id/tvSixMonths" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dashViewSeparator"
+            app:layout_constraintVertical_bias="0.0">
 
-        <TextView
-            android:id="@+id/tvThreeYears"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/three_years_bar_chart"
-            app:layout_constraintEnd_toStartOf="@+id/tvAll"
-            app:layout_constraintStart_toEndOf="@+id/tvOneYear"
-            app:layout_constraintTop_toTopOf="@+id/tvSixMonths" />
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/vehicleTab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/vehicles_tab_label" />
 
-        <TextView
-            android:id="@+id/tvAll"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:text="@string/all_bar_chart"
-            app:layout_constraintEnd_toEndOf="@+id/barChart"
-            app:layout_constraintTop_toTopOf="@+id/tvSixMonths" />
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/maintenanceTab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/maintenance_tab_label" />
+
+
+        </com.google.android.material.tabs.TabLayout>
+
+        <include
+            android:id="@+id/vehicleOverviewLayout"
+            layout="@layout/vehicle_overview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
+
+        <include
+            android:id="@+id/maintenanceOverviewLayout"
+            layout="@layout/maintenance_overview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

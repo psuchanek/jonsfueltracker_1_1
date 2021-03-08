@@ -20,6 +20,22 @@
 
     <style name="MainValuesDisplayed" parent="TextAppearance.MaterialComponents.Headline6"/>
 
+    <style name="LineChartButtons" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:minWidth">32dp</item>
+        <item name="android:minHeight">40dp</item>
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Labels" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="InfoDataStyle" parent="TextAppearance.MaterialComponents.Caption">
+    <item name="android:textStyle">bold</item>
+</style>
+
 
 
 </resources>

@@ -1,10 +1,7 @@
 package dev.psuchanek.jonsfueltracker_v_1_1.services.db
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import dev.psuchanek.jonsfueltracker_v_1_1.models.LocalFuelTrackerTrip
 import dev.psuchanek.jonsfueltracker_v_1_1.models.LocallyDeletedTrip
 import kotlinx.coroutines.flow.Flow
@@ -23,6 +20,12 @@ interface FuelTrackerDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertLocallyDeletedTripId(deletedTripID: LocallyDeletedTrip)
+
+    /*
+    Update trip
+     */
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun updateFuelTrackerTrip(trip: LocalFuelTrackerTrip)
 
     /*
    Delete calls to database
@@ -52,6 +55,9 @@ interface FuelTrackerDao {
     @Query("SELECT * FROM fuel_tracker_history_table WHERE id = :tripId")
     fun observerTripById(tripId: Int): LiveData<LocalFuelTrackerTrip>?
 
+    @Query("SELECT * FROM fuel_tracker_history_table WHERE timestamp BETWEEN :start AND :end ORDER BY timestamp ASC")
+    suspend fun getAllByTimestampRange(start: Long, end: Long): List<LocalFuelTrackerTrip>?
+
     //TODO: Focus on the rest here after refactoring
 
     @Query("SELECT * FROM fuel_tracker_history_table ORDER BY fuel_volume DESC")
@@ -63,11 +69,8 @@ interface FuelTrackerDao {
     @Query("SELECT * FROM fuel_tracker_history_table ORDER BY trip_mileage DESC")
     fun getAllByTripMileage(): List<LocalFuelTrackerTrip>
 
-    @Query("SELECT * FROM fuel_tracker_history_table WHERE timestamp BETWEEN :start AND :end ORDER BY timestamp ASC")
-    fun getAllByTimestampRange(start: Long, end: Long): List<LocalFuelTrackerTrip>
-
     @Query("SELECT * FROM fuel_tracker_history_table ORDER by timestamp DESC LIMIT 1")
-    fun getMostRecentTripRecord(): LocalFuelTrackerTrip
+    fun getMostRecentTripRecord(): LiveData<LocalFuelTrackerTrip>?
 
     @Query("SELECT current_mileage FROM fuel_tracker_history_table WHERE vehicle_id=:vehicleId ORDER BY id DESC LIMIT 1")
     suspend fun getLastKnownMileage(vehicleId: Int): Long?

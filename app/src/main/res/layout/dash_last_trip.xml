@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="trip"
+            type="dev.psuchanek.jonsfueltracker_v_1_1.models.FuelTrackerTrip" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/lastTripLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/last_trip_label"
+            style="@style/Labels"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textAllCaps="true" />
+
+        <TextView
+            android:id="@+id/dateLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            style="@style/Labels"
+            android:text="@string/date_label"
+            app:layout_constraintEnd_toEndOf="@+id/tvDashDate"
+            app:layout_constraintStart_toStartOf="@+id/tvDashDate"
+            app:layout_constraintTop_toBottomOf="@+id/lastTripLabel" />
+
+        <TextView
+            android:id="@+id/mpgLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Labels"
+            android:text="@string/mpg"
+            app:layout_constraintEnd_toEndOf="@+id/tvDashMPG"
+            app:layout_constraintStart_toStartOf="@+id/tvDashMPG"
+            app:layout_constraintTop_toTopOf="@+id/dateLabel" />
+
+        <TextView
+            android:id="@+id/distanceLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Labels"
+            android:text="@string/distance_label"
+            app:layout_constraintEnd_toEndOf="@+id/tvDashDistance"
+            app:layout_constraintStart_toStartOf="@+id/tvDashDistance"
+            app:layout_constraintTop_toTopOf="@+id/dateLabel" />
+
+        <TextView
+            android:id="@+id/fuelCostLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Labels"
+            android:text="@string/fuel_cost_label"
+            app:layout_constraintEnd_toEndOf="@+id/tvDashFuelCost"
+            app:layout_constraintStart_toStartOf="@+id/tvDashFuelCost"
+            app:layout_constraintTop_toTopOf="@+id/dateLabel" />
+
+
+        <TextView
+            android:id="@+id/tvDashDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@{trip.date}"
+            style="@style/InfoDataStyle"
+            app:layout_constraintEnd_toStartOf="@+id/tvDashDistance"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dateLabel" />
+
+        <TextView
+            android:id="@+id/tvDashDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{trip.dashMiles}"
+            style="@style/InfoDataStyle"
+            app:layout_constraintEnd_toStartOf="@+id/tvDashFuelCost"
+            app:layout_constraintStart_toEndOf="@+id/tvDashDate"
+            app:layout_constraintTop_toTopOf="@+id/tvDashDate" />
+
+        <TextView
+            android:id="@+id/tvDashFuelCost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{trip.dashCost}"
+            style="@style/InfoDataStyle"
+            app:layout_constraintEnd_toStartOf="@+id/tvDashMPG"
+            app:layout_constraintStart_toEndOf="@+id/tvDashDistance"
+            app:layout_constraintTop_toTopOf="@+id/tvDashDate" />
+
+        <TextView
+            android:id="@+id/tvDashMPG"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{trip.dashMPG}"
+            style="@style/InfoDataStyle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvDashFuelCost"
+            app:layout_constraintTop_toTopOf="@+id/tvDashDate" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

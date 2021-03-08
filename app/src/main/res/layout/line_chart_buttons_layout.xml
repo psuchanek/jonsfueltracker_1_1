@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/btnThreeMonths"
+        style="@style/LineChartButtons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/btn_line_chart_shape"
+        android:text="@string/three_months_line_chart"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toStartOf="@+id/btnSixMonths"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnSixMonths"
+        style="@style/LineChartButtons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:text="@string/six_months_bar_chart"
+        app:layout_constraintEnd_toStartOf="@+id/btnOneYear"
+        app:layout_constraintStart_toEndOf="@+id/btnThreeMonths"
+        app:layout_constraintTop_toTopOf="@+id/btnThreeMonths" />
+
+    <Button
+        android:id="@+id/btnOneYear"
+        style="@style/LineChartButtons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:text="@string/one_year_bar_chart"
+        app:layout_constraintEnd_toStartOf="@+id/btnThreeYears"
+        app:layout_constraintStart_toEndOf="@+id/btnSixMonths"
+        app:layout_constraintTop_toTopOf="@+id/btnThreeMonths" />
+
+
+    <Button
+        android:id="@+id/btnThreeYears"
+        style="@style/LineChartButtons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:text="@string/three_years_bar_chart"
+        app:layout_constraintEnd_toStartOf="@+id/btnAll"
+        app:layout_constraintStart_toEndOf="@+id/btnOneYear"
+        app:layout_constraintTop_toTopOf="@+id/btnThreeMonths" />
+
+    <Button
+        android:id="@+id/btnAll"
+        style="@style/LineChartButtons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:text="@string/all_bar_chart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnThreeYears"
+        app:layout_constraintTop_toTopOf="@+id/btnThreeMonths" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

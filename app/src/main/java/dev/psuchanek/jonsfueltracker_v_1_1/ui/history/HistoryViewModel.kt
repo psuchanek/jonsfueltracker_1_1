@@ -15,8 +15,6 @@ class HistoryViewModel @ViewModelInject constructor(private val repository: Fuel
     private val _swipeLayout = MutableLiveData<Boolean>()
     val swipeLayout: LiveData<Boolean> = _swipeLayout
 
-    private val _expanded = MutableLiveData<Boolean>()
-    val expanded = _expanded
 
     private val _allTrips = _forceFetch.switchMap {
         repository.getAllTrips().asLiveData(viewModelScope.coroutineContext)
@@ -48,10 +46,5 @@ class HistoryViewModel @ViewModelInject constructor(private val repository: Fuel
     fun swipeLayoutActive(isCurrentlyActive: Boolean) {
         _swipeLayout.value = isCurrentlyActive
     }
-
-    fun setLayoutVisibility(expanded: Boolean) {
-        _expanded.value = expanded
-    }
-
 
 }

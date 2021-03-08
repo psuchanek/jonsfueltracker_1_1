@@ -1,7 +1,9 @@
 package dev.psuchanek.jonsfueltracker_v_1_1.services.network
 
-import dev.psuchanek.jonsfueltracker_v_1_1.models.NetworkDataResponse
-import dev.psuchanek.jonsfueltracker_v_1_1.models.NetworkFuelTrackerTrip
+import dev.psuchanek.jonsfueltracker_v_1_1.models.responses.NetworkDataResponse
+import dev.psuchanek.jonsfueltracker_v_1_1.models.responses.NetworkFuelTrackerTrip
+import dev.psuchanek.jonsfueltracker_v_1_1.models.requests.TripDeleteRequest
+import dev.psuchanek.jonsfueltracker_v_1_1.models.responses.TripDeleteResponse
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.DELETE_TRIP_FROM_SERVICE
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.GET_FROM_SERVICE
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.POST_TRIP_TO_SERVICE
@@ -24,6 +26,6 @@ interface FuelTrackerService {
 
     @POST(DELETE_TRIP_FROM_SERVICE)
     suspend fun deleteTrip(
-        @Body record_id: String
-    ): Response<ResponseBody>
+        @Body recordID: TripDeleteRequest
+    ): Response<TripDeleteResponse>
 }

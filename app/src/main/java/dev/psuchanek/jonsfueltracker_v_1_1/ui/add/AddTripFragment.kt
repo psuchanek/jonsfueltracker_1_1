@@ -5,15 +5,18 @@ import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
 import dev.psuchanek.jonsfueltracker_v_1_1.BaseFragment
 import dev.psuchanek.jonsfueltracker_v_1_1.R
@@ -22,6 +25,7 @@ import dev.psuchanek.jonsfueltracker_v_1_1.utils.Status
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.calculatePencePerLitre
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.getDay
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.getMonth
+import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 import java.util.*
 
@@ -45,12 +49,19 @@ class AddTripFragment : BaseFragment(R.layout.fragment_add_trip) {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_trip, container, false)
+
         binding.apply {
             evDate.setOnClickListener { launchDatePickerDialog() }
-            btnSubmit.setOnClickListener { insertTrip() }
             evTripMileage.addTextChangedListener(textWatcher(evTripMileage.id))
             evPrice.addTextChangedListener(textWatcher(evPrice.id))
             evLitres.addTextChangedListener(textWatcher(evLitres.id))
+            toolbar.apply {
+                inflateMenu(R.menu.add_menu)
+                setOnMenuItemClickListener(menuItemClickListener())
+                setNavigationOnClickListener {
+                    activity?.onBackPressed()
+                }
+            }
         }
         subscribeObservers()
         return binding.root
@@ -217,5 +228,17 @@ class AddTripFragment : BaseFragment(R.layout.fragment_add_trip) {
 
         })
     }
+
+    private fun menuItemClickListener() =
+        Toolbar.OnMenuItemClickListener { item ->
+            when (item?.itemId) {
+                R.id.btnSubmit -> {
+                    Timber.d("DEBUG: menu item gets called")
+                    insertTrip()
+                    true
+                }
+                else -> false
+            }
+        }
 
 }

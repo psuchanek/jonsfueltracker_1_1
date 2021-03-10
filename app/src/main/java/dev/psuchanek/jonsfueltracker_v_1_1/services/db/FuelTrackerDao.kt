@@ -60,14 +60,14 @@ interface FuelTrackerDao {
 
     //TODO: Focus on the rest here after refactoring
 
-    @Query("SELECT * FROM fuel_tracker_history_table ORDER BY fuel_volume DESC")
-    fun getAllByFuelVolume(): List<LocalFuelTrackerTrip>
+    @Query("SELECT * FROM fuel_tracker_history_table ORDER BY timestamp DESC")
+    fun observeAllByTimestamp(): LiveData<List<LocalFuelTrackerTrip>>
 
     @Query("SELECT * FROM fuel_tracker_history_table ORDER BY fuel_cost DESC")
-    fun getAllByFuelCost(): List<LocalFuelTrackerTrip>
+    fun observeAllByFuelCost(): LiveData<List<LocalFuelTrackerTrip>>
 
     @Query("SELECT * FROM fuel_tracker_history_table ORDER BY trip_mileage DESC")
-    fun getAllByTripMileage(): List<LocalFuelTrackerTrip>
+    fun observeAllByTripMileage(): LiveData<List<LocalFuelTrackerTrip>>
 
     @Query("SELECT * FROM fuel_tracker_history_table ORDER by timestamp DESC LIMIT 1")
     fun getMostRecentTripRecord(): LiveData<LocalFuelTrackerTrip>?

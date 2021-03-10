@@ -11,8 +11,8 @@ import dev.psuchanek.jonsfueltracker_v_1_1.databinding.TripHistoryListItemBindin
 import dev.psuchanek.jonsfueltracker_v_1_1.models.FuelTrackerTrip
 import dev.psuchanek.jonsfueltracker_v_1_1.ui.history.OnTripClickListener
 
-class TripHistoryAdapter(private val onTripClickListener: OnTripClickListener) :
-    ListAdapter<FuelTrackerTrip, TripHistoryAdapter.ViewHolder>(
+class FuelTrackerAdapter(private val onTripClickListener: OnTripClickListener) :
+    ListAdapter<FuelTrackerTrip, FuelTrackerAdapter.ViewHolder>(
         TripsDiffCall
     ) {
 

@@ -17,16 +17,13 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import dev.psuchanek.jonsfueltracker_v_1_1.BaseFragment
 import dev.psuchanek.jonsfueltracker_v_1_1.R
-import dev.psuchanek.jonsfueltracker_v_1_1.adapters.TripHistoryAdapter
+import dev.psuchanek.jonsfueltracker_v_1_1.adapters.FuelTrackerAdapter
 import dev.psuchanek.jonsfueltracker_v_1_1.adapters.animations.ArrowAnimation
 import dev.psuchanek.jonsfueltracker_v_1_1.databinding.FragmentHistoryBinding
-import dev.psuchanek.jonsfueltracker_v_1_1.databinding.TripHistoryListItemBinding
 import dev.psuchanek.jonsfueltracker_v_1_1.models.FuelTrackerTrip
 import dev.psuchanek.jonsfueltracker_v_1_1.models.asFuelTrackerTripModel
-import dev.psuchanek.jonsfueltracker_v_1_1.utils.ARROW_ANIM_DOWN
-import dev.psuchanek.jonsfueltracker_v_1_1.utils.ARROW_ANIM_UP
-import dev.psuchanek.jonsfueltracker_v_1_1.utils.CustomItemDecoration
-import dev.psuchanek.jonsfueltracker_v_1_1.utils.Status
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.*
+import kotlinx.android.synthetic.main.fragment_history.view.*
 
 @AndroidEntryPoint
 class HistoryFragment : BaseFragment(R.layout.fragment_history), OnTripClickListener {
@@ -35,8 +32,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history), OnTripClickList
 
     private lateinit var binding: FragmentHistoryBinding
     private val historyViewModel: HistoryViewModel by viewModels()
-    private lateinit var tripAdapter: TripHistoryAdapter
-    private lateinit var bindingTripItem: TripHistoryListItemBinding
+    private lateinit var tripAdapter: FuelTrackerAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,7 +40,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history), OnTripClickList
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_history, container, false)
-        tripAdapter = TripHistoryAdapter(this)
+        tripAdapter = FuelTrackerAdapter(this)
         subscribeObservers()
 
         return binding.root
@@ -61,11 +57,11 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history), OnTripClickList
         binding.swipeRefresher.setOnRefreshListener {
             historyViewModel.syncAllTrips()
             tripAdapter.notifyDataSetChanged()
-//            tripAdapter.currentList.onEach { trip ->
-//                trip.isExpanded = false
-//
-//            }
-//            tripAdapter.notifyDataSetChanged()
+            tripAdapter.currentList.onEach { trip ->
+                trip.isExpanded = false
+
+            }
+            tripAdapter.notifyDataSetChanged()
         }
     }
 
@@ -115,7 +111,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history), OnTripClickList
     private fun setupRecyclerView() {
         binding.recyclerViewHistory.apply {
             adapter = tripAdapter
-            addItemDecoration(CustomItemDecoration(15))
+            addItemDecoration(CustomItemDecoration(DECORATION_SPACING))
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             ItemTouchHelper(itemTouchHelper).attachToRecyclerView(this)
@@ -129,10 +125,19 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history), OnTripClickList
             R.array.sort_by,
             android.R.layout.simple_spinner_item
         ).also {
-            binding.spinnerSort.adapter = it
+            binding.dropdownSort.setAdapter(it)
         }
-        //TODO: add selection visible depending on SortType
-        binding.spinnerSort.onItemSelectedListener = onItemSelectedListener()
+        binding.dropdownSort.apply {
+            when (historyViewModel.sortType) {
+                SortType.DATE_DESC -> dropdownSort.setSelection(0)
+                SortType.DATE_ASC -> dropdownSort.setSelection(1)
+                SortType.FILL_PRICE_DESC -> dropdownSort.setSelection(2)
+                SortType.FILL_PRICE_ASC -> dropdownSort.setSelection(3)
+                SortType.TRIP_MILEAGE_DESC -> dropdownSort.setSelection(4)
+                SortType.TRIP_MILEAGE_ASC -> dropdownSort.setSelection(5)
+            }
+            onItemSelectedListener = onItemSelectedListener()
+        }
     }
 
     private fun onItemSelectedListener(): AdapterView.OnItemSelectedListener? =
@@ -141,8 +146,30 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history), OnTripClickList
 
             }
 
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+            override fun onItemSelected(p0: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                when (position) {
+                    0 -> {
+                        historyViewModel.sortTrips(SortType.DATE_DESC)
+                    }
 
+                    1 -> {
+                        historyViewModel.sortTrips(SortType.DATE_ASC)
+                    }
+                    2 -> {
+                        historyViewModel.sortTrips(SortType.FILL_PRICE_DESC)
+                    }
+
+                    3 -> {
+                        historyViewModel.sortTrips(SortType.FILL_PRICE_ASC)
+                    }
+                    4 -> {
+                        historyViewModel.sortTrips(SortType.TRIP_MILEAGE_DESC)
+                    }
+
+                    5 -> {
+                        historyViewModel.sortTrips(SortType.TRIP_MILEAGE_ASC)
+                    }
+                }
             }
 
         }
@@ -178,6 +205,15 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history), OnTripClickList
                         binding.swipeRefresher.isRefreshing = true
                     }
                 }
+            }
+
+        })
+
+        historyViewModel.sortedTripHistory.observe(viewLifecycleOwner, Observer { event ->
+            event?.let {
+                val result = it.peekContent()
+                tripAdapter.submitList(result)
+                tripAdapter.notifyDataSetChanged()
             }
 
         })

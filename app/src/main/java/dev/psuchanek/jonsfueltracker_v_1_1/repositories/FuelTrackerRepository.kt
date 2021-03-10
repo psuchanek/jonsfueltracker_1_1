@@ -7,6 +7,7 @@ import dev.psuchanek.jonsfueltracker_v_1_1.models.requests.TripDeleteRequest
 import dev.psuchanek.jonsfueltracker_v_1_1.models.responses.NetworkDataResponse
 import dev.psuchanek.jonsfueltracker_v_1_1.models.responses.asDatabaseModel
 import dev.psuchanek.jonsfueltracker_v_1_1.services.db.FuelTrackerDao
+import dev.psuchanek.jonsfueltracker_v_1_1.services.db.VehicleDao
 import dev.psuchanek.jonsfueltracker_v_1_1.services.network.FuelTrackerService
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.checkNetworkConnection
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.networkBoundResource
@@ -20,11 +21,14 @@ import javax.inject.Singleton
 @Singleton
 class FuelTrackerRepository @Inject constructor(
     private val fuelTrackerDao: FuelTrackerDao,
+    private val vehicleDao: VehicleDao,
     private val apiService: FuelTrackerService,
     private val context: Application
 ) : Repository {
 
     private var currentFuelTrackerResponse: Response<NetworkDataResponse>? = null
+
+    val observeAllVehicles = vehicleDao.observeAllVehicles()
 
     fun getAllTrips() = networkBoundResource(
         query = {
@@ -32,14 +36,34 @@ class FuelTrackerRepository @Inject constructor(
         },
         fetch = {
             syncTrips()
-            currentFuelTrackerResponse
+            apiService.getFuelTrackerHistory()
         },
         onFetchFailed = {
             Timber.d("DEBUG: reason for server not reached: ${it.message}")
         },
         saveFetchResult = { response ->
-            response?.let { listOfTrips ->
-                currentFuelTrackerResponse = listOfTrips
+            response?.let { networkResponseList ->
+                Timber.d("DEBUG: ${networkResponseList.body()?.networkTrips}")
+                networkResponseList.body()?.vehicles?.let { vehicleList ->
+                    withContext(Dispatchers.IO) {
+                        val currentVehicleListIDs = vehicleDao.getAllVehicles().map { it.id }
+                        Timber.d("DEBUG: vehicleIds: $currentVehicleListIDs")
+                        if (currentVehicleListIDs.isNullOrEmpty()) {
+                            vehicleDao.insertVehicles(vehicleList)
+                        } else {
+                            val difference = vehicleList.filter {
+                                it.id !in currentVehicleListIDs
+                            }
+                            if (!difference.isNullOrEmpty()) {
+                                vehicleDao.insertVehicles(difference)
+                            }
+                        }
+
+
+                    }
+                }
+
+                currentFuelTrackerResponse = networkResponseList
                 currentFuelTrackerResponse?.body()?.let { response ->
                     val currentDatabaseList =
                         withContext(Dispatchers.IO) { fuelTrackerDao.getAllById() }
@@ -74,7 +98,6 @@ class FuelTrackerRepository @Inject constructor(
         val unsyncedTrips = fuelTrackerDao.getAllUnsyncedTrips()
         unsyncedTrips.forEach { trip -> insertTrip(trip.asFuelTrackerTrip()) }
     }
-
 
     private suspend fun insertTrips(trips: List<LocalFuelTrackerTrip>) {
         trips.forEach { trip ->
@@ -122,7 +145,11 @@ class FuelTrackerRepository @Inject constructor(
         }
     }
 
-    fun getMostRecentTripRecord(): LiveData<LocalFuelTrackerTrip>? = fuelTrackerDao.getMostRecentTripRecord()
+    suspend fun insertVehicle(vehicle: Vehicle) =
+        withContext(Dispatchers.IO) { vehicleDao.insertVehicle(vehicle) }
+
+    fun getMostRecentTripRecord(): LiveData<LocalFuelTrackerTrip>? =
+        fuelTrackerDao.getMostRecentTripRecord()
 
     suspend fun getAllByTimestampRange(start: Long, end: Long): List<LocalFuelTrackerTrip>? =
         withContext(Dispatchers.IO) { fuelTrackerDao.getAllByTimestampRange(start, end) }
@@ -132,16 +159,11 @@ class FuelTrackerRepository @Inject constructor(
     override suspend fun getLastKnownMileage(vehicleId: Int) =
         withContext(Dispatchers.IO) { fuelTrackerDao.getLastKnownMileage(vehicleId) }
 
-    fun getAllTripsSortedByTimeStamp() = fuelTrackerDao.getAllByTimestamp()
+    val observeAllByTimestamp = fuelTrackerDao.observeAllByTimestamp()
 
-    suspend fun getAllTripsSortedByFuelVolume() =
-        withContext(Dispatchers.IO) { fuelTrackerDao.getAllByFuelVolume() }
+    val observeAllByFuelCost =fuelTrackerDao.observeAllByFuelCost()
 
-    suspend fun getAllTripsSortedByFuelCost() =
-        withContext(Dispatchers.IO) { fuelTrackerDao.getAllByFuelCost() }
-
-    suspend fun getAllTripsSortedByTripMileage() =
-        withContext(Dispatchers.IO) { fuelTrackerDao.getAllByTripMileage() }
+    val observeAllByTripMileage = fuelTrackerDao.observeAllByTripMileage()
 
 
 }

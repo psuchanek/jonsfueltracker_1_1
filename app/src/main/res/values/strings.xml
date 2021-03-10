@@ -23,7 +23,7 @@
     <string name="total_mileage_label">Total mileage</string>
     <string name="vehicle_label">Vehicle</string>
     <string name="fab_service_label">Service</string>
-    <string name="add_trip_label">Add trip</string>
+    <string name="add_trip_label">ADD TRIP</string>
     <string name="last_trip_label">Last trip:</string>
     <string name="dash_label">Dashboard</string>
     <string name="trips_history_label">Trips history</string>
@@ -69,5 +69,11 @@
     <string name="fuel_volume_label">volume</string>
     <string name="three_months_line_chart">3m</string>
     <string name="no_data_for_this_period">No data available for this period.</string>
+    <string name="odo_label">ODO:</string>
+    <string name="avg_mpg_label">AVG MPG:</string>
+    <string name="avg_mpl_label">AVG MPL:</string>
+    <string name="avg_ppm_label">AVG PPM:</string>
+    <string name="avg_ppl_label">AVG PPL:</string>
+    <string name="settings">Settings</string>
 
 </resources>

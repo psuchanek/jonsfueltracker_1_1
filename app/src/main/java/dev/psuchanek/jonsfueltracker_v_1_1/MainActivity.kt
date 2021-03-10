@@ -1,5 +1,6 @@
 package dev.psuchanek.jonsfueltracker_v_1_1
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -19,13 +20,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        setSupportActionBar(binding.toolbar)
+//        setSupportActionBar(binding.toolbar)
         navHostFragment =
             supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
 
-        binding.toolbar.setupWithNavController(navHostFragment.findNavController())
+//        binding.toolbar.setupWithNavController(navHostFragment.findNavController())
         binding.bottomNavigationView.apply {
             background = null
             setupWithNavController(navHostFragment.findNavController())

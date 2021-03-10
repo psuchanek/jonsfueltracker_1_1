@@ -12,6 +12,22 @@
         android:layout_height="match_parent"
         tools:context=".ui.dash.DashboardFragment">
 
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/app_bar_height"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.Toolbar
+                        android:id="@+id/toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:menu="@menu/dash_menu"/>
+        </com.google.android.material.appbar.AppBarLayout>
+
         <include
             android:id="@+id/lastTripLayout"
             layout="@layout/dash_last_trip"
@@ -19,7 +35,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/appBar" />
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/lineChart"

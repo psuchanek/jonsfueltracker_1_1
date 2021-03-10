@@ -6,7 +6,7 @@ import android.animation.ObjectAnimator
 import android.view.View
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.RecyclerView
-import dev.psuchanek.jonsfueltracker_v_1_1.adapters.TripHistoryAdapter
+import dev.psuchanek.jonsfueltracker_v_1_1.adapters.FuelTrackerAdapter
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.ARROW_ANIM_DOWN
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.ARROW_ANIM_UP
 
@@ -25,7 +25,7 @@ class ArrowAnimation() : DefaultItemAnimator() {
         preInfo: ItemHolderInfo,
         postInfo: ItemHolderInfo
     ): Boolean {
-        val holder = newHolder as TripHistoryAdapter.ViewHolder
+        val holder = newHolder as FuelTrackerAdapter.ViewHolder
 
         if (preInfo is TripItemHolderInfo) {
             if (preInfo.isExpanded) {

@@ -24,3 +24,6 @@ const val ARROW_ANIM_DOWN = 2222
 
 //Line chart
 const val RIGHT_AXIS_LABEL_COUNT = 4
+
+//Item decorator
+const val DECORATION_SPACING = 5

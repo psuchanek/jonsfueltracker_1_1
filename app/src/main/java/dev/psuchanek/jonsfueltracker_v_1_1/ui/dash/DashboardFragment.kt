@@ -3,10 +3,7 @@ package dev.psuchanek.jonsfueltracker_v_1_1.ui.dash
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -22,12 +19,13 @@ import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import dev.psuchanek.jonsfueltracker_v_1_1.BaseFragment
 import dev.psuchanek.jonsfueltracker_v_1_1.R
+import dev.psuchanek.jonsfueltracker_v_1_1.adapters.VehicleAdapter
 import dev.psuchanek.jonsfueltracker_v_1_1.databinding.FragmentDashboardBinding
 import dev.psuchanek.jonsfueltracker_v_1_1.models.FuelTrackerTrip
+import dev.psuchanek.jonsfueltracker_v_1_1.models.asFuelTrackerTrip
 import dev.psuchanek.jonsfueltracker_v_1_1.ui.MainViewModel
-import dev.psuchanek.jonsfueltracker_v_1_1.utils.RIGHT_AXIS_LABEL_COUNT
-import dev.psuchanek.jonsfueltracker_v_1_1.utils.TimePeriod
-import dev.psuchanek.jonsfueltracker_v_1_1.utils.getTimePeriodTimestamp
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.*
+import timber.log.Timber
 
 @AndroidEntryPoint
 class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
@@ -36,18 +34,23 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
 
     private lateinit var binding: FragmentDashboardBinding
     private var mostRecentTrip: FuelTrackerTrip? = null
+    private lateinit var vehicleAdapter: VehicleAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_dashboard, container, false)
         subscribeObservers()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        super.onViewCreated(
+            view, savedInstanceState
+        )
+        setupRecyclerViews()
         setupLineChart()
         binding.apply {
             lineChartButtonLayout.apply {
@@ -62,6 +65,14 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
                 onChartGestureListener = lineChartGestureListener()
             }
             tabLayout.addOnTabSelectedListener(tabLayoutClickListener())
+        }
+    }
+
+    private fun setupRecyclerViews() {
+        vehicleAdapter = VehicleAdapter()
+        binding.vehicleOverviewLayout.vehicleRecyclerView.apply {
+            adapter = vehicleAdapter
+            addItemDecoration(CustomItemDecoration(DECORATION_SPACING))
         }
     }
 
@@ -121,10 +132,21 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
         })
 
         viewModel.mostRecentTrip?.observe(viewLifecycleOwner, Observer { mostRecentTrip ->
-            this.mostRecentTrip = mostRecentTrip
-            binding.lastTripLayout.apply {
-                trip = mostRecentTrip
+            if (mostRecentTrip == null) {
+                return@Observer
             }
+            this.mostRecentTrip = mostRecentTrip.asFuelTrackerTrip()
+            binding.lastTripLayout.apply {
+                trip = mostRecentTrip.asFuelTrackerTrip()
+            }
+        })
+
+        viewModel.vehicleList.observe(viewLifecycleOwner, Observer { vehicleList ->
+            vehicleList?.let {
+                Timber.d("DEBUG: vehicleList: $it")
+                vehicleAdapter.submitList(vehicleList)
+            }
+
         })
     }
 
@@ -368,6 +390,10 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
         override fun onChartTranslate(me: MotionEvent?, dX: Float, dY: Float) {
         }
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        return inflater.inflate(R.menu.dash_menu, menu)
     }
 
 

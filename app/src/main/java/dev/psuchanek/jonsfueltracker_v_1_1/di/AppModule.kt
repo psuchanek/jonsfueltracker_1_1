@@ -14,6 +14,7 @@ import dev.psuchanek.jonsfueltracker_v_1_1.repositories.FuelTrackerRepository
 import dev.psuchanek.jonsfueltracker_v_1_1.repositories.Repository
 import dev.psuchanek.jonsfueltracker_v_1_1.services.db.FuelTrackerDao
 import dev.psuchanek.jonsfueltracker_v_1_1.services.db.FuelTrackerDatabase
+import dev.psuchanek.jonsfueltracker_v_1_1.services.db.VehicleDao
 import dev.psuchanek.jonsfueltracker_v_1_1.services.network.FuelTrackerService
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.BASE_URL
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.CALL_TIMEOUT
@@ -72,7 +73,11 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideRepository(apiService: FuelTrackerService, fuelTrackerDao: FuelTrackerDao, @ApplicationContext context: Context) =
-        FuelTrackerRepository(fuelTrackerDao, apiService, context as Application) as Repository
+    fun provideVehicleDao(database: FuelTrackerDatabase) = database.vehicleDao()
+
+    @Singleton
+    @Provides
+    fun provideRepository(apiService: FuelTrackerService, vehicleDao: VehicleDao, fuelTrackerDao: FuelTrackerDao, @ApplicationContext context: Context) =
+        FuelTrackerRepository(fuelTrackerDao, vehicleDao, apiService, context as Application) as Repository
 
 }

@@ -127,26 +127,13 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history), OnTripClickList
         ).also {
             binding.dropdownSort.setAdapter(it)
         }
-        binding.dropdownSort.apply {
-            when (historyViewModel.sortType) {
-                SortType.DATE_DESC -> dropdownSort.setSelection(0)
-                SortType.DATE_ASC -> dropdownSort.setSelection(1)
-                SortType.FILL_PRICE_DESC -> dropdownSort.setSelection(2)
-                SortType.FILL_PRICE_ASC -> dropdownSort.setSelection(3)
-                SortType.TRIP_MILEAGE_DESC -> dropdownSort.setSelection(4)
-                SortType.TRIP_MILEAGE_ASC -> dropdownSort.setSelection(5)
-            }
-            onItemSelectedListener = onItemSelectedListener()
-        }
+        binding.dropdownSort.onItemClickListener = onItemSelectedListener()
+
     }
 
-    private fun onItemSelectedListener(): AdapterView.OnItemSelectedListener? =
-        object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-
-            }
-
-            override fun onItemSelected(p0: AdapterView<*>?, view: View?, position: Int, id: Long) {
+    private fun onItemSelectedListener() =
+        object : AdapterView.OnItemClickListener {
+            override fun onItemClick(p0: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 when (position) {
                     0 -> {
                         historyViewModel.sortTrips(SortType.DATE_DESC)
@@ -171,6 +158,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history), OnTripClickList
                     }
                 }
             }
+
 
         }
 
@@ -209,12 +197,10 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history), OnTripClickList
 
         })
 
-        historyViewModel.sortedTripHistory.observe(viewLifecycleOwner, Observer { event ->
-            event?.let {
-                val result = it.peekContent()
-                tripAdapter.submitList(result)
-                tripAdapter.notifyDataSetChanged()
-            }
+        historyViewModel.sortedTripHistory.observe(viewLifecycleOwner, Observer { sortedTripList ->
+            tripAdapter.submitList(sortedTripList)
+
+
 
         })
 

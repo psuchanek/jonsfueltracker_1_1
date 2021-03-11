@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.psuchanek.jonsfueltracker_v_1_1.models.FuelTrackerTrip
-import dev.psuchanek.jonsfueltracker_v_1_1.models.LocalFuelTrackerTrip
 import dev.psuchanek.jonsfueltracker_v_1_1.models.asFuelTrackerTripModel
 import dev.psuchanek.jonsfueltracker_v_1_1.repositories.FuelTrackerRepository
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.Event
@@ -22,7 +21,7 @@ class MainViewModel @ViewModelInject constructor(private val repository: FuelTra
     private val _tripsByTimestampRange = MutableLiveData<Event<List<FuelTrackerTrip>>>()
     val tripsByTimestampRange: LiveData<Event<List<FuelTrackerTrip>>> = _tripsByTimestampRange
 
-    val mostRecentTrip: LiveData<LocalFuelTrackerTrip>? = repository.getMostRecentTripRecord()
+    val mostRecentTrip = repository.mostRecentTrip
 
     val vehicleList = repository.observeAllVehicles
 

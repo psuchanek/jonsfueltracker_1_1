@@ -8,6 +8,7 @@ import dev.psuchanek.jonsfueltracker_v_1_1.repositories.FuelTrackerRepository
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.Event
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.SortType
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class HistoryViewModel @ViewModelInject constructor(private val repository: FuelTrackerRepository) :
     ViewModel() {
@@ -27,7 +28,7 @@ class HistoryViewModel @ViewModelInject constructor(private val repository: Fuel
     private val tripsSortedByTripMileage = repository.observeAllByTripMileage
 
 
-    val sortedTripHistory = MediatorLiveData<Event<List<FuelTrackerTrip>>>()
+    val sortedTripHistory = MediatorLiveData<List<FuelTrackerTrip>>()
 
 
     /**
@@ -52,10 +53,10 @@ class HistoryViewModel @ViewModelInject constructor(private val repository: Fuel
         sortedTripHistory.addSource(tripsSortedByDate) { result ->
             result?.let {
                 if (_sortType == SortType.DATE_ASC) {
-                    sortedTripHistory.postValue(Event(it.asFuelTrackerTripModel().reversed()))
+                    sortedTripHistory.value = it.asFuelTrackerTripModel().reversed()
                 }
                 if (_sortType == SortType.DATE_DESC) {
-                    sortedTripHistory.postValue(Event(it.asFuelTrackerTripModel()))
+                    sortedTripHistory.value = it.asFuelTrackerTripModel()
                 }
             }
 
@@ -64,10 +65,10 @@ class HistoryViewModel @ViewModelInject constructor(private val repository: Fuel
         sortedTripHistory.addSource(tripsSortedByFuelCost) { result ->
             result?.let {
                 if (_sortType == SortType.FILL_PRICE_ASC) {
-                    sortedTripHistory.postValue(Event(it.asFuelTrackerTripModel().reversed()))
+                    sortedTripHistory.postValue(it.asFuelTrackerTripModel().reversed())
                 }
                 if (_sortType == SortType.FILL_PRICE_DESC) {
-                    sortedTripHistory.postValue(Event(it.asFuelTrackerTripModel()))
+                    sortedTripHistory.postValue(it.asFuelTrackerTripModel())
                 }
             }
 
@@ -76,10 +77,10 @@ class HistoryViewModel @ViewModelInject constructor(private val repository: Fuel
         sortedTripHistory.addSource(tripsSortedByTripMileage) { result ->
             result?.let {
                 if (_sortType == SortType.TRIP_MILEAGE_ASC) {
-                    sortedTripHistory.postValue(Event(it.asFuelTrackerTripModel().reversed()))
+                    sortedTripHistory.postValue(it.asFuelTrackerTripModel().reversed())
                 }
                 if (_sortType == SortType.TRIP_MILEAGE_DESC) {
-                    sortedTripHistory.postValue(Event(it.asFuelTrackerTripModel()))
+                    sortedTripHistory.postValue(it.asFuelTrackerTripModel())
                 }
             }
 
@@ -89,39 +90,39 @@ class HistoryViewModel @ViewModelInject constructor(private val repository: Fuel
     }
 
     fun sortTrips(sortType: SortType) {
+        Timber.d("DEBUG: sorting got called with sort type: $sortType")
         when (sortType) {
             SortType.DATE_ASC -> {
                 tripsSortedByDate.value?.let {
-                    sortedTripHistory.postValue(
-                        Event(
+                    sortedTripHistory.value =
+
                             it.asFuelTrackerTripModel().reversed()
-                        )
-                    )
+
                 }
             }
             SortType.DATE_DESC -> {
                 tripsSortedByDate.value?.let {
-                    sortedTripHistory.postValue(Event(it.asFuelTrackerTripModel()))
+                    sortedTripHistory.postValue(it.asFuelTrackerTripModel())
                 }
             }
             SortType.TRIP_MILEAGE_ASC -> {
                 tripsSortedByTripMileage.value?.let {
-                    sortedTripHistory.postValue(Event(it.asFuelTrackerTripModel().reversed()))
+                    sortedTripHistory.postValue(it.asFuelTrackerTripModel().reversed())
                 }
             }
             SortType.TRIP_MILEAGE_DESC -> {
                 tripsSortedByTripMileage.value?.let {
-                    sortedTripHistory.postValue(Event(it.asFuelTrackerTripModel()))
+                    sortedTripHistory.postValue(it.asFuelTrackerTripModel())
                 }
             }
             SortType.FILL_PRICE_ASC -> {
                 tripsSortedByFuelCost.value?.let {
-                    sortedTripHistory.postValue(Event(it.asFuelTrackerTripModel().reversed()))
+                    sortedTripHistory.postValue(it.asFuelTrackerTripModel().reversed())
                 }
             }
             SortType.FILL_PRICE_DESC -> {
                 tripsSortedByFuelCost.value?.let {
-                    sortedTripHistory.postValue(Event(it.asFuelTrackerTripModel()))
+                    sortedTripHistory.postValue(it.asFuelTrackerTripModel())
                 }
             }
         }.also {

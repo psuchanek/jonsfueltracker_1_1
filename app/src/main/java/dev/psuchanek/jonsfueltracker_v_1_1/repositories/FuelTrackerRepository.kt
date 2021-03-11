@@ -148,8 +148,7 @@ class FuelTrackerRepository @Inject constructor(
     suspend fun insertVehicle(vehicle: Vehicle) =
         withContext(Dispatchers.IO) { vehicleDao.insertVehicle(vehicle) }
 
-    fun getMostRecentTripRecord(): LiveData<LocalFuelTrackerTrip>? =
-        fuelTrackerDao.getMostRecentTripRecord()
+   val mostRecentTrip: LiveData<LocalFuelTrackerTrip>? = fuelTrackerDao.getMostRecentTripRecord()
 
     suspend fun getAllByTimestampRange(start: Long, end: Long): List<LocalFuelTrackerTrip>? =
         withContext(Dispatchers.IO) { fuelTrackerDao.getAllByTimestampRange(start, end) }

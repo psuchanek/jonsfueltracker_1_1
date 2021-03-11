@@ -10,12 +10,15 @@
 
     <fragment
         android:id="@+id/dashboardFragment"
-        android:name="dev.psuchanek.jonsfueltracker_v_1_1.ui.dash.DashboardFragment"
-        android:label="@string/dash_label" />
+        android:name="dev.psuchanek.jonsfueltracker_v_1_1.ui.dash.DashboardFragment">
+        <action
+            android:id="@+id/action_dashboardFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/historyFragment"
-        android:name="dev.psuchanek.jonsfueltracker_v_1_1.ui.history.HistoryFragment"
-        android:label="@string/trips_history_label" />
+        android:name="dev.psuchanek.jonsfueltracker_v_1_1.ui.history.HistoryFragment" />
     <fragment
         android:id="@+id/addTripFragment"
         android:name="dev.psuchanek.jonsfueltracker_v_1_1.ui.add.AddTripFragment"
@@ -24,4 +27,8 @@
             android:id="@+id/action_addTripFragment_to_dashboardFragment"
             app:destination="@id/dashboardFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="dev.psuchanek.jonsfueltracker_v_1_1.ui.settings.SettingsFragment"
+        android:label="@string/settings" />
 </navigation>

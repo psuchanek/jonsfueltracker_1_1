@@ -3,10 +3,15 @@ package dev.psuchanek.jonsfueltracker_v_1_1.ui.dash
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -42,9 +47,15 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
     ): View? {
         setHasOptionsMenu(true)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_dashboard, container, false)
+        binding.toolbar.apply {
+            inflateMenu(R.menu.dash_menu)
+            setOnMenuItemClickListener(menuItemClickListener())
+        }
         subscribeObservers()
         return binding.root
     }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(
@@ -392,8 +403,14 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        return inflater.inflate(R.menu.dash_menu, menu)
+    private fun menuItemClickListener() = Toolbar.OnMenuItemClickListener { item ->
+        when (item?.itemId) {
+            R.id.settings -> {
+                findNavController().navigate(R.id.action_dashboardFragment_to_settingsFragment)
+                true
+            }
+            else -> false
+        }
     }
 
 

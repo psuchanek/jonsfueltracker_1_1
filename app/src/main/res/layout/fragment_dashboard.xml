@@ -13,20 +13,14 @@
         tools:context=".ui.dash.DashboardFragment">
 
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBar"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/app_bar_height"
+            android:layout_height="@dimen/toolbar_height"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.appcompat.widget.Toolbar
-                        android:id="@+id/toolbar"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:menu="@menu/dash_menu"/>
-        </com.google.android.material.appbar.AppBarLayout>
 
         <include
             android:id="@+id/lastTripLayout"
@@ -35,7 +29,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appBar" />
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/lineChart"
@@ -51,9 +45,9 @@
             layout="@layout/line_chart_buttons_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lineChart"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lineChart" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/dashGuideline"
@@ -65,7 +59,7 @@
         <View
             android:id="@+id/dashViewSeparator"
             android:layout_width="match_parent"
-            android:layout_height="16dp"
+            android:layout_height="8dp"
             android:layout_marginTop="4dp"
             android:background="@color/grey"
             app:layout_constraintEnd_toEndOf="parent"

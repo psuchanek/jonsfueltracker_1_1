@@ -76,4 +76,10 @@
     <string name="avg_ppl_label">AVG PPL:</string>
     <string name="settings">Settings</string>
 
+
+    //Prefrence
+    <string name="ui_mode">Mode</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="dark_mode_def_value">MODE_NIGHT_FOLLOW_SYSTEM</string>
+
 </resources>

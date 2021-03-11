@@ -23,7 +23,6 @@ import dev.psuchanek.jonsfueltracker_v_1_1.databinding.FragmentHistoryBinding
 import dev.psuchanek.jonsfueltracker_v_1_1.models.FuelTrackerTrip
 import dev.psuchanek.jonsfueltracker_v_1_1.models.asFuelTrackerTripModel
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.*
-import kotlinx.android.synthetic.main.fragment_history.view.*
 
 @AndroidEntryPoint
 class HistoryFragment : BaseFragment(R.layout.fragment_history), OnTripClickListener {

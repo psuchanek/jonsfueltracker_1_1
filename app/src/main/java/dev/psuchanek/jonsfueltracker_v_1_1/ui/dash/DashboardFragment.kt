@@ -35,6 +35,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
 
     private val viewModel: MainViewModel by viewModels()
 
+
     private lateinit var binding: FragmentDashboardBinding
     private var mostRecentTrip: FuelTrackerTrip? = null
     private lateinit var vehicleAdapter: VehicleAdapter
@@ -398,4 +399,6 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
         }
 
     }
+
+
 }

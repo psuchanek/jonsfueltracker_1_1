@@ -16,4 +16,11 @@
         <item>MODE_NIGHT_AUTO_BATTERY</item>
     </string-array>
 
+    //Vehicles string array
+    <string-array name="vehicle_names">
+        <item>Nissan Micra</item>
+        <item>Midget</item>
+        <item>Mercedes Sprinter</item>
+    </string-array>
+
 </resources>

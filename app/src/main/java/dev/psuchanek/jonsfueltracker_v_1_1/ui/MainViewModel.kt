@@ -11,7 +11,6 @@ import dev.psuchanek.jonsfueltracker_v_1_1.repositories.FuelTrackerRepository
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.Event
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.TimePeriod
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.getTimePeriodTimestamp
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
 
@@ -26,7 +25,6 @@ class MainViewModel @ViewModelInject constructor(private val repository: FuelTra
     val vehicleList = repository.observeAllVehicles
 
     init {
-        GlobalScope.launch { repository.getAllTrips() }
         getTripsByTimestampRange(getTimePeriodTimestamp(TimePeriod.THREE_MONTHS))
     }
 

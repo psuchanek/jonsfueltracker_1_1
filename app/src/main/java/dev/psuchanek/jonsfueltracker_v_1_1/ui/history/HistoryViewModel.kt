@@ -15,7 +15,6 @@ class HistoryViewModel @ViewModelInject constructor(private val repository: Fuel
 
     private val _forceFetch = MutableLiveData<Boolean>(false)
     private var _sortType = SortType.DATE_DESC
-    val sortType = _sortType
 
     private val _swipeLayout = MutableLiveData<Boolean>()
     val swipeLayout: LiveData<Boolean> = _swipeLayout

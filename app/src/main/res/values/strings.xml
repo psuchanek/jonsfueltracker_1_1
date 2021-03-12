@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">JonsFuelTracker_v_1_1</string>
+    <string name="app_name">Fuel Tracker</string>
 
     //NavigationBar labels
     <string name="dashboard_menu">Dashboard</string>
@@ -78,8 +78,18 @@
 
 
     //Prefrence
-    <string name="ui_mode">Mode</string>
-    <string name="dark_mode">Dark Mode</string>
+    <string name="ui_mode">Theme Mode</string>
+    <string name="dark_mode">Light/Dark Mode</string>
     <string name="dark_mode_def_value">MODE_NIGHT_FOLLOW_SYSTEM</string>
+
+
+    //Filter menu
+    <string name="filter_menu_label">Filter</string>
+    <string name="date_new_to_old">Date: New to Old</string>
+    <string name="date_old_to_new">Date: Old to New</string>
+    <string name="price_low_to_high">Price: Low to High</string>
+    <string name="price_high_to_low">Price: High to Low</string>
+    <string name="mileage_low_to_high">Mileage: Low to High</string>
+    <string name="mileage_high_to_low">Mileage: High to Low</string>
 
 </resources>

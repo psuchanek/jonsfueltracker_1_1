@@ -7,11 +7,9 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -47,14 +45,9 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
     ): View? {
         setHasOptionsMenu(true)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_dashboard, container, false)
-        binding.toolbar.apply {
-            inflateMenu(R.menu.dash_menu)
-            setOnMenuItemClickListener(menuItemClickListener())
-        }
         subscribeObservers()
         return binding.root
     }
-
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -65,11 +58,11 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
         setupLineChart()
         binding.apply {
             lineChartButtonLayout.apply {
-                btnThreeMonths.setOnClickListener(onClick())
-                btnSixMonths.setOnClickListener(onClick())
-                btnOneYear.setOnClickListener(onClick())
-                btnThreeYears.setOnClickListener(onClick())
-                btnAll.setOnClickListener(onClick())
+                btnThreeMonths.setOnClickListener(onChartButtonClick())
+                btnSixMonths.setOnClickListener(onChartButtonClick())
+                btnOneYear.setOnClickListener(onChartButtonClick())
+                btnThreeYears.setOnClickListener(onChartButtonClick())
+                btnAll.setOnClickListener(onChartButtonClick())
             }
             lineChart.apply {
                 setOnChartValueSelectedListener(lineChartSelectListener())
@@ -95,12 +88,13 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
             isClickable = true
             legend.isEnabled = false
             description.text = ""
+            setNoDataTextColor(resources.getColor(R.color.secondaryDarkColor, null))
             setNoDataText(context.getString(R.string.no_data_for_this_period))
             xAxis.apply {
                 setDrawGridLines(false)
                 setDrawLabels(false)
                 position = XAxis.XAxisPosition.BOTTOM
-                axisLineColor = Color.WHITE
+                axisLineColor = Color.BLACK
                 textColor = Color.WHITE
             }
             axisLeft.apply {
@@ -112,7 +106,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
                 setDrawAxisLine(false)
                 setDrawLabels(true)
                 labelCount = RIGHT_AXIS_LABEL_COUNT
-                textColor = resources.getColor(R.color.white, null)
+                textColor = resources.getColor(R.color.secondaryTextColor, null)
                 setDrawGridLines(false)
             }
         }
@@ -133,7 +127,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
                 }
                 val lineDataSet = getLineDataSet(listOfEntries)
                 binding.lineChart.apply {
-                    animateX(1000)
+                    animateX(500)
                     data = LineData(lineDataSet)
                     this.invalidate()
                 }
@@ -164,15 +158,17 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
     private fun getLineDataSet(entries: List<Entry>): LineDataSet {
         return LineDataSet(entries, "").apply {
             lineWidth = 4f
-            color = resources.getColor(R.color.colorAccent, null)
+            color = resources.getColor(R.color.secondaryDarkColor, null)
             setDrawFilled(true)
+            setCircleColor(resources.getColor(R.color.secondaryLightColor, null))
+            fillColor = resources.getColor(R.color.secondaryLightColor, null)
             mode = LineDataSet.Mode.HORIZONTAL_BEZIER
         }.also {
             if (entries.size > 50) it.setDrawValues(false)
         }
     }
 
-    private fun onClick() = View.OnClickListener { view ->
+    private fun onChartButtonClick() = View.OnClickListener { view ->
         when (view.id) {
             R.id.btnThreeMonths -> {
                 changeButton(view.id)
@@ -402,16 +398,4 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
         }
 
     }
-
-    private fun menuItemClickListener() = Toolbar.OnMenuItemClickListener { item ->
-        when (item?.itemId) {
-            R.id.settings -> {
-                findNavController().navigate(R.id.action_dashboardFragment_to_settingsFragment)
-                true
-            }
-            else -> false
-        }
-    }
-
-
 }

@@ -6,25 +6,11 @@
 
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/toolbar_height"
-                app:title="@string/add_trip_label"
-                app:navigationIcon="@drawable/ic_back"/>
-
-
-
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_marginTop="@dimen/app_bar_height"
             android:id="@+id/addTripLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="16dp">
+            android:padding="@dimen/parent_layout_padding">
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -185,6 +171,4 @@
             </com.google.android.material.textfield.TextInputLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

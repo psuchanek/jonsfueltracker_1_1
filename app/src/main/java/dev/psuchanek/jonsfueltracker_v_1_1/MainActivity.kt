@@ -3,13 +3,19 @@ package dev.psuchanek.jonsfueltracker_v_1_1
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.preference.ListPreference
 import androidx.preference.Preference
@@ -23,11 +29,12 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navHostFragment: NavHostFragment
+    private lateinit var appBarConfig: AppBarConfiguration
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         PreferenceManager.getDefaultSharedPreferences(this)
             .registerOnSharedPreferenceChangeListener(this)
-//        setSupportActionBar(binding.toolbar)
+
 
         val darkModeValues = resources.getStringArray(R.array.dark_mode_values)
         // The apps theme is decided depending upon the saved preferences on app startup
@@ -43,16 +50,22 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
+        setSupportActionBar(binding.toolbar)
+
         navHostFragment =
             supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
-//        appBarConfiguration = AppBarConfiguration(navHostFragment.navController.graph)
-//        setupActionBarWithNavController(navHostFragment.findNavController())
+
+        appBarConfig = AppBarConfiguration(setOf(R.id.dashboardFragment, R.id.historyFragment))
+        setupActionBarWithNavController(navHostFragment.findNavController(), appBarConfig)
+
         binding.bottomNavigationView.apply {
             background = null
             setupWithNavController(navHostFragment.findNavController())
         }
+
         navHostFragment.findNavController()
             .addOnDestinationChangedListener(destinationChangeListener())
+
         binding.fabAddTrip.setOnClickListener(fabAddTripClickListener())
 
         binding.root
@@ -68,6 +81,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
             when (destination.id) {
                 R.id.dashboardFragment, R.id.historyFragment -> {
                     with(binding) {
+                        toolbar.title = resources.getString(R.string.app_name)
                         bottomAppBar.visibility = View.VISIBLE
                         fabAddTrip.show()
                     }
@@ -85,6 +99,26 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
 
             }
         }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.settings_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.settings -> {
+                navHostFragment.findNavController().navigate(R.id.action_to_settingsFragment)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.navHostFragment)
+        return navController.navigateUp(appBarConfig) || super.onSupportNavigateUp()
+    }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         val darkModeString = getString(R.string.dark_mode)

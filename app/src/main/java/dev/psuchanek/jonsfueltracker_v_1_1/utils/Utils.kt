@@ -22,7 +22,7 @@ fun String.convertToTimeInMillis(): Long {
 }
 
 fun Long.formatDateForUI(): String {
-    val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
+    val dateFormat = SimpleDateFormat("dd/MMM/yyyy", Locale.getDefault())
     return dateFormat.format(this).toString()
 }
 

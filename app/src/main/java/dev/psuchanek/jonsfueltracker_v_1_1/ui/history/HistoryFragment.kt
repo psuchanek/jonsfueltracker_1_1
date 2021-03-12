@@ -2,11 +2,7 @@ package dev.psuchanek.jonsfueltracker_v_1_1.ui.history
 
 import android.graphics.Canvas
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
+import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -38,6 +34,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history), OnTripClickList
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_history, container, false)
         tripAdapter = FuelTrackerAdapter(this)
         subscribeObservers()
@@ -48,7 +45,6 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history), OnTripClickList
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRefresher()
-        setupSpinner()
         setupRecyclerView()
     }
 
@@ -118,50 +114,6 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history), OnTripClickList
         }
     }
 
-    private fun setupSpinner() {
-        ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.sort_by,
-            android.R.layout.simple_spinner_item
-        ).also {
-            binding.dropdownSort.setAdapter(it)
-        }
-        binding.dropdownSort.onItemClickListener = onItemSelectedListener()
-
-    }
-
-    private fun onItemSelectedListener() =
-        object : AdapterView.OnItemClickListener {
-            override fun onItemClick(p0: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                when (position) {
-                    0 -> {
-                        historyViewModel.sortTrips(SortType.DATE_DESC)
-                    }
-
-                    1 -> {
-                        historyViewModel.sortTrips(SortType.DATE_ASC)
-                    }
-                    2 -> {
-                        historyViewModel.sortTrips(SortType.FILL_PRICE_DESC)
-                    }
-
-                    3 -> {
-                        historyViewModel.sortTrips(SortType.FILL_PRICE_ASC)
-                    }
-                    4 -> {
-                        historyViewModel.sortTrips(SortType.TRIP_MILEAGE_DESC)
-                    }
-
-                    5 -> {
-                        historyViewModel.sortTrips(SortType.TRIP_MILEAGE_ASC)
-                    }
-                }
-            }
-
-
-        }
-
-
     private fun subscribeObservers() {
         historyViewModel.getAllTrips.observe(viewLifecycleOwner, Observer { event ->
             event?.let {
@@ -216,5 +168,42 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history), OnTripClickList
             tripAdapter.notifyItemChanged(position, ARROW_ANIM_UP)
         }
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
+        inflater.inflate(R.menu.filter_menu, menu)
+        inflater.inflate(R.menu.settings_menu, menu)
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId) {
+            R.id.sortDateNewToOld -> {
+                historyViewModel.sortTrips(SortType.DATE_DESC)
+                true
+            }
+            R.id.sortDateOldToNew -> {
+                historyViewModel.sortTrips(SortType.DATE_ASC)
+                true
+            }
+            R.id.sortPriceLowToHigh -> {
+                historyViewModel.sortTrips(SortType.FILL_PRICE_ASC)
+                true
+            }
+            R.id.sortPriceHighToLow -> {
+                historyViewModel.sortTrips(SortType.FILL_PRICE_DESC)
+                true
+            }
+            R.id.sortMileageLowToHigh -> {
+                historyViewModel.sortTrips(SortType.TRIP_MILEAGE_ASC)
+                true
+            }
+            R.id.sortMileageHighToLow -> {
+                historyViewModel.sortTrips(SortType.TRIP_MILEAGE_DESC)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

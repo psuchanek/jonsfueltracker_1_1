@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:text="@string/six_months_bar_chart"
+        android:textColor="@color/grey"
         app:layout_constraintEnd_toStartOf="@+id/btnOneYear"
         app:layout_constraintStart_toEndOf="@+id/btnThreeMonths"
         app:layout_constraintTop_toTopOf="@+id/btnThreeMonths" />
@@ -35,6 +36,7 @@
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:text="@string/one_year_bar_chart"
+        android:textColor="@color/grey"
         app:layout_constraintEnd_toStartOf="@+id/btnThreeYears"
         app:layout_constraintStart_toEndOf="@+id/btnSixMonths"
         app:layout_constraintTop_toTopOf="@+id/btnThreeMonths" />
@@ -47,6 +49,7 @@
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:text="@string/three_years_bar_chart"
+        android:textColor="@color/grey"
         app:layout_constraintEnd_toStartOf="@+id/btnAll"
         app:layout_constraintStart_toEndOf="@+id/btnOneYear"
         app:layout_constraintTop_toTopOf="@+id/btnThreeMonths" />
@@ -58,6 +61,7 @@
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:text="@string/all_bar_chart"
+        android:textColor="@color/grey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btnThreeYears"
         app:layout_constraintTop_toTopOf="@+id/btnThreeMonths" />

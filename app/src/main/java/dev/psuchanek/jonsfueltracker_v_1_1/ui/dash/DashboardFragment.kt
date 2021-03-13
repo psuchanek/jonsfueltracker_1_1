@@ -87,7 +87,14 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
     private fun setupSwipeRefresher() {
         binding.swipeRefresherDash.isRefreshing = false
         binding.swipeRefresherDash.setOnRefreshListener {
-            viewModel.fetchData()
+            if (!sharedPrefs.getBoolean(FIRST_LAUNCH, true)) {
+                binding.swipeRefresherDash.isRefreshing = false
+                binding.lastTripLayout.trip = mostRecentTrip
+            } else {
+                fetchInitialData()
+                viewModel.fetchData()
+            }
+
         }
     }
 
@@ -152,7 +159,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
                             trip = mostRecentTrip?.asFuelTrackerTrip()
                             binding.swipeRefresherDash.isRefreshing = false
                         }
-
+                        viewModel.fetchInitialData.removeObservers(viewLifecycleOwner)
                     }
                     Status.ERROR -> {
                         binding.swipeRefresherDash.isRefreshing = true
@@ -165,7 +172,6 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
                 }
 
             }
-
         })
     }
 
@@ -402,6 +408,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
             e?.let {
                 binding.lastTripLayout.lastTripLabel.text = "SELECTED TRIP:"
                 binding.lastTripLayout.trip = it.data as FuelTrackerTrip
+                binding.swipeRefresherDash.isEnabled = false
             }
         }
     }
@@ -416,10 +423,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
                     trip = mostRecentTrip
                     lastTripLabel.text = "LAST TRIP:"
                 }
-                binding.lineChart.apply {
-                    clearFocus()
-                    invalidate()
-                }
+                binding.swipeRefresherDash.isEnabled = true
             }
         }
 
@@ -439,9 +443,6 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
             me: MotionEvent?,
             lastPerformedGesture: ChartTouchListener.ChartGesture?
         ) {
-//            if (me?.action == MotionEvent.ACTION_DOWN && lastPerformedGesture == ChartTouchListener.ChartGesture.LONG_PRESS) {
-//                binding.lastTripLayout.lastTripLabel.text = "SELECTED TRIP:"
-//            }
         }
 
         override fun onChartScale(me: MotionEvent?, scaleX: Float, scaleY: Float) {

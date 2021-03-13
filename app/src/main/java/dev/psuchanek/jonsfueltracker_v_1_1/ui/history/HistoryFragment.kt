@@ -3,6 +3,7 @@ package dev.psuchanek.jonsfueltracker_v_1_1.ui.history
 import android.graphics.Canvas
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -14,14 +15,16 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.psuchanek.jonsfueltracker_v_1_1.BaseFragment
 import dev.psuchanek.jonsfueltracker_v_1_1.R
 import dev.psuchanek.jonsfueltracker_v_1_1.adapters.FuelTrackerAdapter
-import dev.psuchanek.jonsfueltracker_v_1_1.adapters.animations.ArrowAnimation
 import dev.psuchanek.jonsfueltracker_v_1_1.databinding.FragmentHistoryBinding
 import dev.psuchanek.jonsfueltracker_v_1_1.models.FuelTrackerTrip
 import dev.psuchanek.jonsfueltracker_v_1_1.models.asFuelTrackerTripModel
-import dev.psuchanek.jonsfueltracker_v_1_1.utils.*
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.CustomItemDecoration
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.DECORATION_SPACING
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.SortType
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.Status
 
 @AndroidEntryPoint
-class HistoryFragment : BaseFragment(R.layout.fragment_history), OnTripClickListener {
+class HistoryFragment : BaseFragment(R.layout.fragment_history) {
 
     //TODO: fix animation arrow recycling behavior and implement sorting function
 
@@ -36,7 +39,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history), OnTripClickList
     ): View? {
         setHasOptionsMenu(true)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_history, container, false)
-        tripAdapter = FuelTrackerAdapter(this)
+        tripAdapter = FuelTrackerAdapter()
         subscribeObservers()
 
         return binding.root
@@ -49,14 +52,11 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history), OnTripClickList
     }
 
     private fun setupRefresher() {
-        binding.swipeRefresher.setOnRefreshListener {
+        binding.swipeRefresherHistory.isRefreshing = false
+        binding.swipeRefresherHistory.setOnRefreshListener {
+            subscribeSingleObserver()
             historyViewModel.syncAllTrips()
-            tripAdapter.notifyDataSetChanged()
-            tripAdapter.currentList.onEach { trip ->
-                trip.isExpanded = false
 
-            }
-            tripAdapter.notifyDataSetChanged()
         }
     }
 
@@ -89,18 +89,38 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history), OnTripClickList
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
             val position = viewHolder.layoutPosition
             val trip = tripAdapter.currentList[position]
-            historyViewModel.deleteTrip(trip.id)
-            Snackbar.make(
-                requireView(),
-                getString(R.string.trip_record_deleted),
-                Snackbar.LENGTH_LONG
-            ).apply {
-                setAction(getString(R.string.undo)) {
-                    historyViewModel.insertTrip(trip)
-                    historyViewModel.deleteLocallyDeletedTripID(trip.id)
-                }
-            }.show()
+            showDeleteDialog(trip)
         }
+    }
+
+    private fun showDeleteDialog(trip: FuelTrackerTrip) {
+        val dialogBuilder = AlertDialog.Builder(requireContext())
+            .setMessage(getString(R.string.delete_alert_dialog_message))
+            .setPositiveButton(
+                "YES"
+            ) { _, _ ->
+                historyViewModel.deleteTrip(trip.id)
+                Snackbar.make(
+                    requireView(),
+                    getString(R.string.trip_record_deleted),
+                    Snackbar.LENGTH_LONG
+                ).apply {
+                    setAction(getString(R.string.undo)) {
+                        undoDeleteTrip(trip)
+                    }
+                }.show()
+            }
+            .setNegativeButton("CANCEL") { dialog, _ ->
+                tripAdapter.notifyDataSetChanged()
+                dialog.cancel()
+            }
+        dialogBuilder.show()
+
+    }
+
+    private fun undoDeleteTrip(trip: FuelTrackerTrip) {
+        historyViewModel.insertTrip(trip)
+        historyViewModel.deleteLocallyDeletedTripID(trip.id)
     }
 
     private fun setupRecyclerView() {
@@ -110,11 +130,10 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history), OnTripClickList
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             ItemTouchHelper(itemTouchHelper).attachToRecyclerView(this)
-            itemAnimator = ArrowAnimation()
         }
     }
 
-    private fun subscribeObservers() {
+    private fun subscribeSingleObserver() {
         historyViewModel.getAllTrips.observe(viewLifecycleOwner, Observer { event ->
             event?.let {
                 val result = it.peekContent()
@@ -124,7 +143,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history), OnTripClickList
                             result.data!!.asFuelTrackerTripModel()
                         )
                         tripAdapter.notifyDataSetChanged()
-                        binding.swipeRefresher.isRefreshing = false
+                        binding.swipeRefresherHistory.isRefreshing = false
 
                     }
                     Status.ERROR -> {
@@ -134,41 +153,33 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history), OnTripClickList
                             }
                         }
 
-                        binding.swipeRefresher.isRefreshing = false
+                        binding.swipeRefresherHistory.isRefreshing = false
 
                     }
                     Status.LOADING -> {
                         result.data?.let { trips ->
                             tripAdapter.submitList(trips.asFuelTrackerTripModel())
                         }
-                        binding.swipeRefresher.isRefreshing = true
+                        binding.swipeRefresherHistory.isRefreshing = true
                     }
                 }
             }
 
         })
+}
 
+    private fun subscribeObservers() {
         historyViewModel.sortedTripHistory.observe(viewLifecycleOwner, Observer { sortedTripList ->
             tripAdapter.submitList(sortedTripList)
-
 
 
         })
 
         historyViewModel.swipeLayout.observe(viewLifecycleOwner, Observer {
-            binding.swipeRefresher.isEnabled = !it
+            binding.swipeRefresherHistory.isEnabled = !it
         })
     }
 
-    override fun onClick(trip: FuelTrackerTrip, position: Int) {
-        trip.isExpanded = !trip.isExpanded
-        if (!trip.isExpanded) {
-            tripAdapter.notifyItemChanged(position, ARROW_ANIM_DOWN)
-        } else {
-            tripAdapter.notifyItemChanged(position, ARROW_ANIM_UP)
-        }
-
-    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
@@ -178,7 +189,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history), OnTripClickList
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId) {
+        return when (item.itemId) {
             R.id.sortDateNewToOld -> {
                 historyViewModel.sortTrips(SortType.DATE_DESC)
                 true

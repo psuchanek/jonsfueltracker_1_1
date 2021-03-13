@@ -1,10 +1,7 @@
 package dev.psuchanek.jonsfueltracker_v_1_1.ui
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import dev.psuchanek.jonsfueltracker_v_1_1.models.FuelTrackerTrip
 import dev.psuchanek.jonsfueltracker_v_1_1.models.asFuelTrackerTripModel
 import dev.psuchanek.jonsfueltracker_v_1_1.repositories.FuelTrackerRepository
@@ -17,16 +14,29 @@ import kotlinx.coroutines.launch
 class MainViewModel @ViewModelInject constructor(private val repository: FuelTrackerRepository) :
     ViewModel() {
 
+    private val _forceFetch = MutableLiveData<Boolean>(false)
+
     private val _tripsByTimestampRange = MutableLiveData<Event<List<FuelTrackerTrip>>>()
     val tripsByTimestampRange: LiveData<Event<List<FuelTrackerTrip>>> = _tripsByTimestampRange
 
-    val mostRecentTrip = repository.mostRecentTrip
 
     val vehicleList = repository.observeAllVehicles
+
+    private val _initialData = _forceFetch.switchMap {
+        repository.getAllTrips().asLiveData(viewModelScope.coroutineContext)
+    }.switchMap { resource ->
+        MutableLiveData(Event(resource))
+    }
+    val fetchInitialData = _initialData
+
+    val mostRecentTrip = repository.mostRecentTrip
+
 
     init {
         getTripsByTimestampRange(getTimePeriodTimestamp(TimePeriod.THREE_MONTHS))
     }
+
+    fun fetchData() = _forceFetch.postValue(true)
 
     fun getTripsByTimestampRange(startTime: Long, endTime: Long = System.currentTimeMillis()) {
         viewModelScope.launch {

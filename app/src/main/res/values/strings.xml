@@ -12,6 +12,9 @@
     <string name="trip_added_successfully">Trip added successfully.</string>
     <string name="something_went_wrong">Something went wrong! Please try again.</string>
 
+    //Dialog messages
+    <string name="delete_alert_dialog_message">Delete selected record?</string>
+
 
     //View Labels
     <string name="petrol_station_label">Petrol station</string>

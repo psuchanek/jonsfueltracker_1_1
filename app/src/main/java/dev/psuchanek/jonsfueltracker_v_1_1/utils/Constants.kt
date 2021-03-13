@@ -1,5 +1,8 @@
 package dev.psuchanek.jonsfueltracker_v_1_1.utils
 
+//SharedPref
+const val FIRST_LAUNCH = "FIRST_LAUNCH"
+
 //Services
 const val BASE_URL = "http://fuel.tecserv-uk.co.uk/"
 const val GET_FROM_SERVICE = "api.php/history"

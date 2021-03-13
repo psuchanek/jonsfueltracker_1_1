@@ -2,6 +2,8 @@ package dev.psuchanek.jonsfueltracker_v_1_1.di
 
 import android.app.Application
 import android.content.Context
+import android.content.SharedPreferences
+import androidx.preference.PreferenceManager
 import androidx.room.Room
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -16,10 +18,7 @@ import dev.psuchanek.jonsfueltracker_v_1_1.services.db.FuelTrackerDao
 import dev.psuchanek.jonsfueltracker_v_1_1.services.db.FuelTrackerDatabase
 import dev.psuchanek.jonsfueltracker_v_1_1.services.db.VehicleDao
 import dev.psuchanek.jonsfueltracker_v_1_1.services.network.FuelTrackerService
-import dev.psuchanek.jonsfueltracker_v_1_1.utils.BASE_URL
-import dev.psuchanek.jonsfueltracker_v_1_1.utils.CALL_TIMEOUT
-import dev.psuchanek.jonsfueltracker_v_1_1.utils.FUEL_TRACKER_DB_NAME
-import dev.psuchanek.jonsfueltracker_v_1_1.utils.READ_TIMEOUT
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.*
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -77,7 +76,27 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideRepository(apiService: FuelTrackerService, vehicleDao: VehicleDao, fuelTrackerDao: FuelTrackerDao, @ApplicationContext context: Context) =
-        FuelTrackerRepository(fuelTrackerDao, vehicleDao, apiService, context as Application) as Repository
+    fun provideRepository(
+        apiService: FuelTrackerService,
+        vehicleDao: VehicleDao,
+        fuelTrackerDao: FuelTrackerDao,
+        @ApplicationContext context: Context
+    ) =
+        FuelTrackerRepository(
+            fuelTrackerDao,
+            vehicleDao,
+            apiService,
+            context as Application
+        ) as Repository
+
+    @Singleton
+    @Provides
+    fun provideSharedPreferences(@ApplicationContext context: Context) :SharedPreferences {
+        val prefs =  PreferenceManager.getDefaultSharedPreferences(context)
+        prefs.edit().putBoolean(FIRST_LAUNCH, true)
+        return prefs
+    }
+
+
 
 }

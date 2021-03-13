@@ -2,6 +2,7 @@ package dev.psuchanek.jonsfueltracker_v_1_1.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -9,9 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import dev.psuchanek.jonsfueltracker_v_1_1.R
 import dev.psuchanek.jonsfueltracker_v_1_1.databinding.TripHistoryListItemBinding
 import dev.psuchanek.jonsfueltracker_v_1_1.models.FuelTrackerTrip
-import dev.psuchanek.jonsfueltracker_v_1_1.ui.history.OnTripClickListener
 
-class FuelTrackerAdapter(private val onTripClickListener: OnTripClickListener) :
+class FuelTrackerAdapter() :
     ListAdapter<FuelTrackerTrip, FuelTrackerAdapter.ViewHolder>(
         TripsDiffCall
     ) {
@@ -20,14 +20,9 @@ class FuelTrackerAdapter(private val onTripClickListener: OnTripClickListener) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(
-            trip: FuelTrackerTrip,
-            onTripClickListener: OnTripClickListener
+            trip: FuelTrackerTrip
         ) {
             binding.trip = trip
-            binding.ivArrow.setOnClickListener {
-                onTripClickListener.onClick(trip, adapterPosition)
-            }
-
             binding.executePendingBindings()
         }
 
@@ -74,7 +69,11 @@ class FuelTrackerAdapter(private val onTripClickListener: OnTripClickListener) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val trip = getItem(position)
-        holder.bind(trip, onTripClickListener)
+        holder.bind(trip)
+        holder.binding.itemCardView.animation = AnimationUtils.loadAnimation(
+            holder.itemView.context,
+            R.anim.recyclerview_animation
+        )
 
     }
 

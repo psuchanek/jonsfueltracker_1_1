@@ -18,8 +18,7 @@ data class FuelTrackerTrip(
     val currentMileage: Int,
     val costPerLitre: Float,
     val gasStationName: String,
-    var isSynced: Boolean = false,
-    var isExpanded: Boolean = false
+    var isSynced: Boolean = false
 ) {
 
     val vehicleName = when (vehicleId) {
@@ -29,10 +28,10 @@ data class FuelTrackerTrip(
         else -> R.string.unknown_car
     }
 
-    val litres = "Fuel volume: $fuelVolume litres"
+    val litres = "FUEL: $fuelVolume L"
     val date = timestamp.formatDateForUI()
     val fillUpCost = "£${this.fuelCost.round(2)}"
-    val lastTripDistance = "Trip distance: ${this.tripMileage} miles"
+    val lastTripDistance = "DISTANCE: ${this.tripMileage} Miles"
     val ppl = "PPL: $costPerLitre"
     val milesPerGallon = "MPG: ${(tripMileage / fuelVolume.convertToGallons()).round(2)}"
     val sync = when (isSynced) {

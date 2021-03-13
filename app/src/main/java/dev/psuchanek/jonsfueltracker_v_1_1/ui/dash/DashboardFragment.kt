@@ -1,5 +1,6 @@
 package dev.psuchanek.jonsfueltracker_v_1_1.ui.dash
 
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -29,11 +30,15 @@ import dev.psuchanek.jonsfueltracker_v_1_1.models.asFuelTrackerTrip
 import dev.psuchanek.jonsfueltracker_v_1_1.ui.MainViewModel
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.*
 import timber.log.Timber
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
 
     private val viewModel: MainViewModel by viewModels()
+
+    @Inject
+    lateinit var sharedPrefs: SharedPreferences
 
 
     private lateinit var binding: FragmentDashboardBinding
@@ -46,6 +51,11 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
     ): View? {
         setHasOptionsMenu(true)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_dashboard, container, false)
+        if (sharedPrefs.getBoolean(FIRST_LAUNCH, true)) {
+            fetchInitialData()
+            sharedPrefs.edit().clear().apply()
+            sharedPrefs.edit().putBoolean(FIRST_LAUNCH, false).apply()
+        }
         subscribeObservers()
         return binding.root
     }
@@ -56,6 +66,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
             view, savedInstanceState
         )
         setupRecyclerViews()
+        setupSwipeRefresher()
         setupLineChart()
         binding.apply {
             lineChartButtonLayout.apply {
@@ -70,6 +81,13 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
                 onChartGestureListener = lineChartGestureListener()
             }
             tabLayout.addOnTabSelectedListener(tabLayoutClickListener())
+        }
+    }
+
+    private fun setupSwipeRefresher() {
+        binding.swipeRefresherDash.isRefreshing = false
+        binding.swipeRefresherDash.setOnRefreshListener {
+            viewModel.fetchData()
         }
     }
 
@@ -113,6 +131,44 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
         }
     }
 
+    private fun fetchInitialData() {
+        viewModel.fetchInitialData.observe(viewLifecycleOwner, Observer { event ->
+            event?.let {
+                val result = it.peekContent()
+                when (result.status) {
+                    Status.LOADING -> {
+                        binding.swipeRefresherDash.isRefreshing = true
+                    }
+                    Status.SUCCESS -> {
+                        binding.swipeRefresherDash.isRefreshing = true
+                        val mostRecentTrip = it.getContentIfNotHandled()?.let { resource ->
+                            resource.data?.maxBy { trip ->
+                                trip.timestamp
+                            }
+
+                        }
+                        this.mostRecentTrip = mostRecentTrip?.asFuelTrackerTrip()
+                        binding.lastTripLayout.apply {
+                            trip = mostRecentTrip?.asFuelTrackerTrip()
+                            binding.swipeRefresherDash.isRefreshing = false
+                        }
+
+                    }
+                    Status.ERROR -> {
+                        binding.swipeRefresherDash.isRefreshing = true
+                        it.getContentIfNotHandled()?.let { errorResource ->
+                            errorResource.message?.let { errorMessage ->
+                                showSnackbar(errorMessage)
+                            }
+                        }
+                    }
+                }
+
+            }
+
+        })
+    }
+
     private fun subscribeObservers() {
         viewModel.tripsByTimestampRange.observe(viewLifecycleOwner, Observer { event ->
             event?.getContentIfNotHandled()?.let { tripList ->
@@ -145,6 +201,8 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
             binding.lastTripLayout.apply {
                 trip = mostRecentTrip.asFuelTrackerTrip()
             }
+
+
         })
 
         viewModel.vehicleList.observe(viewLifecycleOwner, Observer { vehicleList ->

@@ -10,6 +10,8 @@ abstract class BaseFragment(layoutID: Int) : Fragment(layoutID) {
             requireActivity().findViewById(R.id.rootLayout),
             message,
             Snackbar.LENGTH_SHORT
-        ).show()
+        )
+            .setAnchorView(R.id.fabAddTrip)
+            .show()
     }
 }

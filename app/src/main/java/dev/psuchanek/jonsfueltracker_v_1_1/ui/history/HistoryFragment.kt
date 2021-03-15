@@ -166,14 +166,15 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
             }
 
         })
-}
+    }
 
     private fun subscribeObservers() {
         historyViewModel.sortedTripHistory.observe(viewLifecycleOwner, Observer { sortedTripList ->
             tripAdapter.submitList(sortedTripList)
-
-
+            tripAdapter.notifyDataSetChanged()
+            binding.recyclerViewHistory.layoutManager?.scrollToPosition(0)
         })
+
 
         historyViewModel.swipeLayout.observe(viewLifecycleOwner, Observer {
             binding.swipeRefresherHistory.isEnabled = !it

@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -32,6 +33,7 @@ import dev.psuchanek.jonsfueltracker_v_1_1.utils.*
 import timber.log.Timber
 import javax.inject.Inject
 
+
 @AndroidEntryPoint
 class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
 
@@ -39,8 +41,6 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
 
     @Inject
     lateinit var sharedPrefs: SharedPreferences
-
-
     private lateinit var binding: FragmentDashboardBinding
     private var mostRecentTrip: FuelTrackerTrip? = null
     private lateinit var vehicleAdapter: VehicleAdapter
@@ -132,7 +132,9 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
                 setDrawAxisLine(false)
                 setDrawLabels(true)
                 labelCount = RIGHT_AXIS_LABEL_COUNT
-                textColor = resources.getColor(R.color.secondaryTextColor, null)
+                if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+                    textColor = resources.getColor(R.color.primaryTextColor, null)
+                }
                 setDrawGridLines(false)
             }
         }
@@ -185,15 +187,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
                     }
                     return@let
                 }
-                val listOfEntries = tripList.indices.map { i ->
-                    Entry(i.toFloat(), tripList[i].fuelCost, tripList[i])
-                }
-                val lineDataSet = getLineDataSet(listOfEntries)
-                binding.lineChart.apply {
-                    animateX(500)
-                    data = LineData(lineDataSet)
-                    this.invalidate()
-                }
+                populateLineChart(tripList)
 
             }
 
@@ -220,10 +214,23 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
         })
     }
 
+    private fun populateLineChart(tripList: List<FuelTrackerTrip>) {
+        val listOfEntries = tripList.indices.map { i ->
+            Entry(i.toFloat(), tripList[i].fuelCost, tripList[i])
+        }
+        val lineDataSet = getLineDataSet(listOfEntries)
+        binding.lineChart.apply {
+            animateX(500)
+            data = LineData(lineDataSet)
+            this.invalidate()
+        }
+    }
+
     private fun getLineDataSet(entries: List<Entry>): LineDataSet {
         return LineDataSet(entries, "").apply {
             lineWidth = 4f
             color = resources.getColor(R.color.secondaryDarkColor, null)
+            setDrawHorizontalHighlightIndicator(false)
             setDrawFilled(true)
             setCircleColor(resources.getColor(R.color.secondaryLightColor, null))
             fillColor = resources.getColor(R.color.secondaryLightColor, null)
@@ -232,6 +239,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
             if (entries.size > 50) it.setDrawValues(false)
         }
     }
+
 
     private fun onChartButtonClick() = View.OnClickListener { view ->
         when (view.id) {
@@ -419,6 +427,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
             lastPerformedGesture: ChartTouchListener.ChartGesture?
         ) {
             if (me?.action == MotionEvent.ACTION_UP) {
+                binding.lineChart.highlightValues(null)
                 binding.lastTripLayout.apply {
                     trip = mostRecentTrip
                     lastTripLabel.text = "LAST TRIP:"

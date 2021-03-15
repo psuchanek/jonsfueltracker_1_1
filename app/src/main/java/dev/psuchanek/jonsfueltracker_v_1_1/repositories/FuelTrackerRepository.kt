@@ -28,7 +28,7 @@ class FuelTrackerRepository @Inject constructor(
 
     private var currentFuelTrackerResponse: Response<NetworkDataResponse>? = null
 
-    val observeAllVehicles = vehicleDao.observeAllVehicles()
+    override val observeAllVehicles = vehicleDao.observeAllVehicles()
 
     fun getAllTrips() = networkBoundResource(
         query = {
@@ -153,7 +153,6 @@ class FuelTrackerRepository @Inject constructor(
     suspend fun getAllByTimestampRange(start: Long, end: Long): List<LocalFuelTrackerTrip>? =
         withContext(Dispatchers.IO) { fuelTrackerDao.getAllByTimestampRange(start, end) }
 
-    fun observeTripById(tripId: Int) = fuelTrackerDao.observerTripById(tripId)
 
     override suspend fun getLastKnownMileage(vehicleId: Int) =
         withContext(Dispatchers.IO) { fuelTrackerDao.getLastKnownMileage(vehicleId) }

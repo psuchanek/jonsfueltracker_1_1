@@ -98,8 +98,8 @@
                     style="@style/Labels"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
                     android:text="@{trip.vehicleName}"
+                    app:layout_constraintEnd_toStartOf="@+id/tvIsSynced"
                     app:layout_constraintStart_toEndOf="@+id/tvDateItem"
                     app:layout_constraintTop_toTopOf="@+id/tvDateItem"
                     tools:hint="Mercedes" />

@@ -100,6 +100,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
             }
         }
 
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.settings_menu, menu)
         return true
@@ -134,6 +135,8 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
             }
         }
     }
+
+
 
     override fun onDestroy() {
         super.onDestroy()

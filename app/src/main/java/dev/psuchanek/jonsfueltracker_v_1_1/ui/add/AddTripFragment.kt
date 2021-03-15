@@ -36,6 +36,8 @@ class AddTripFragment : BaseFragment(R.layout.fragment_add_trip) {
     private var litres: String = ""
     private var timestamp: Long = 0L
 
+    private var vehicleList: List<String> = emptyList()
+    private lateinit var spinnerAdapter: ArrayAdapter<String>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -180,7 +182,7 @@ class AddTripFragment : BaseFragment(R.layout.fragment_add_trip) {
 
 
     private fun initSpinner() {
-        ArrayAdapter(
+        spinnerAdapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_dropdown_item_1line,
             resources.getStringArray(R.array.vehicle_names)
@@ -215,6 +217,16 @@ class AddTripFragment : BaseFragment(R.layout.fragment_add_trip) {
             }
 
         })
+
+        addTripViewModel.observeAllVehicles.observe(viewLifecycleOwner, Observer { vehicleList ->
+            Timber.d("DEBUG: addFragment vehicleList: $vehicleList")
+            if (vehicleList.isNullOrEmpty()) {
+
+            } else {
+//
+            }
+
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -223,7 +235,7 @@ class AddTripFragment : BaseFragment(R.layout.fragment_add_trip) {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId) {
+        return when (item.itemId) {
             R.id.btnSubmit -> {
                 insertTrip()
                 true
@@ -231,5 +243,4 @@ class AddTripFragment : BaseFragment(R.layout.fragment_add_trip) {
             else -> super.onOptionsItemSelected(item)
         }
     }
-
 }

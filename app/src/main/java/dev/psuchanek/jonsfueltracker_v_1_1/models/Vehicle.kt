@@ -4,13 +4,12 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.round
-import java.util.*
 
 @Entity(tableName = "vehicle_table")
 data class Vehicle(
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey(autoGenerate = true)
     @Json(name = "vehicle_id")
-    val id: String = UUID.randomUUID().toString(),
+    val id: Int,
     @Json(name = "vehicle_name")
     val vehicleName: String = "No name",
     @Json(name = "miles_per_litre_avg")

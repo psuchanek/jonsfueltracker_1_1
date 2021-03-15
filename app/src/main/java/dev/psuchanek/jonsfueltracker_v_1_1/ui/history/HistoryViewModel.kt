@@ -93,35 +93,33 @@ class HistoryViewModel @ViewModelInject constructor(private val repository: Fuel
         when (sortType) {
             SortType.DATE_ASC -> {
                 tripsSortedByDate.value?.let {
-                    sortedTripHistory.value =
-
-                            it.asFuelTrackerTripModel().reversed()
+                    sortedTripHistory.value =it.asFuelTrackerTripModel().reversed()
 
                 }
             }
             SortType.DATE_DESC -> {
                 tripsSortedByDate.value?.let {
-                    sortedTripHistory.postValue(it.asFuelTrackerTripModel())
+                    sortedTripHistory.value = it.asFuelTrackerTripModel()
                 }
             }
             SortType.TRIP_MILEAGE_ASC -> {
                 tripsSortedByTripMileage.value?.let {
-                    sortedTripHistory.postValue(it.asFuelTrackerTripModel().reversed())
+                    sortedTripHistory.value = it.asFuelTrackerTripModel().reversed()
                 }
             }
             SortType.TRIP_MILEAGE_DESC -> {
                 tripsSortedByTripMileage.value?.let {
-                    sortedTripHistory.postValue(it.asFuelTrackerTripModel())
+                    sortedTripHistory.value = it.asFuelTrackerTripModel()
                 }
             }
             SortType.FILL_PRICE_ASC -> {
                 tripsSortedByFuelCost.value?.let {
-                    sortedTripHistory.postValue(it.asFuelTrackerTripModel().reversed())
+                    sortedTripHistory.value = it.asFuelTrackerTripModel().reversed()
                 }
             }
             SortType.FILL_PRICE_DESC -> {
                 tripsSortedByFuelCost.value?.let {
-                    sortedTripHistory.postValue(it.asFuelTrackerTripModel())
+                    sortedTripHistory.value = it.asFuelTrackerTripModel()
                 }
             }
         }.also {
@@ -149,5 +147,7 @@ class HistoryViewModel @ViewModelInject constructor(private val repository: Fuel
     fun swipeLayoutActive(isCurrentlyActive: Boolean) {
         _swipeLayout.value = isCurrentlyActive
     }
+
+
 
 }

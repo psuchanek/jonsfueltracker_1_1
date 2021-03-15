@@ -25,6 +25,8 @@ class AddTripViewModel @ViewModelInject constructor(private val repository: Repo
     private var _submitTripStatus: MutableLiveData<Status> = MutableLiveData()
     val submitTripStatus: LiveData<Status> = _submitTripStatus
 
+    val observeAllVehicles = repository.observeAllVehicles
+
 
     fun getCurrentMileage(vehicleId: Int) {
         viewModelScope.launch {

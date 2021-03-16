@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android" android:opacity="opaque">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:opacity="opaque">
 
-    <item android:drawable="@color/secondaryDarkColor"/>
+    <item android:drawable="@color/white" />
 
     <item
-        android:gravity="center"
-        android:height="@dimen/app_bar_height"
-        android:width="@dimen/app_bar_height"
-        android:drawable="@drawable/ic_filter">
-    </item>
-<!--    <item>-->
-<!--        <bitmap-->
-<!--            android:src="@drawable/ic_settings"-->
-<!--            android:gravity="center"/>-->
-<!--    </item>-->
+        android:width="500dp"
+        android:height="750dp"
+        android:drawable="@drawable/splash_logo"
+        android:gravity="center" />
 
 </layer-list>

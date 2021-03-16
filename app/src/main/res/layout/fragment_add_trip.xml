@@ -120,11 +120,13 @@
                 android:id="@+id/tiLayoutPencePerLitres"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:hint="@string/pence_per_litre_label"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/guidelineAddTrip"
-                app:layout_constraintTop_toTopOf="@+id/tiLayoutLitres">
+                app:layout_constraintEnd_toStartOf="@+id/guidelineAddTrip"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tiLayoutLitres"
+                >
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/evPencePerLitre"
@@ -137,12 +139,11 @@
                 android:id="@+id/tiLayoutTripMileage"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
                 android:hint="@string/trip_mileage_label"
-                app:layout_constraintEnd_toStartOf="@+id/guidelineAddTrip"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tiLayoutLitres"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guidelineAddTrip"
+                app:layout_constraintTop_toTopOf="@+id/tiLayoutLitres"
                 app:startIconDrawable="@drawable/ic_trip_mileage">
 
                 <com.google.android.material.textfield.TextInputEditText

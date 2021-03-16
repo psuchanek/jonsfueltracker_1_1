@@ -2,12 +2,12 @@ package dev.psuchanek.jonsfueltracker_v_1_1
 
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
-import android.os.Build
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import androidx.annotation.RequiresApi
+import android.view.ViewTreeObserver
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.DataBindingUtil
@@ -25,6 +25,7 @@ import androidx.preference.PreferenceManager
 import dagger.hilt.android.AndroidEntryPoint
 import dev.psuchanek.jonsfueltracker_v_1_1.databinding.ActivityMainBinding
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.changeMargin
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.hideKeyboardWhenDisplayed
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener,
@@ -33,9 +34,11 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     private lateinit var binding: ActivityMainBinding
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var appBarConfig: AppBarConfiguration
+    private var softKeyboardVisible: Boolean = false
+    val isKeyboardVisible: Boolean
+        get() = softKeyboardVisible
 
 
-    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         PreferenceManager.getDefaultSharedPreferences(this)
@@ -73,8 +76,17 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
             .addOnDestinationChangedListener(destinationChangeListener())
 
         binding.fabAddTrip.setOnClickListener(fabAddTripClickListener())
+        binding.rootLayout.viewTreeObserver.addOnGlobalLayoutListener(softKeyboardListener())
 
         binding.root
+    }
+
+    private fun softKeyboardListener() = ViewTreeObserver.OnGlobalLayoutListener {
+        val rect = Rect()
+        binding.rootLayout.getWindowVisibleDisplayFrame(rect)
+        val screenHeight = binding.rootLayout.rootView.height
+        val keypadHeight = screenHeight - rect.bottom
+        softKeyboardVisible = keypadHeight > screenHeight * 0.15
     }
 
     private fun fabAddTripClickListener() = View.OnClickListener {
@@ -130,6 +142,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                 navHostFragment.findNavController().navigate(R.id.action_to_settingsFragment)
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -154,6 +167,13 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        if(isKeyboardVisible) {
+            hideKeyboardWhenDisplayed(this)
+        }
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()
@@ -165,5 +185,11 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         if (preference?.key == getString(R.string.dark_mode)) preference.entry
         else "Unknown Preference"
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if(isKeyboardVisible) {
+            hideKeyboardWhenDisplayed(this)
+        }
+    }
 
 }

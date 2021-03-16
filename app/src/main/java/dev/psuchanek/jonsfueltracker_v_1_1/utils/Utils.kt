@@ -1,6 +1,13 @@
 package dev.psuchanek.jonsfueltracker_v_1_1.utils
 
 
+import android.content.Context
+import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.marginTop
+import dev.psuchanek.jonsfueltracker_v_1_1.databinding.ActivityMainBinding
+import timber.log.Timber
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
@@ -97,6 +104,31 @@ fun Float.convertToGallons() = this / LITRES_IN_GALLON
 fun calculatePencePerLitre(price: Float, litres: Float): Float {
     if (litres == 0f || price == 0f) return 0.0f
     return round((price / litres) * 1000) / 10
+}
+
+//Soft keyobard
+fun hideKeyboardWhenDisplayed(context: Context) {
+    val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+}
+
+//Layout margin change
+fun changeMargin(bottomBarVisible: Boolean, binding: ActivityMainBinding) {
+    val topMargin = binding.navHostFragment.marginTop
+    Timber.d("DEBUG: this is top margin: $topMargin")
+
+    val bottomMargin = when (bottomBarVisible) {
+        true -> topMargin
+        false -> 0
+    }
+    val params = CoordinatorLayout.LayoutParams(
+        ViewGroup.LayoutParams.MATCH_PARENT,
+        ViewGroup.LayoutParams.MATCH_PARENT
+    )
+    params.setMargins(0, topMargin, 0, bottomMargin)
+    binding.navHostFragment.layoutParams = params
+
+
 }
 
 

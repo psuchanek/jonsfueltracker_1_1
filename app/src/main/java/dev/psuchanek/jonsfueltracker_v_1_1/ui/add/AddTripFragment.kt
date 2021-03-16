@@ -36,7 +36,6 @@ class AddTripFragment : BaseFragment(R.layout.fragment_add_trip) {
     private var litres: String = ""
     private var timestamp: Long = 0L
 
-    private var vehicleList: List<String> = emptyList()
     private lateinit var spinnerAdapter: ArrayAdapter<String>
 
     override fun onCreateView(
@@ -162,7 +161,7 @@ class AddTripFragment : BaseFragment(R.layout.fragment_add_trip) {
         val dayFromCalendar = calendar.get(Calendar.DAY_OF_MONTH)
         val datePickerDialog = DatePickerDialog(
             requireContext(),
-            DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+            { _, year, monthOfYear, dayOfMonth ->
                 calendar.set(year, monthOfYear, dayOfMonth)
                 timestamp = calendar.timeInMillis
 

@@ -79,5 +79,6 @@
     <string name="price_high_to_low">Price: High to Low</string>
     <string name="mileage_low_to_high">Mileage: Low to High</string>
     <string name="mileage_high_to_low">Mileage: High to Low</string>
+    <string name="version">FuelTracker v1.0</string>
 
 </resources>

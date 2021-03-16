@@ -60,6 +60,16 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
         }
     }
 
+    private fun setupRecyclerView() {
+        binding.recyclerViewHistory.apply {
+            adapter = tripAdapter
+            addItemDecoration(CustomItemDecoration(DECORATION_SPACING))
+            layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            ItemTouchHelper(itemTouchHelper).attachToRecyclerView(this)
+        }
+    }
+
     private val itemTouchHelper = object : ItemTouchHelper.SimpleCallback(
         0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
     ) {
@@ -101,12 +111,15 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
             ) { _, _ ->
                 historyViewModel.deleteTrip(trip.id)
                 Snackbar.make(
-                    requireView(),
+                    requireActivity().findViewById(R.id.rootLayout),
                     getString(R.string.trip_record_deleted),
                     Snackbar.LENGTH_LONG
                 ).apply {
+                    setActionTextColor(resources.getColor(R.color.primaryTextColor))
+                    setAnchorView(R.id.bottomAppBar)
                     setAction(getString(R.string.undo)) {
                         undoDeleteTrip(trip)
+
                     }
                 }.show()
             }
@@ -123,15 +136,6 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
         historyViewModel.deleteLocallyDeletedTripID(trip.id)
     }
 
-    private fun setupRecyclerView() {
-        binding.recyclerViewHistory.apply {
-            adapter = tripAdapter
-            addItemDecoration(CustomItemDecoration(DECORATION_SPACING))
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            ItemTouchHelper(itemTouchHelper).attachToRecyclerView(this)
-        }
-    }
 
     private fun subscribeSingleObserver() {
         historyViewModel.getAllTrips.observe(viewLifecycleOwner, Observer { event ->
@@ -139,9 +143,12 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
                 val result = it.peekContent()
                 when (result.status) {
                     Status.SUCCESS -> {
-                        tripAdapter.submitList(
-                            result.data!!.asFuelTrackerTripModel()
-                        )
+                        tripAdapter.apply {
+                            submitList(null)
+                            submitList(
+                                result.data?.asFuelTrackerTripModel()
+                            )
+                        }
                         tripAdapter.notifyDataSetChanged()
                         binding.swipeRefresherHistory.isRefreshing = false
 
@@ -170,12 +177,12 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
 
     private fun subscribeObservers() {
         historyViewModel.sortedTripHistory.observe(viewLifecycleOwner, Observer { sortedTripList ->
-            tripAdapter.submitList(sortedTripList)
-            tripAdapter.notifyDataSetChanged()
-            binding.recyclerViewHistory.layoutManager?.scrollToPosition(0)
+
+            tripAdapter.apply {
+                submitList(null)
+                submitList(sortedTripList)
+            }
         })
-
-
         historyViewModel.swipeLayout.observe(viewLifecycleOwner, Observer {
             binding.swipeRefresherHistory.isEnabled = !it
         })

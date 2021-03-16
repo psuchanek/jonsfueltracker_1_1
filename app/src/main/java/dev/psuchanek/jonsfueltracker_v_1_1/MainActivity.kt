@@ -2,10 +2,12 @@ package dev.psuchanek.jonsfueltracker_v_1_1
 
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.DataBindingUtil
@@ -22,6 +24,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import dagger.hilt.android.AndroidEntryPoint
 import dev.psuchanek.jonsfueltracker_v_1_1.databinding.ActivityMainBinding
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.changeMargin
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener,
@@ -30,6 +33,9 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     private lateinit var binding: ActivityMainBinding
     private lateinit var navHostFragment: NavHostFragment
     private lateinit var appBarConfig: AppBarConfiguration
+
+
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         PreferenceManager.getDefaultSharedPreferences(this)
@@ -76,21 +82,34 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
             .navigate(R.id.action_to_addTripFragment)
     }
 
+
     private fun destinationChangeListener() =
         NavController.OnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.dashboardFragment, R.id.historyFragment -> {
                     with(binding) {
+                        changeMargin(true, binding)
                         toolbar.title = resources.getString(R.string.app_name)
+                        tvVersion.visibility = View.GONE
                         bottomAppBar.visibility = View.VISIBLE
                         fabAddTrip.show()
                     }
 
                 }
+                R.id.settingsFragment -> {
+                    with(binding) {
+                        bottomAppBar.visibility = View.GONE
+                        changeMargin(false, binding)
+                        fabAddTrip.hide()
+                        tvVersion.visibility = View.VISIBLE
+                    }
+                }
                 else -> {
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)
                     with(binding) {
+                        changeMargin(false, binding)
                         bottomAppBar.visibility = View.GONE
+                        tvVersion.visibility = View.GONE
                         fabAddTrip.hide()
                     }
 
@@ -99,7 +118,6 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
 
             }
         }
-
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.settings_menu, menu)
@@ -135,7 +153,6 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
             }
         }
     }
-
 
 
     override fun onDestroy() {

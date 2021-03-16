@@ -54,6 +54,7 @@ class FuelTrackerAdapter() :
             return oldItem == newItem
         }
 
+
     }
 
     override fun getItemCount() = currentList.size
@@ -66,6 +67,8 @@ class FuelTrackerAdapter() :
             parent
         )
     }
+
+
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val trip = getItem(position)

@@ -11,7 +11,7 @@ abstract class BaseFragment(layoutID: Int) : Fragment(layoutID) {
             message,
             Snackbar.LENGTH_SHORT
         )
-            .setAnchorView(R.id.fabAddTrip)
+            .setAnchorView(R.id.bottomAppBar)
             .show()
     }
 }

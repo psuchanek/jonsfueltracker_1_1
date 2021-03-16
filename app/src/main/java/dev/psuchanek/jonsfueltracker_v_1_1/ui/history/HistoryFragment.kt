@@ -1,9 +1,13 @@
 package dev.psuchanek.jonsfueltracker_v_1_1.ui.history
 
 import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -31,6 +35,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
     private lateinit var binding: FragmentHistoryBinding
     private val historyViewModel: HistoryViewModel by viewModels()
     private lateinit var tripAdapter: FuelTrackerAdapter
+    private var icon: Drawable? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,6 +44,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
     ): View? {
         setHasOptionsMenu(true)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_history, container, false)
+        icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_trash, null)
         tripAdapter = FuelTrackerAdapter()
         subscribeObservers()
 
@@ -73,6 +79,11 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
     private val itemTouchHelper = object : ItemTouchHelper.SimpleCallback(
         0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
     ) {
+
+
+        val background: ColorDrawable = ColorDrawable(Color.parseColor("#ba6b6c"))
+        val backgroundCornerOffset = 20
+
         override fun onChildDraw(
             c: Canvas,
             recyclerView: RecyclerView,
@@ -86,6 +97,40 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
             if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
                 historyViewModel.swipeLayoutActive(isCurrentlyActive)
             }
+            val itemView = viewHolder.itemView
+            val iconMargin = (itemView.height - icon!!.intrinsicHeight) / 2
+            val iconTop = itemView.top + (itemView.height - icon!!.intrinsicHeight) / 2
+            val iconBottom = iconTop + icon!!.intrinsicHeight
+
+            when {
+                dX > 0 -> {
+                    val iconLeft = itemView.left + iconMargin + icon!!.intrinsicWidth
+                    val iconRight = itemView.left + iconMargin
+                    icon!!.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+
+                    background.setBounds(
+                        itemView.left,
+                        itemView.top,
+                        itemView.left + (dX.toInt() + backgroundCornerOffset),
+                        itemView.bottom
+                    )
+                }
+                dX < 0 -> {
+                    val iconLeft = itemView.right - iconMargin - icon!!.intrinsicWidth
+                    val iconRight = itemView.right - iconMargin
+                    icon!!.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+
+                    background.setBounds(
+                        itemView.right + (dX.toInt() - backgroundCornerOffset),
+                        itemView.top,
+                        itemView.right,
+                        itemView.bottom
+                    )
+                }
+                else -> background.setBounds(0, 0, 0, 0)
+            }
+            background.draw(c)
+            icon!!.draw(c)
         }
 
         override fun onMove(

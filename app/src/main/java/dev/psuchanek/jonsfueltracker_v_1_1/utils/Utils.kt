@@ -131,6 +131,9 @@ fun changeMargin(bottomBarVisible: Boolean, binding: ActivityMainBinding) {
 
 }
 
+//Default vehicle list
+val defaultVehicleList = listOf<String>(MICRA, MIDGET, SPRINTER)
+
 
 
 

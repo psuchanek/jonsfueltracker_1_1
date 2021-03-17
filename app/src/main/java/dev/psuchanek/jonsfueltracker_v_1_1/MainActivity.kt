@@ -99,6 +99,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         NavController.OnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.dashboardFragment, R.id.historyFragment -> {
+                    if(isKeyboardVisible) hideKeyboardWhenDisplayed(this)
                     with(binding) {
                         changeMargin(true, binding)
                         toolbar.title = resources.getString(R.string.app_name)

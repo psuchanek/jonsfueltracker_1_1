@@ -16,10 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.psuchanek.jonsfueltracker_v_1_1.BaseFragment
 import dev.psuchanek.jonsfueltracker_v_1_1.R
 import dev.psuchanek.jonsfueltracker_v_1_1.databinding.FragmentAddTripBinding
-import dev.psuchanek.jonsfueltracker_v_1_1.utils.Status
-import dev.psuchanek.jonsfueltracker_v_1_1.utils.calculatePencePerLitre
-import dev.psuchanek.jonsfueltracker_v_1_1.utils.getDay
-import dev.psuchanek.jonsfueltracker_v_1_1.utils.getMonth
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.*
 import timber.log.Timber
 import java.util.*
 
@@ -37,6 +34,7 @@ class AddTripFragment : BaseFragment(R.layout.fragment_add_trip) {
     private var timestamp: Long = 0L
 
     private lateinit var spinnerAdapter: ArrayAdapter<String>
+    private var spinnerVehicleList: List<String> = defaultVehicleList
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -184,7 +182,7 @@ class AddTripFragment : BaseFragment(R.layout.fragment_add_trip) {
         spinnerAdapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_dropdown_item_1line,
-            resources.getStringArray(R.array.vehicle_names)
+            spinnerVehicleList
         ).also { adapter ->
             binding.dropDownVehicle.setAdapter(adapter)
         }
@@ -218,11 +216,11 @@ class AddTripFragment : BaseFragment(R.layout.fragment_add_trip) {
         })
 
         addTripViewModel.observeAllVehicles.observe(viewLifecycleOwner, Observer { vehicleList ->
-            Timber.d("DEBUG: addFragment vehicleList: $vehicleList")
-            if (vehicleList.isNullOrEmpty()) {
-
-            } else {
-//
+            vehicleList.isNotEmpty().let {
+                spinnerVehicleList = List(vehicleList.size, init = {
+                    vehicleList[it].vehicleName
+                })
+                spinnerAdapter.notifyDataSetChanged()
             }
 
         })

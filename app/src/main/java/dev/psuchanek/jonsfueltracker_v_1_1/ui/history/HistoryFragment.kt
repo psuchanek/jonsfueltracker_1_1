@@ -58,7 +58,6 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
     }
 
     private fun setupRefresher() {
-        binding.swipeRefresherHistory.isRefreshing = false
         binding.swipeRefresherHistory.setOnRefreshListener {
             subscribeSingleObserver()
             historyViewModel.syncAllTrips()
@@ -106,7 +105,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
                 dX > 0 -> {
                     val iconLeft = itemView.left + iconMargin + icon!!.intrinsicWidth
                     val iconRight = itemView.left + iconMargin
-                    icon!!.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+                    icon!!.setBounds(iconRight, iconTop, iconLeft, iconBottom)
 
                     background.setBounds(
                         itemView.left,
@@ -160,7 +159,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
                     getString(R.string.trip_record_deleted),
                     Snackbar.LENGTH_LONG
                 ).apply {
-                    setActionTextColor(resources.getColor(R.color.primaryTextColor))
+                    setActionTextColor(resources.getColor(R.color.secondaryDarkColor, null))
                     setAnchorView(R.id.bottomAppBar)
                     setAction(getString(R.string.undo)) {
                         undoDeleteTrip(trip)
@@ -188,13 +187,6 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
                 val result = it.peekContent()
                 when (result.status) {
                     Status.SUCCESS -> {
-                        tripAdapter.apply {
-                            submitList(null)
-                            submitList(
-                                result.data?.asFuelTrackerTripModel()
-                            )
-                        }
-                        tripAdapter.notifyDataSetChanged()
                         binding.swipeRefresherHistory.isRefreshing = false
 
                     }

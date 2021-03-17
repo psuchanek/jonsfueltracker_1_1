@@ -121,7 +121,6 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
                 setDrawLabels(false)
                 position = XAxis.XAxisPosition.BOTTOM
                 axisLineColor = Color.BLACK
-                textColor = Color.WHITE
             }
             axisLeft.apply {
                 setDrawAxisLine(false)
@@ -229,6 +228,9 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
     private fun getLineDataSet(entries: List<Entry>): LineDataSet {
         return LineDataSet(entries, "").apply {
             lineWidth = 4f
+            if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+                valueTextColor = resources.getColor(R.color.primaryTextColor, null)
+            }
             color = resources.getColor(R.color.secondaryDarkColor, null)
             setDrawHorizontalHighlightIndicator(false)
             setDrawFilled(true)

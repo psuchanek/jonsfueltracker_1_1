@@ -91,12 +91,11 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideSharedPreferences(@ApplicationContext context: Context) :SharedPreferences {
-        val prefs =  PreferenceManager.getDefaultSharedPreferences(context)
+    fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         prefs.edit().putBoolean(FIRST_LAUNCH, true)
         return prefs
     }
-
 
 
 }

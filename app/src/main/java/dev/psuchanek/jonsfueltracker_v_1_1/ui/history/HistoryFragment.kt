@@ -18,14 +18,11 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import dev.psuchanek.jonsfueltracker_v_1_1.BaseFragment
 import dev.psuchanek.jonsfueltracker_v_1_1.R
-import dev.psuchanek.jonsfueltracker_v_1_1.adapters.FuelTrackerAdapter
+import dev.psuchanek.jonsfueltracker_v_1_1.adapters.FuelTrackerListAdapter
 import dev.psuchanek.jonsfueltracker_v_1_1.databinding.FragmentHistoryBinding
 import dev.psuchanek.jonsfueltracker_v_1_1.models.FuelTrackerTrip
 import dev.psuchanek.jonsfueltracker_v_1_1.models.asFuelTrackerTripModel
-import dev.psuchanek.jonsfueltracker_v_1_1.utils.CustomItemDecoration
-import dev.psuchanek.jonsfueltracker_v_1_1.utils.DECORATION_SPACING
-import dev.psuchanek.jonsfueltracker_v_1_1.utils.SortType
-import dev.psuchanek.jonsfueltracker_v_1_1.utils.Status
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.*
 
 @AndroidEntryPoint
 class HistoryFragment : BaseFragment(R.layout.fragment_history) {
@@ -34,7 +31,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
 
     private lateinit var binding: FragmentHistoryBinding
     private val historyViewModel: HistoryViewModel by viewModels()
-    private lateinit var tripAdapter: FuelTrackerAdapter
+    private lateinit var tripAdapter: FuelTrackerListAdapter<FuelTrackerTrip>
     private var icon: Drawable? = null
 
     override fun onCreateView(
@@ -45,7 +42,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
         setHasOptionsMenu(true)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_history, container, false)
         icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_trash, null)
-        tripAdapter = FuelTrackerAdapter()
+        tripAdapter = FuelTrackerListAdapter(TRIP_HISTORY)
         subscribeObservers()
 
         return binding.root

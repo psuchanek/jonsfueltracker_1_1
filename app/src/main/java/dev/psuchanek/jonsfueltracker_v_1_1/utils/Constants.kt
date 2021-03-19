@@ -3,6 +3,11 @@ package dev.psuchanek.jonsfueltracker_v_1_1.utils
 //SharedPref
 const val FIRST_LAUNCH = "FIRST_LAUNCH"
 
+//ViewHolder types
+const val VEHICLE = 1
+const val MAINTENANCE = 2
+const val TRIP_HISTORY = 3
+
 //Services
 const val BASE_URL = "http://fuel.tecserv-uk.co.uk/"
 const val GET_FROM_SERVICE = "api.php/history"

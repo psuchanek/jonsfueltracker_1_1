@@ -24,9 +24,10 @@ import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import dev.psuchanek.jonsfueltracker_v_1_1.BaseFragment
 import dev.psuchanek.jonsfueltracker_v_1_1.R
-import dev.psuchanek.jonsfueltracker_v_1_1.adapters.VehicleAdapter
+import dev.psuchanek.jonsfueltracker_v_1_1.adapters.FuelTrackerListAdapter
 import dev.psuchanek.jonsfueltracker_v_1_1.databinding.FragmentDashboardBinding
 import dev.psuchanek.jonsfueltracker_v_1_1.models.FuelTrackerTrip
+import dev.psuchanek.jonsfueltracker_v_1_1.models.Vehicle
 import dev.psuchanek.jonsfueltracker_v_1_1.models.asFuelTrackerTrip
 import dev.psuchanek.jonsfueltracker_v_1_1.ui.MainViewModel
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.*
@@ -43,7 +44,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
     lateinit var sharedPrefs: SharedPreferences
     private lateinit var binding: FragmentDashboardBinding
     private var mostRecentTrip: FuelTrackerTrip? = null
-    private lateinit var vehicleAdapter: VehicleAdapter
+    private lateinit var vehicleAdapter: FuelTrackerListAdapter<Vehicle>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -99,7 +100,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
     }
 
     private fun setupRecyclerViews() {
-        vehicleAdapter = VehicleAdapter()
+        vehicleAdapter = FuelTrackerListAdapter<Vehicle>(VEHICLE)
         binding.vehicleOverviewLayout.vehicleRecyclerView.apply {
             adapter = vehicleAdapter
             addItemDecoration(CustomItemDecoration(DECORATION_SPACING))

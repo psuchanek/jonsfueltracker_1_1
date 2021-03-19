@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/vehicle_item_layout"
+        tools:listitem="@layout/vehicle_list_item"
         android:layout_marginBottom="4dp"/>
 
 

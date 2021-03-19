@@ -8,6 +8,9 @@ const val VEHICLE = 1
 const val MAINTENANCE = 2
 const val TRIP_HISTORY = 3
 
+// Fragment add tab
+const val FRAGMENT_ADD_TAB_COUNT = 3
+
 //Services
 const val BASE_URL = "http://fuel.tecserv-uk.co.uk/"
 const val GET_FROM_SERVICE = "api.php/history"

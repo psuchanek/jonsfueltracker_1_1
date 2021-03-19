@@ -1,6 +1,7 @@
 package dev.psuchanek.jonsfueltracker_v_1_1.utils
 
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
@@ -54,6 +55,16 @@ fun getMonth(month: Int) = when (month) {
     }
     else -> "$month"
 }
+
+//Create date string
+fun createDateString(year: Int, monthOfYear: Int, dayOfMonth: Int): String {
+    return "${getDay(dayOfMonth)}/${getMonth(monthOfYear)}/$year"
+}
+
+//Capitalize words in string
+@SuppressLint("DefaultLocale")
+fun String.capitalizeWords(): String =
+    split(" ").joinToString(" ") { it.toLowerCase().capitalize() }
 
 
 //Date ranges
@@ -132,7 +143,7 @@ fun changeMargin(bottomBarVisible: Boolean, binding: ActivityMainBinding) {
 }
 
 //Default vehicle list
-val defaultVehicleList = listOf<String>(MICRA, MIDGET, SPRINTER)
+val defaultVehicleList = listOf<String>(VEHICLE_ONE, VEHICLE_TWO, VEHICLE_THREE)
 
 
 

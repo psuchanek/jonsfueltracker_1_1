@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
 
     private fun fabAddTripClickListener() = View.OnClickListener {
         navHostFragment.findNavController()
-            .navigate(R.id.action_to_addTripFragment)
+            .navigate(R.id.action_to_addFragment)
     }
 
 

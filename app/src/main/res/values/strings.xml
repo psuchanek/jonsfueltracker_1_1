@@ -27,6 +27,7 @@
     <string name="vehicle_label">Vehicle</string>
     <string name="fab_service_label">Service</string>
     <string name="add_trip_label">ADD TRIP</string>
+    <string name="add_label">ADD</string>
     <string name="last_trip_label">Last trip:</string>
     <string name="dash_label">Dashboard</string>
     <string name="trips_history_label">Trips history</string>
@@ -65,7 +66,7 @@
     <string name="settings">Settings</string>
 
 
-    //Prefrence
+    //Preference
     <string name="ui_mode">Theme Mode</string>
     <string name="dark_mode">Light/Dark Mode</string>
     <string name="dark_mode_def_value">MODE_NIGHT_FOLLOW_SYSTEM</string>
@@ -80,5 +81,10 @@
     <string name="mileage_low_to_high">Mileage: Low to High</string>
     <string name="mileage_high_to_low">Mileage: High to Low</string>
     <string name="version">FuelTracker v1.0</string>
+    <string name="vehicle_added_successfully">Vehicle added successfully</string>
+    <string name="new_vehicle_label">New vehicle name</string>
+    <string name="workshop_name_label">Workshop name</string>
+    <string name="work_done_description_label">Work done description</string>
+    <string name="current_mileage_label">Current mileage</string>
 
 </resources>

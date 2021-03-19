@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface FuelTrackerDao {
 
-    /*
+    /**
     Insert calls to database
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -21,13 +21,13 @@ interface FuelTrackerDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertLocallyDeletedTripId(deletedTripID: LocallyDeletedTrip)
 
-    /*
+    /**
     Update trip
      */
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateFuelTrackerTrip(trip: LocalFuelTrackerTrip)
 
-    /*
+    /**
    Delete calls to database
     */
     @Query("DELETE FROM fuel_tracker_history_table WHERE id = :tripID")
@@ -40,7 +40,7 @@ interface FuelTrackerDao {
     suspend fun deleteAllTrips()
 
 
-    /*
+    /**
       Get calls to database
        */
     @Query("SELECT * FROM fuel_tracker_history_table ORDER BY id DESC")
@@ -57,8 +57,6 @@ interface FuelTrackerDao {
 
     @Query("SELECT * FROM fuel_tracker_history_table WHERE timestamp BETWEEN :start AND :end ORDER BY timestamp ASC")
     suspend fun getAllByTimestampRange(start: Long, end: Long): List<LocalFuelTrackerTrip>?
-
-    //TODO: Focus on the rest here after refactoring
 
     @Query("SELECT * FROM fuel_tracker_history_table ORDER BY timestamp DESC")
     fun observeAllByTimestamp(): LiveData<List<LocalFuelTrackerTrip>>

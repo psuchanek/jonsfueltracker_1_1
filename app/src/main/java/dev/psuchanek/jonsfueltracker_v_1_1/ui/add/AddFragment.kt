@@ -44,7 +44,7 @@ class AddFragment : BaseFragment(R.layout.fragment_add) {
                     tab.text = "VEHICLE"
                 }
             }
-        }
+        }.attach()
 
     }
 }

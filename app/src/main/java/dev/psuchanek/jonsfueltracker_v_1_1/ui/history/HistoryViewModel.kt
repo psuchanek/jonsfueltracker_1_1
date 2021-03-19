@@ -3,6 +3,7 @@ package dev.psuchanek.jonsfueltracker_v_1_1.ui.history
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import dev.psuchanek.jonsfueltracker_v_1_1.models.FuelTrackerTrip
+import dev.psuchanek.jonsfueltracker_v_1_1.models.Maintenance
 import dev.psuchanek.jonsfueltracker_v_1_1.models.asFuelTrackerTripModel
 import dev.psuchanek.jonsfueltracker_v_1_1.repositories.FuelTrackerRepository
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.Event
@@ -20,14 +21,20 @@ class HistoryViewModel @ViewModelInject constructor(private val repository: Fuel
     val swipeLayout: LiveData<Boolean> = _swipeLayout
 
     /**
-    Sorting sources
+    Sorting sources for trips list
      */
-    private val tripsSortedByDate = repository.observeAllByTimestamp
-    private val tripsSortedByFuelCost = repository.observeAllByFuelCost
-    private val tripsSortedByTripMileage = repository.observeAllByTripMileage
+    private val tripsSortedByDate = repository.observeAllTripsByTimestamp
+    private val tripsSortedByFuelCost = repository.observeAllTripsByFuelCost
+    private val tripsSortedByTripMileage = repository.observeAllTripsByTripMileage
 
+    /**
+    Sorting sources for maintenance list
+     */
+    private val maintenanceSortedByDate = repository.observeAllMaintenanceByTimestamp
+    private val maintenanceSortedByPrice = repository.observeAllMaintenanceByPrice
 
     val sortedTripHistory = MediatorLiveData<List<FuelTrackerTrip>>()
+    val sortedMaintenanceHistory = MediatorLiveData<List<Maintenance>>()
 
 
     /**
@@ -49,6 +56,31 @@ class HistoryViewModel @ViewModelInject constructor(private val repository: Fuel
     fun syncAllTrips() = _forceFetch.postValue(true)
 
     private fun addSources() {
+        sortedMaintenanceHistory.addSource(maintenanceSortedByDate) { result ->
+            result?.let {
+                if (_sortType == SortType.DATE_ASC) {
+                    sortedMaintenanceHistory.value = it.reversed()
+                }
+                if (_sortType == SortType.DATE_DESC) {
+                    sortedMaintenanceHistory.value = it
+                }
+            }
+
+        }
+
+        sortedMaintenanceHistory.addSource(maintenanceSortedByPrice) { result ->
+            result?.let {
+                if (_sortType == SortType.PRICE_ASC) {
+                    sortedMaintenanceHistory.postValue(it.reversed())
+                }
+                if (_sortType == SortType.PRICE_DESC) {
+                    sortedMaintenanceHistory.postValue(it)
+                }
+            }
+
+        }
+
+
         sortedTripHistory.addSource(tripsSortedByDate) { result ->
             result?.let {
                 if (_sortType == SortType.DATE_ASC) {
@@ -63,10 +95,10 @@ class HistoryViewModel @ViewModelInject constructor(private val repository: Fuel
 
         sortedTripHistory.addSource(tripsSortedByFuelCost) { result ->
             result?.let {
-                if (_sortType == SortType.FILL_PRICE_ASC) {
+                if (_sortType == SortType.PRICE_ASC) {
                     sortedTripHistory.postValue(it.asFuelTrackerTripModel().reversed())
                 }
-                if (_sortType == SortType.FILL_PRICE_DESC) {
+                if (_sortType == SortType.PRICE_DESC) {
                     sortedTripHistory.postValue(it.asFuelTrackerTripModel())
                 }
             }
@@ -93,7 +125,7 @@ class HistoryViewModel @ViewModelInject constructor(private val repository: Fuel
         when (sortType) {
             SortType.DATE_ASC -> {
                 tripsSortedByDate.value?.let {
-                    sortedTripHistory.value =it.asFuelTrackerTripModel().reversed()
+                    sortedTripHistory.value = it.asFuelTrackerTripModel().reversed()
 
                 }
             }
@@ -112,12 +144,12 @@ class HistoryViewModel @ViewModelInject constructor(private val repository: Fuel
                     sortedTripHistory.value = it.asFuelTrackerTripModel()
                 }
             }
-            SortType.FILL_PRICE_ASC -> {
+            SortType.PRICE_ASC -> {
                 tripsSortedByFuelCost.value?.let {
                     sortedTripHistory.value = it.asFuelTrackerTripModel().reversed()
                 }
             }
-            SortType.FILL_PRICE_DESC -> {
+            SortType.PRICE_DESC -> {
                 tripsSortedByFuelCost.value?.let {
                     sortedTripHistory.value = it.asFuelTrackerTripModel()
                 }
@@ -147,7 +179,6 @@ class HistoryViewModel @ViewModelInject constructor(private val repository: Fuel
     fun swipeLayoutActive(isCurrentlyActive: Boolean) {
         _swipeLayout.value = isCurrentlyActive
     }
-
 
 
 }

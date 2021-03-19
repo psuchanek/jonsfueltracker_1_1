@@ -1,12 +1,14 @@
 package dev.psuchanek.jonsfueltracker_v_1_1.services.network
 
+import dev.psuchanek.jonsfueltracker_v_1_1.models.requests.TripDeleteRequest
 import dev.psuchanek.jonsfueltracker_v_1_1.models.responses.NetworkDataResponse
 import dev.psuchanek.jonsfueltracker_v_1_1.models.responses.NetworkFuelTrackerTrip
-import dev.psuchanek.jonsfueltracker_v_1_1.models.requests.TripDeleteRequest
+import dev.psuchanek.jonsfueltracker_v_1_1.models.responses.NetworkVehicle
 import dev.psuchanek.jonsfueltracker_v_1_1.models.responses.TripDeleteResponse
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.DELETE_TRIP_FROM_SERVICE
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.GET_FROM_SERVICE
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.POST_TRIP_TO_SERVICE
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.POST_VEHICLE_TO_SERVICE
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -28,4 +30,9 @@ interface FuelTrackerService {
     suspend fun deleteTrip(
         @Body recordID: TripDeleteRequest
     ): Response<TripDeleteResponse>
+
+    @POST(POST_VEHICLE_TO_SERVICE)
+    suspend fun insertVehicle(
+        @Body vehicle: NetworkVehicle
+    ): Response<ResponseBody>
 }

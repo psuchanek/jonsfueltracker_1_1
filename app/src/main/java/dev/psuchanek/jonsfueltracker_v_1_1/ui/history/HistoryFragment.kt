@@ -241,11 +241,11 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
                 true
             }
             R.id.sortPriceLowToHigh -> {
-                historyViewModel.sortTrips(SortType.FILL_PRICE_ASC)
+                historyViewModel.sortTrips(SortType.PRICE_ASC)
                 true
             }
             R.id.sortPriceHighToLow -> {
-                historyViewModel.sortTrips(SortType.FILL_PRICE_DESC)
+                historyViewModel.sortTrips(SortType.PRICE_DESC)
                 true
             }
             R.id.sortMileageLowToHigh -> {

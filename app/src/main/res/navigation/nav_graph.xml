@@ -4,8 +4,8 @@
     app:startDestination="@id/dashboardFragment">
 
     <action
-        android:id="@+id/action_to_addTripFragment"
-        app:destination="@+id/addTripFragment"
+        android:id="@+id/action_to_addFragment"
+        app:destination="@+id/addFragment"
         app:popUpTo="@id/dashboardFragment"/>
 
     <action
@@ -21,15 +21,15 @@
         android:id="@+id/historyFragment"
         android:name="dev.psuchanek.jonsfueltracker_v_1_1.ui.history.HistoryFragment" />
     <fragment
-        android:id="@+id/addTripFragment"
-        android:name="dev.psuchanek.jonsfueltracker_v_1_1.ui.add.AddTripFragment"
-        android:label="@string/add_trip_label" >
-        <action
-            android:id="@+id/action_addTripFragment_to_dashboardFragment"
-            app:destination="@id/dashboardFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/settingsFragment"
         android:name="dev.psuchanek.jonsfueltracker_v_1_1.ui.settings.SettingsFragment"
         android:label="@string/settings" />
+    <fragment
+        android:id="@+id/addFragment"
+        android:name="dev.psuchanek.jonsfueltracker_v_1_1.ui.add.AddFragment"
+        android:label="@string/add_label">
+        <action
+            android:id="@+id/action_addFragment_to_dashboardFragment"
+            app:destination="@id/dashboardFragment" />
+    </fragment>
 </navigation>

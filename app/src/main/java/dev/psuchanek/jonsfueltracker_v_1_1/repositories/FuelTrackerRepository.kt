@@ -7,6 +7,7 @@ import dev.psuchanek.jonsfueltracker_v_1_1.models.requests.TripDeleteRequest
 import dev.psuchanek.jonsfueltracker_v_1_1.models.responses.NetworkDataResponse
 import dev.psuchanek.jonsfueltracker_v_1_1.models.responses.asDatabaseModel
 import dev.psuchanek.jonsfueltracker_v_1_1.services.db.FuelTrackerDao
+import dev.psuchanek.jonsfueltracker_v_1_1.services.db.MaintenanceDao
 import dev.psuchanek.jonsfueltracker_v_1_1.services.db.VehicleDao
 import dev.psuchanek.jonsfueltracker_v_1_1.services.network.FuelTrackerService
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.checkNetworkConnection
@@ -20,6 +21,7 @@ import javax.inject.Singleton
 
 @Singleton
 class FuelTrackerRepository @Inject constructor(
+    private val maintenanceDao: MaintenanceDao,
     private val fuelTrackerDao: FuelTrackerDao,
     private val vehicleDao: VehicleDao,
     private val apiService: FuelTrackerService,
@@ -145,23 +147,49 @@ class FuelTrackerRepository @Inject constructor(
         }
     }
 
-    suspend fun insertVehicle(vehicle: Vehicle) =
-        withContext(Dispatchers.IO) { vehicleDao.insertVehicle(vehicle) }
+    override suspend fun insertVehicle(vehicle: Vehicle) {
+        val response = try {
+            apiService.insertVehicle(vehicle.asNetworkModel())
+        } catch (e: Exception) {
+            null
+        }
+        withContext(Dispatchers.IO) {
+            if (response != null && response.isSuccessful) {
+                vehicleDao.insertVehicle(vehicle.apply { isSynced = true })
+            } else {
+                vehicleDao.insertVehicle(vehicle)
+            }
 
-   val mostRecentTrip: LiveData<LocalFuelTrackerTrip>? = fuelTrackerDao.getMostRecentTripRecord()
+        }
+    }
+
+    override suspend fun insertMaintenance(maintenance: Maintenance) = withContext(Dispatchers.IO) {
+        maintenanceDao.insertMaintenance(maintenance)
+    }
+
+    override suspend fun deleteMaintenanceByID(maintenanceID: String) = withContext(Dispatchers.IO) {
+        maintenanceDao.deleteTripByID(maintenanceID)
+    }
+
+
+    val mostRecentTrip: LiveData<LocalFuelTrackerTrip>? = fuelTrackerDao.getMostRecentTripRecord()
 
     suspend fun getAllByTimestampRange(start: Long, end: Long): List<LocalFuelTrackerTrip>? =
         withContext(Dispatchers.IO) { fuelTrackerDao.getAllByTimestampRange(start, end) }
+
+    suspend fun getAllMaintenanceByTimestampRange(start: Long, end: Long): List<Maintenance>? =
+        withContext(Dispatchers.IO) { maintenanceDao.getAllMaintenanceByTimestampRange(start, end) }
 
 
     override suspend fun getLastKnownMileage(vehicleId: Int) =
         withContext(Dispatchers.IO) { fuelTrackerDao.getLastKnownMileage(vehicleId) }
 
-    val observeAllByTimestamp = fuelTrackerDao.observeAllByTimestamp()
+    val observeAllTripsByTimestamp = fuelTrackerDao.observeAllByTimestamp()
+    val observeAllTripsByFuelCost = fuelTrackerDao.observeAllByFuelCost()
+    val observeAllTripsByTripMileage = fuelTrackerDao.observeAllByTripMileage()
 
-    val observeAllByFuelCost =fuelTrackerDao.observeAllByFuelCost()
-
-    val observeAllByTripMileage = fuelTrackerDao.observeAllByTripMileage()
+    val observeAllMaintenanceByTimestamp = maintenanceDao.observeAllMaintenanceByTimestamp()
+    val observeAllMaintenanceByPrice = maintenanceDao.observeAllMaintenanceByPrice()
 
 
 }

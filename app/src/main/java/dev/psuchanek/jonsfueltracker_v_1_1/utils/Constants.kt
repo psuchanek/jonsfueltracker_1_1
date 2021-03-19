@@ -29,17 +29,13 @@ const val LITRES_IN_GALLON = 4.546f
 const val EMPTY_MILEAGE = 0L
 
 
-//Adapter animation
-const val ARROW_ANIM_UP = 1111
-const val ARROW_ANIM_DOWN = 2222
-
 //Line chart
 const val RIGHT_AXIS_LABEL_COUNT = 4
 
 //Item decorator
 const val DECORATION_SPACING = 5
 
-//Vehicle names
-const val MICRA = "Nissan Micra"
-const val MIDGET = "Midget"
-const val SPRINTER = "Mercedes Sprinter"
+//Vehicle default names
+const val VEHICLE_ONE = "Nissan Micra"
+const val VEHICLE_TWO = "Midget"
+const val VEHICLE_THREE = "Mercedes Sprinter"

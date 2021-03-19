@@ -6,170 +6,169 @@
 
     </data>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/addTripLayout"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/addTripLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/parent_layout_padding">
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tiLayoutDate"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="@dimen/parent_layout_padding">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="@string/date_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:startIconDrawable="@drawable/ic_calendar">
 
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tiLayoutDate"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/evDate"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="@string/date_label"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:startIconDrawable="@drawable/ic_calendar">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/evDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:inputType="date"
-                    android:focusable="false"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tiLayoutPetrolStation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="@string/petrol_station_label"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tiLayoutDate"
-                app:startIconDrawable="@drawable/ic_location">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/evPetrolStation"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:inputType="text" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tiLayoutVehicleDropDown"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="@string/vehicle_label"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tiLayoutPetrolStation"
-                app:startIconDrawable="@drawable/ic_vehicle">
-
-
-                <AutoCompleteTextView
-                    android:id="@+id/dropDownVehicle"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:inputType="none" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tiLayoutPrice"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="@string/price_label"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tiLayoutVehicleDropDown"
-                app:startIconDrawable="@drawable/ic_price">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/evPrice"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:inputType="numberDecimal" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guidelineAddTrip"
-                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.5" />
+                android:focusable="false"
+                android:inputType="date" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tiLayoutLitres"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:hint="@string/litres_label"
-                app:layout_constraintEnd_toStartOf="@+id/guidelineAddTrip"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tiLayoutPrice"
-                app:startIconDrawable="@drawable/ic_gas">
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/evLitres"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:inputType="numberDecimal" />
-            </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tiLayoutPetrolStation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="@string/petrol_station_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tiLayoutVehicleDropDown"
+            app:startIconDrawable="@drawable/ic_location">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tiLayoutPencePerLitres"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:hint="@string/pence_per_litre_label"
-                app:layout_constraintEnd_toStartOf="@+id/guidelineAddTrip"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tiLayoutLitres"
-                >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/evPetrolStation"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="text" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/evPencePerLitre"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:inputType="numberDecimal" />
-            </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tiLayoutTripMileage"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:hint="@string/trip_mileage_label"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/guidelineAddTrip"
-                app:layout_constraintTop_toTopOf="@+id/tiLayoutLitres"
-                app:startIconDrawable="@drawable/ic_trip_mileage">
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tiLayoutVehicleDropDown"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="@string/vehicle_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tiLayoutDate"
+            app:startIconDrawable="@drawable/ic_vehicle">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/evTripMileage"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:inputType="numberDecimal" />
-            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tiLayoutTotalMileage"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:hint="@string/total_mileage_label"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/guidelineAddTrip"
-                app:layout_constraintTop_toBottomOf="@+id/tiLayoutLitres">
+            <AutoCompleteTextView
+                android:id="@+id/dropDownVehicle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="none" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/evTotalMileage"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:inputType="number" />
-            </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tiLayoutPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="@string/price_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tiLayoutPetrolStation"
+            app:startIconDrawable="@drawable/ic_price">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/evPrice"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="numberDecimal" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineAddTrip"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tiLayoutLitres"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:hint="@string/litres_label"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineAddTrip"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tiLayoutPrice"
+            app:startIconDrawable="@drawable/ic_gas">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/evLitres"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="numberDecimal" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tiLayoutPencePerLitres"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:hint="@string/pence_per_litre_label"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineAddTrip"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tiLayoutLitres">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/evPencePerLitre"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="numberDecimal" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tiLayoutTripMileage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:hint="@string/trip_mileage_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guidelineAddTrip"
+            app:layout_constraintTop_toTopOf="@+id/tiLayoutLitres"
+            app:startIconDrawable="@drawable/ic_trip_mileage">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/evTripMileage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="numberDecimal" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tiLayoutTotalMileage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:hint="@string/total_mileage_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guidelineAddTrip"
+            app:layout_constraintTop_toBottomOf="@+id/tiLayoutLitres">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/evTotalMileage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

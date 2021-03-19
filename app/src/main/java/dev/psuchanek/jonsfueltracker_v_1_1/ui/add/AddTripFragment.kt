@@ -16,14 +16,17 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.psuchanek.jonsfueltracker_v_1_1.BaseFragment
 import dev.psuchanek.jonsfueltracker_v_1_1.R
 import dev.psuchanek.jonsfueltracker_v_1_1.databinding.FragmentAddTripBinding
-import dev.psuchanek.jonsfueltracker_v_1_1.utils.*
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.Status
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.calculatePencePerLitre
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.createDateString
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.defaultVehicleList
 import timber.log.Timber
 import java.util.*
 
 @AndroidEntryPoint
 class AddTripFragment : BaseFragment(R.layout.fragment_add_trip) {
 
-    private val addTripViewModel: AddTripViewModel by viewModels()
+    private val addViewModel: AddViewModel by viewModels()
 
     private lateinit var binding: FragmentAddTripBinding
 
@@ -43,13 +46,6 @@ class AddTripFragment : BaseFragment(R.layout.fragment_add_trip) {
     ): View? {
         setHasOptionsMenu(true)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_trip, container, false)
-
-        binding.apply {
-            evDate.setOnClickListener { launchDatePickerDialog() }
-            evTripMileage.addTextChangedListener(textWatcher(evTripMileage.id))
-            evPrice.addTextChangedListener(textWatcher(evPrice.id))
-            evLitres.addTextChangedListener(textWatcher(evLitres.id))
-        }
         subscribeObservers()
         return binding.root
     }
@@ -59,13 +55,19 @@ class AddTripFragment : BaseFragment(R.layout.fragment_add_trip) {
         super.onViewCreated(view, savedInstanceState)
         initSpinner()
         initDate()
-        binding.dropDownVehicle.onItemClickListener = spinnerOnItemClickListener()
+        binding.apply {
+            evDate.setOnClickListener { launchDatePickerDialog() }
+            evTripMileage.addTextChangedListener(textWatcher(evTripMileage.id))
+            evPrice.addTextChangedListener(textWatcher(evPrice.id))
+            evLitres.addTextChangedListener(textWatcher(evLitres.id))
+            dropDownVehicle.onItemClickListener = spinnerOnItemClickListener()
+        }
     }
 
     private fun spinnerOnItemClickListener() =
         AdapterView.OnItemClickListener { _, _, position, _ ->
             vehicleId = position + 1
-            addTripViewModel.getCurrentMileage(vehicleId)
+            addViewModel.getCurrentMileage(vehicleId)
         }
 
     private fun insertTrip() {
@@ -73,7 +75,7 @@ class AddTripFragment : BaseFragment(R.layout.fragment_add_trip) {
         val stationName = binding.evPetrolStation.text.toString()
         val price = binding.evPrice.text.toString()
         val fuelVolume = binding.evLitres.text.toString()
-        addTripViewModel.insertTrip(
+        addViewModel.insertTrip(
             stationName = stationName,
             timestamp = timestamp,
             vehicleId = vehicleId,
@@ -173,7 +175,7 @@ class AddTripFragment : BaseFragment(R.layout.fragment_add_trip) {
     }
 
     private fun setDateString(year: Int, monthOfYear: Int, dayOfMonth: Int) {
-        val dateString = "${getDay(dayOfMonth)}/${getMonth(monthOfYear)}/$year"
+        val dateString = createDateString(year, monthOfYear, dayOfMonth)
         binding.evDate.setText(dateString)
     }
 
@@ -189,7 +191,7 @@ class AddTripFragment : BaseFragment(R.layout.fragment_add_trip) {
     }
 
     private fun subscribeObservers() {
-        addTripViewModel.lastKnownMileage.observe(viewLifecycleOwner, Observer {
+        addViewModel.lastKnownMileage.observe(viewLifecycleOwner, Observer {
             lastKnownMileage = it
             if (it == null) {
                 binding.evTotalMileage.setText(0)
@@ -198,13 +200,13 @@ class AddTripFragment : BaseFragment(R.layout.fragment_add_trip) {
 
         })
 
-        addTripViewModel.submitTripStatus.observe(viewLifecycleOwner, Observer { status ->
+        addViewModel.submitStatus.observe(viewLifecycleOwner, Observer { status ->
             when (status) {
                 Status.ERROR -> {
                     showSnackbar(getString(R.string.fileds_missing))
                 }
                 Status.SUCCESS -> {
-                    findNavController().navigate(R.id.action_addTripFragment_to_dashboardFragment)
+                    findNavController().navigate(R.id.action_addFragment_to_dashboardFragment)
                     showSnackbar(getString(R.string.trip_added_successfully))
                 }
                 Status.LOADING -> {
@@ -215,12 +217,12 @@ class AddTripFragment : BaseFragment(R.layout.fragment_add_trip) {
 
         })
 
-        addTripViewModel.observeAllVehicles.observe(viewLifecycleOwner, Observer { vehicleList ->
+        addViewModel.observeAllVehicles.observe(viewLifecycleOwner, Observer { vehicleList ->
             vehicleList.isNotEmpty().let {
                 spinnerVehicleList = List(vehicleList.size, init = {
                     vehicleList[it].vehicleName
                 })
-                spinnerAdapter.notifyDataSetChanged()
+                initSpinner()
             }
 
         })

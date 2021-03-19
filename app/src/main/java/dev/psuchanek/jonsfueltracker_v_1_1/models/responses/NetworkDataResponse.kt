@@ -12,6 +12,11 @@ data class NetworkDataResponse(
     val networkTrips: List<NetworkFuelTrackerTrip>
 )
 
+data class NetworkVehicle(
+    @Json(name = "vehicle_name")
+    val vehicleName: String
+)
+
 data class NetworkFuelTrackerTrip(
     @Json(name = "record_id")
     val id: String,

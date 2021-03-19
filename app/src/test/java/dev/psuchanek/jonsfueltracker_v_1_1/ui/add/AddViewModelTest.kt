@@ -12,10 +12,10 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class AddTripViewModelTest {
+class AddViewModelTest {
 
     //Subject under test
-    private lateinit var viewModel: AddTripViewModel
+    private lateinit var viewModel: AddViewModel
 
     //fake repo
     private lateinit var repository: FakeFuelTrackerRepository
@@ -29,7 +29,7 @@ class AddTripViewModelTest {
 
     @Before
     fun init() {
-        viewModel = AddTripViewModel(FakeFuelTrackerRepository())
+        viewModel = AddViewModel(FakeFuelTrackerRepository())
     }
 
     @Test
@@ -46,7 +46,7 @@ class AddTripViewModelTest {
             tripMileage = "123",
             totalMileage = "123"
         )
-        val result = viewModel.submitTripStatus.getOrAwaitValue()
+        val result = viewModel.submitStatus.getOrAwaitValue()
 
         //Then
         assertThat(result).isEqualTo(Status.SUCCESS)
@@ -66,7 +66,7 @@ class AddTripViewModelTest {
             tripMileage = "123",
             totalMileage = "123"
         )
-        val result = viewModel.submitTripStatus.getOrAwaitValue()
+        val result = viewModel.submitStatus.getOrAwaitValue()
 
         //Then
         assertThat(result).isEqualTo(Status.ERROR)

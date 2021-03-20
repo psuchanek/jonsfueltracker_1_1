@@ -92,7 +92,7 @@ class AddMaintenanceFragment : BaseFragment(R.layout.fragment_add_maintenance) {
         })
 
         addViewModel.observeAllVehicles.observe(viewLifecycleOwner, Observer { vehicleList ->
-            if(vehicleList.isNotEmpty()) {
+            if (vehicleList.isNotEmpty()) {
                 spinnerVehicleList = List(vehicleList.size, init = {
                     vehicleList[it].vehicleName
                 })
@@ -144,6 +144,7 @@ class AddMaintenanceFragment : BaseFragment(R.layout.fragment_add_maintenance) {
         val workShopName = binding.evWorkshopName.text.toString()
         val workDoneDescription = binding.evWorkDoneDescription.text.toString()
         val workPrice = binding.evWorkPrice.text.toString()
+        val mileage = binding.evCurrentMileage.toString().toInt()
 
         addViewModel.insertMaintenance(
             timestamp,
@@ -151,7 +152,7 @@ class AddMaintenanceFragment : BaseFragment(R.layout.fragment_add_maintenance) {
             workShopName,
             workDoneDescription,
             workPrice,
-            lastKnownMileage
+            mileage
         )
     }
 

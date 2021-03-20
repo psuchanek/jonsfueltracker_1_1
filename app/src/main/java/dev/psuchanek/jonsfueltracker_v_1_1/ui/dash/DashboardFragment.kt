@@ -32,6 +32,7 @@ import dev.psuchanek.jonsfueltracker_v_1_1.models.asFuelTrackerTrip
 import dev.psuchanek.jonsfueltracker_v_1_1.ui.MainViewModel
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.*
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 
@@ -45,6 +46,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
     private lateinit var binding: FragmentDashboardBinding
     private var mostRecentTrip: FuelTrackerTrip? = null
     private lateinit var vehicleAdapter: FuelTrackerListAdapter<Vehicle>
+    private val lineDataSets = arrayListOf<LineDataSet>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -193,6 +195,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
 
         })
 
+
         viewModel.mostRecentTrip?.observe(viewLifecycleOwner, Observer { mostRecentTrip ->
             if (mostRecentTrip == null) {
                 return@Observer
@@ -225,6 +228,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
             this.invalidate()
         }
     }
+
 
     private fun getLineDataSet(entries: List<Entry>): LineDataSet {
         return LineDataSet(entries, "").apply {
@@ -282,8 +286,6 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
         }
 
         when (viewID) {
-
-            //TODO: style color according to APP Theme
             R.id.btnThreeMonths -> {
                 swapColors(
                     colorArray[0],

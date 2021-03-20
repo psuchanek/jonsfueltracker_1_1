@@ -1,5 +1,6 @@
 package dev.psuchanek.jonsfueltracker_v_1_1.ui.add
 
+import android.annotation.SuppressLint
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -16,7 +17,9 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.IOException
+import java.util.*
 
+@SuppressLint("DefaultLocale")
 class AddViewModel @ViewModelInject constructor(private val repository: Repository) :
     ViewModel() {
 
@@ -41,6 +44,7 @@ class AddViewModel @ViewModelInject constructor(private val repository: Reposito
             }
         }
     }
+
 
     fun insertTrip(
         timestamp: Long,
@@ -72,7 +76,7 @@ class AddViewModel @ViewModelInject constructor(private val repository: Reposito
                         tripMileage = tripMileage.toFloat(),
                         currentMileage = tripMileage.toInt(),
                         costPerLitre = ppl.toFloat(),
-                        gasStationName = stationName
+                        gasStationName = stationName.toLowerCase(Locale.ROOT).capitalize()
                     )
                 )
                 _submitStatus.postValue(Status.SUCCESS)
@@ -125,8 +129,9 @@ class AddViewModel @ViewModelInject constructor(private val repository: Reposito
                     Maintenance(
                         timestamp = timestamp,
                         vehicleID = vehicleID,
-                        workshopName = workshopName,
-                        workDoneDescription = workDoneDescription,
+                        workshopName = workshopName.toLowerCase(Locale.ROOT).capitalize(),
+                        workDoneDescription = workDoneDescription.toLowerCase(Locale.ROOT)
+                            .capitalize(),
                         workPrice = workPrice.toFloat(),
                         currentMileage = currentMileage
                     )

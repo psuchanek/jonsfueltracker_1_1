@@ -19,6 +19,9 @@ class MainViewModel @ViewModelInject constructor(private val repository: FuelTra
     private val _tripsByTimestampRange = MutableLiveData<Event<List<FuelTrackerTrip>>>()
     val tripsByTimestampRange: LiveData<Event<List<FuelTrackerTrip>>> = _tripsByTimestampRange
 
+//    private val _maintenanceTimestampRange = MutableLiveData<Event<List<Maintenance>>>()
+//    val maintenanceTimestampRange: LiveData<Event<List<Maintenance>>> = _maintenanceTimestampRange
+
 
     val vehicleList = repository.observeAllVehicles
 
@@ -41,17 +44,47 @@ class MainViewModel @ViewModelInject constructor(private val repository: FuelTra
     fun getTripsByTimestampRange(startTime: Long, endTime: Long = System.currentTimeMillis()) {
         viewModelScope.launch {
             try {
-                val resultList = repository.getAllByTimestampRange(startTime, endTime)
-                if (resultList.isNullOrEmpty()) {
+                val resultTripsList = repository.getAllByTimestampRange(startTime, endTime)
+                if (resultTripsList.isNullOrEmpty()) {
                     _tripsByTimestampRange.postValue(Event(emptyList()))
                     return@launch
                 }
-                _tripsByTimestampRange.postValue(Event(resultList.asFuelTrackerTripModel()))
+                _tripsByTimestampRange.postValue(Event(resultTripsList.asFuelTrackerTripModel()))
             } catch (e: Exception) {
                 _tripsByTimestampRange.postValue(Event(emptyList()))
             }
+
+//            try {
+//                val resultMaintenanceList =
+//                    repository.getAllMaintenanceByTimestampRange(startTime, endTime)
+//                if (resultMaintenanceList.isNullOrEmpty()) {
+//                    _maintenanceTimestampRange.postValue(Event(emptyList()))
+//                    return@launch
+//                }
+//                _maintenanceTimestampRange.postValue(Event(resultMaintenanceList))
+//            } catch (e: Exception) {
+//                _maintenanceTimestampRange.postValue(Event(emptyList()))
+//            }
         }
     }
+
+//    fun getMaintenanceByTimestampRange(
+//        startTime: Long,
+//        endTime: Long = System.currentTimeMillis()
+//    ) {
+//        viewModelScope.launch {
+//            try {
+//                val resultList = repository.getAllByTimestampRange(startTime, endTime)
+//                if (resultList.isNullOrEmpty()) {
+//                    _tripsByTimestampRange.postValue(Event(emptyList()))
+//                    return@launch
+//                }
+//                _tripsByTimestampRange.postValue(Event(resultList.asFuelTrackerTripModel()))
+//            } catch (e: Exception) {
+//                _tripsByTimestampRange.postValue(Event(emptyList()))
+//            }
+//        }
+//    }
 
     override fun onCleared() {
         super.onCleared()

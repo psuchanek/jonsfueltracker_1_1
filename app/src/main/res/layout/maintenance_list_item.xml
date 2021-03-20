@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="com.google.android.material.textview.MaterialTextView" />
+
+        <variable
+            name="viewModel"
+            type="dev.psuchanek.jonsfueltracker_v_1_1.ui.history.HistoryViewModel" />
+
         <variable
             name="maintenance"
             type="dev.psuchanek.jonsfueltracker_v_1_1.models.Maintenance" />
@@ -10,7 +19,49 @@
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/list_item_cards_elevation">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/maintenanceItemMainLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/cardview_padding">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvDateItem"
+                style="@style/Labels"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{maintenance.date}"
+                android:textAllCaps="false"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:hint="00-00-0000" />
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvVehicleNameItem"
+                style="@style/Labels"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@+id/tvMaintenancePrice"
+                app:layout_constraintStart_toEndOf="@+id/tvDateItem"
+                app:layout_constraintTop_toTopOf="@+id/tvDateItem"
+                app:vehicleID="@{maintenance.vehicleID}"
+                app:vehicleList="@{viewModel.observeVehicleList}"
+                tools:hint="Mercedes" />
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvMaintenancePrice"
+                style="@style/InfoDataStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{maintenance.maintenancePrice}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
 </layout>

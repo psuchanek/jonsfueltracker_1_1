@@ -1,13 +1,11 @@
 package dev.psuchanek.jonsfueltracker_v_1_1.models
 
-import android.os.Parcelable
 import dev.psuchanek.jonsfueltracker_v_1_1.R
 import dev.psuchanek.jonsfueltracker_v_1_1.models.responses.NetworkFuelTrackerTrip
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.convertTimestampToDateString
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.convertToGallons
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.formatDateForUI
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.round
-import kotlinx.android.parcel.Parcelize
 import java.util.*
 
 

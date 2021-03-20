@@ -10,10 +10,10 @@ import com.google.android.material.tabs.TabLayoutMediator
 import dev.psuchanek.jonsfueltracker_v_1_1.BaseFragment
 import dev.psuchanek.jonsfueltracker_v_1_1.R
 import dev.psuchanek.jonsfueltracker_v_1_1.adapters.AddCollectionAdapter
-import dev.psuchanek.jonsfueltracker_v_1_1.databinding.FragmentAddBinding
+import dev.psuchanek.jonsfueltracker_v_1_1.databinding.FragmentAddCollectionBinding
 
-class AddFragment : BaseFragment(R.layout.fragment_add) {
-    private lateinit var binding: FragmentAddBinding
+class AddCollectionFragment : BaseFragment(R.layout.fragment_add_collection) {
+    private lateinit var binding: FragmentAddCollectionBinding
     private lateinit var viewPager: ViewPager2
     private lateinit var addCollectionAdapter: AddCollectionAdapter
     private lateinit var addTabLayout: TabLayout
@@ -22,7 +22,7 @@ class AddFragment : BaseFragment(R.layout.fragment_add) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentAddBinding.inflate(inflater, container, false)
+        binding = FragmentAddCollectionBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -35,13 +35,13 @@ class AddFragment : BaseFragment(R.layout.fragment_add) {
         TabLayoutMediator(addTabLayout, viewPager) { tab, position ->
             when (position) {
                 0 -> {
-                    tab.text = "TRIP"
+                    tab.text = resources.getString(R.string.trips_tab_label)
                 }
                 1 -> {
-                    tab.text = "MAINTENANCE"
+                    tab.text = resources.getString(R.string.maintenance_tab_label)
                 }
                 2 -> {
-                    tab.text = "VEHICLE"
+                    tab.text = resources.getString(R.string.vehicles_tab_label)
                 }
             }
         }.attach()

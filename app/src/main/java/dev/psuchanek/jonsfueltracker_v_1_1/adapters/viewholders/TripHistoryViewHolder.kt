@@ -7,13 +7,18 @@ import androidx.recyclerview.widget.RecyclerView
 import dev.psuchanek.jonsfueltracker_v_1_1.R
 import dev.psuchanek.jonsfueltracker_v_1_1.databinding.TripHistoryListItemBinding
 import dev.psuchanek.jonsfueltracker_v_1_1.models.FuelTrackerTrip
+import dev.psuchanek.jonsfueltracker_v_1_1.ui.history.HistoryViewModel
 
 class TripHistoryViewHolder(val binding: TripHistoryListItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(
-        trip: FuelTrackerTrip
+        trip: FuelTrackerTrip,
+        viewModel: HistoryViewModel? = null
     ) {
+        viewModel?.let {
+            binding.viewModel = viewModel
+        }
         binding.trip = trip
         binding.executePendingBindings()
     }

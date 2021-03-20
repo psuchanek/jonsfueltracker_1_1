@@ -35,14 +35,14 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.75" />
 
-                       <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvVehicleName"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{vehicle.vehicleName}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="@{vehicle.vehicleName}"/>
 
             <TextView
                 android:id="@+id/tvODDLabel"
@@ -50,9 +50,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/odo_label"
+                app:layout_constraintBottom_toBottomOf="@id/tvVehicleName"
                 app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="@id/tvVehicleName"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tvVehicleMileage"
@@ -68,8 +68,8 @@
                 style="@style/Labels"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/avg_mpg_label"
                 android:layout_marginTop="@dimen/top_margin_in_vehicle_item"
+                android:text="@string/avg_mpg_label"
                 app:layout_constraintStart_toStartOf="@+id/tvVehicleName"
                 app:layout_constraintTop_toBottomOf="@+id/tvVehicleName" />
 
@@ -78,11 +78,10 @@
                 style="@style/Labels"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/avg_mpl_label"
                 android:layout_marginTop="@dimen/top_margin_in_vehicle_item"
+                android:text="@string/avg_mpl_label"
                 app:layout_constraintStart_toStartOf="@+id/tvVehicleName"
                 app:layout_constraintTop_toBottomOf="@+id/tvAvgMpgLabel" />
-
 
 
             <TextView
@@ -99,8 +98,8 @@
                 style="@style/Labels"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/avg_ppl_label"
                 android:layout_marginTop="@dimen/top_margin_in_vehicle_item"
+                android:text="@string/avg_ppl_label"
                 app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
                 app:layout_constraintTop_toBottomOf="@+id/tvAvgPpmLabel" />
 
@@ -132,7 +131,6 @@
                 app:layout_constraintTop_toTopOf="@id/tvAvgMplLabel" />
 
 
-
             <TextView
                 android:id="@+id/tvAvgPpl"
                 style="@style/InfoDataStyle"
@@ -141,7 +139,6 @@
                 android:text="@{vehicle.avgPPLString}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tvAvgPplLabel" />
-
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

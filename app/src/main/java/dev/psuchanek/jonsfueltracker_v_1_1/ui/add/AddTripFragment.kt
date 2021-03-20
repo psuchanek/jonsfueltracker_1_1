@@ -218,13 +218,13 @@ class AddTripFragment : BaseFragment(R.layout.fragment_add_trip) {
         })
 
         addViewModel.observeAllVehicles.observe(viewLifecycleOwner, Observer { vehicleList ->
-            vehicleList.isNotEmpty().let {
+            if(vehicleList.isNotEmpty()) {
                 spinnerVehicleList = List(vehicleList.size, init = {
                     vehicleList[it].vehicleName
                 })
                 initSpinner()
+                Timber.d("DEBUG: vehicleList: $vehicleList")
             }
-
         })
     }
 

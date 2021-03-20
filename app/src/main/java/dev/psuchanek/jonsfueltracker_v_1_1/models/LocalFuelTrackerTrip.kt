@@ -52,7 +52,7 @@ fun List<LocalFuelTrackerTrip>.asFuelTrackerTripModel(): List<FuelTrackerTrip> {
             tripMileage = it.tripMileage,
             currentMileage = it.currentMileage,
             costPerLitre = it.costPerLitre,
-            gasStationName = it.gasStationName,
+            gasStationName = if (it.gasStationName.isEmpty()) "Location unknown" else it.gasStationName,
             isSynced = it.isSynced
         )
     }
@@ -68,7 +68,7 @@ fun LocalFuelTrackerTrip.asFuelTrackerTrip(): FuelTrackerTrip {
         tripMileage = this.tripMileage,
         currentMileage = this.currentMileage,
         costPerLitre = this.costPerLitre,
-        gasStationName = this.gasStationName,
+        gasStationName = if (this.gasStationName.isEmpty()) "Location unknown" else this.gasStationName,
         isSynced = this.isSynced
     )
 }

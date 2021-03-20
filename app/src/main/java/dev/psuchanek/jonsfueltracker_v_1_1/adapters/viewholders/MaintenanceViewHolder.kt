@@ -7,11 +7,15 @@ import androidx.recyclerview.widget.RecyclerView
 import dev.psuchanek.jonsfueltracker_v_1_1.R
 import dev.psuchanek.jonsfueltracker_v_1_1.databinding.MaintenanceListItemBinding
 import dev.psuchanek.jonsfueltracker_v_1_1.models.Maintenance
+import dev.psuchanek.jonsfueltracker_v_1_1.ui.history.HistoryViewModel
 
 class MaintenanceViewHolder(private val binding: MaintenanceListItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(maintenance: Maintenance) {
+    fun bind(maintenance: Maintenance, viewModel: HistoryViewModel? = null) {
+        viewModel?.let {
+            binding.viewModel = viewModel
+        }
         binding.maintenance = maintenance
         binding.executePendingBindings()
     }

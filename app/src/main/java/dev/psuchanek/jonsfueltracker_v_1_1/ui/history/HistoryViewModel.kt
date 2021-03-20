@@ -47,6 +47,7 @@ class HistoryViewModel @ViewModelInject constructor(private val repository: Fuel
     }
 
     val getAllTrips = _allTrips
+    val observeVehicleList = repository.observeAllVehicles
 
     init {
         addSources()
@@ -168,6 +169,16 @@ class HistoryViewModel @ViewModelInject constructor(private val repository: Fuel
     fun insertTrip(trip: FuelTrackerTrip) =
         viewModelScope.launch {
             repository.insertTrip(trip)
+        }
+
+    fun deleteMaintenance(maintenanceID: String) =
+        viewModelScope.launch {
+            repository.deleteMaintenanceByID(maintenanceID)
+        }
+
+    fun insertMaintenance(maintenance: Maintenance) =
+        viewModelScope.launch {
+            repository.insertMaintenance(maintenance)
         }
 
 

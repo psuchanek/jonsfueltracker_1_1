@@ -10,6 +10,7 @@ const val TRIP_HISTORY = 3
 
 // Fragment add tab
 const val FRAGMENT_ADD_TAB_COUNT = 3
+const val FRAGMENT_HISTORY_TAB_COUNT = 2
 
 //Services
 const val BASE_URL = "http://fuel.tecserv-uk.co.uk/"
@@ -39,3 +40,4 @@ const val DECORATION_SPACING = 5
 const val VEHICLE_ONE = "Nissan Micra"
 const val VEHICLE_TWO = "Midget"
 const val VEHICLE_THREE = "Mercedes Sprinter"
+const val UNKNOWN_VEHICLE = "Unknown vehicle"

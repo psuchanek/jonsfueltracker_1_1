@@ -3,10 +3,16 @@ package dev.psuchanek.jonsfueltracker_v_1_1.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.marginTop
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import dev.psuchanek.jonsfueltracker_v_1_1.databinding.ActivityMainBinding
 import timber.log.Timber
 import java.sql.Timestamp
@@ -144,6 +150,82 @@ fun changeMargin(bottomBarVisible: Boolean, binding: ActivityMainBinding) {
 
 //Default vehicle list
 val defaultVehicleList = listOf<String>(VEHICLE_ONE, VEHICLE_TWO, VEHICLE_THREE)
+
+//ItemTouchHelper utility
+fun setupItemTouchHelper(
+    deleteIcon: Drawable,
+    actionCheckBlock: (isCurrentlyActive: Boolean) -> Unit,
+    onSwipeBlock: (viewHolder: RecyclerView.ViewHolder) -> Unit
+): ItemTouchHelper.SimpleCallback {
+    return object : ItemTouchHelper.SimpleCallback(
+        0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+    ) {
+
+        val background: ColorDrawable = ColorDrawable(Color.parseColor("#ba6b6c"))
+        val backgroundCornerOffset = 20
+
+        override fun onChildDraw(
+            c: Canvas,
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            dX: Float,
+            dY: Float,
+            actionState: Int,
+            isCurrentlyActive: Boolean
+        ) {
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+            if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+                actionCheckBlock(isCurrentlyActive)
+            }
+            val itemView = viewHolder.itemView
+            val iconMargin = (itemView.height - deleteIcon.intrinsicHeight) / 2
+            val iconTop = itemView.top + (itemView.height - deleteIcon.intrinsicHeight) / 2
+            val iconBottom = iconTop + deleteIcon.intrinsicHeight
+
+            when {
+                dX > 0 -> {
+                    val iconLeft = itemView.left + iconMargin + deleteIcon.intrinsicWidth
+                    val iconRight = itemView.left + iconMargin
+                    deleteIcon.setBounds(iconRight, iconTop, iconLeft, iconBottom)
+
+                    background.setBounds(
+                        itemView.left,
+                        itemView.top,
+                        itemView.left + (dX.toInt() + backgroundCornerOffset),
+                        itemView.bottom
+                    )
+                }
+                dX < 0 -> {
+                    val iconLeft = itemView.right - iconMargin - deleteIcon.intrinsicWidth
+                    val iconRight = itemView.right - iconMargin
+                    deleteIcon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+
+                    background.setBounds(
+                        itemView.right + (dX.toInt() - backgroundCornerOffset),
+                        itemView.top,
+                        itemView.right,
+                        itemView.bottom
+                    )
+                }
+                else -> background.setBounds(0, 0, 0, 0)
+            }
+            background.draw(c)
+            deleteIcon.draw(c)
+        }
+
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean {
+            return true
+        }
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            onSwipeBlock(viewHolder)
+        }
+    }
+}
 
 
 

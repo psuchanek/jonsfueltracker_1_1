@@ -9,6 +9,7 @@
     <dimen name="toolbar_height">48dp</dimen>
     <dimen name="parent_layout_padding">8dp</dimen>
     <dimen name="nav_container_margin">?attr/actionBarSize</dimen>
+    <dimen name="list_item_cards_elevation">5dp</dimen>
 
 
 </resources>

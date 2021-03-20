@@ -7,11 +7,13 @@ import androidx.recyclerview.widget.RecyclerView
 import dev.psuchanek.jonsfueltracker_v_1_1.R
 import dev.psuchanek.jonsfueltracker_v_1_1.databinding.VehicleListItemBinding
 import dev.psuchanek.jonsfueltracker_v_1_1.models.Vehicle
+import dev.psuchanek.jonsfueltracker_v_1_1.ui.MainViewModel
 
 class VehicleViewHolder(val binding: VehicleListItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(vehicle: Vehicle) {
+    fun bind(vehicle: Vehicle,
+    viewModel: MainViewModel? = null) {
         binding.vehicle = vehicle
         binding.executePendingBindings()
     }

@@ -9,7 +9,7 @@ import dev.psuchanek.jonsfueltracker_v_1_1.models.Vehicle
 
 @Database(
     entities = [LocalFuelTrackerTrip::class, LocallyDeletedTrip::class, Vehicle::class, Maintenance::class],
-    version = 3,
+    version = 1,
     exportSchema = false
 )
 abstract class FuelTrackerDatabase : RoomDatabase() {

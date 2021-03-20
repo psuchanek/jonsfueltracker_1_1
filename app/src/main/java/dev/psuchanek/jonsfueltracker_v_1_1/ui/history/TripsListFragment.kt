@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -19,20 +18,19 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.psuchanek.jonsfueltracker_v_1_1.BaseFragment
 import dev.psuchanek.jonsfueltracker_v_1_1.R
 import dev.psuchanek.jonsfueltracker_v_1_1.adapters.FuelTrackerListAdapter
-import dev.psuchanek.jonsfueltracker_v_1_1.databinding.FragmentHistoryBinding
+import dev.psuchanek.jonsfueltracker_v_1_1.databinding.FragmentTripsBinding
 import dev.psuchanek.jonsfueltracker_v_1_1.models.FuelTrackerTrip
 import dev.psuchanek.jonsfueltracker_v_1_1.models.asFuelTrackerTripModel
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.*
 
 @AndroidEntryPoint
-class HistoryFragment : BaseFragment(R.layout.fragment_history) {
+class TripsListFragment : BaseFragment(R.layout.fragment_trips) {
 
-    //TODO: fix animation arrow recycling behavior and implement sorting function
 
-    private lateinit var binding: FragmentHistoryBinding
+    private lateinit var binding: FragmentTripsBinding
     private val historyViewModel: HistoryViewModel by viewModels()
-    private lateinit var tripAdapter: FuelTrackerListAdapter<FuelTrackerTrip>
-    private var icon: Drawable? = null
+    private lateinit var listAdapter: FuelTrackerListAdapter<FuelTrackerTrip>
+    private var deleteIcon: Drawable? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,9 +38,9 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_history, container, false)
-        icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_trash, null)
-        tripAdapter = FuelTrackerListAdapter(TRIP_HISTORY)
+        binding = FragmentTripsBinding.inflate(inflater, container, false)
+        deleteIcon = ResourcesCompat.getDrawable(resources, R.drawable.ic_trash, null)
+        listAdapter = FuelTrackerListAdapter(TRIP_HISTORY, historyViewModel)
         subscribeObservers()
 
         return binding.root
@@ -55,7 +53,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
     }
 
     private fun setupRefresher() {
-        binding.swipeRefresherHistory.setOnRefreshListener {
+        binding.swipeRefresherTrips.setOnRefreshListener {
             subscribeSingleObserver()
             historyViewModel.syncAllTrips()
 
@@ -64,7 +62,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
 
     private fun setupRecyclerView() {
         binding.recyclerViewHistory.apply {
-            adapter = tripAdapter
+            adapter = listAdapter
             addItemDecoration(CustomItemDecoration(DECORATION_SPACING))
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -94,15 +92,15 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
                 historyViewModel.swipeLayoutActive(isCurrentlyActive)
             }
             val itemView = viewHolder.itemView
-            val iconMargin = (itemView.height - icon!!.intrinsicHeight) / 2
-            val iconTop = itemView.top + (itemView.height - icon!!.intrinsicHeight) / 2
-            val iconBottom = iconTop + icon!!.intrinsicHeight
+            val iconMargin = (itemView.height - deleteIcon!!.intrinsicHeight) / 2
+            val iconTop = itemView.top + (itemView.height - deleteIcon!!.intrinsicHeight) / 2
+            val iconBottom = iconTop + deleteIcon!!.intrinsicHeight
 
             when {
                 dX > 0 -> {
-                    val iconLeft = itemView.left + iconMargin + icon!!.intrinsicWidth
+                    val iconLeft = itemView.left + iconMargin + deleteIcon!!.intrinsicWidth
                     val iconRight = itemView.left + iconMargin
-                    icon!!.setBounds(iconRight, iconTop, iconLeft, iconBottom)
+                    deleteIcon!!.setBounds(iconRight, iconTop, iconLeft, iconBottom)
 
                     background.setBounds(
                         itemView.left,
@@ -112,9 +110,9 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
                     )
                 }
                 dX < 0 -> {
-                    val iconLeft = itemView.right - iconMargin - icon!!.intrinsicWidth
+                    val iconLeft = itemView.right - iconMargin - deleteIcon!!.intrinsicWidth
                     val iconRight = itemView.right - iconMargin
-                    icon!!.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+                    deleteIcon!!.setBounds(iconLeft, iconTop, iconRight, iconBottom)
 
                     background.setBounds(
                         itemView.right + (dX.toInt() - backgroundCornerOffset),
@@ -126,7 +124,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
                 else -> background.setBounds(0, 0, 0, 0)
             }
             background.draw(c)
-            icon!!.draw(c)
+            deleteIcon!!.draw(c)
         }
 
         override fun onMove(
@@ -139,7 +137,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
             val position = viewHolder.layoutPosition
-            val trip = tripAdapter.currentList[position]
+            val trip = listAdapter.currentList[position]
             showDeleteDialog(trip)
         }
     }
@@ -165,7 +163,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
                 }.show()
             }
             .setNegativeButton("CANCEL") { dialog, _ ->
-                tripAdapter.notifyDataSetChanged()
+                listAdapter.notifyDataSetChanged()
                 dialog.cancel()
             }
         dialogBuilder.show()
@@ -184,7 +182,7 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
                 val result = it.peekContent()
                 when (result.status) {
                     Status.SUCCESS -> {
-                        binding.swipeRefresherHistory.isRefreshing = false
+                        binding.swipeRefresherTrips.isRefreshing = false
 
                     }
                     Status.ERROR -> {
@@ -194,14 +192,14 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
                             }
                         }
 
-                        binding.swipeRefresherHistory.isRefreshing = false
+                        binding.swipeRefresherTrips.isRefreshing = false
 
                     }
                     Status.LOADING -> {
                         result.data?.let { trips ->
-                            tripAdapter.submitList(trips.asFuelTrackerTripModel())
+                            listAdapter.submitList(trips.asFuelTrackerTripModel())
                         }
-                        binding.swipeRefresherHistory.isRefreshing = true
+                        binding.swipeRefresherTrips.isRefreshing = true
                     }
                 }
             }
@@ -212,20 +210,20 @@ class HistoryFragment : BaseFragment(R.layout.fragment_history) {
     private fun subscribeObservers() {
         historyViewModel.sortedTripHistory.observe(viewLifecycleOwner, Observer { sortedTripList ->
 
-            tripAdapter.apply {
+            listAdapter.apply {
                 submitList(null)
                 submitList(sortedTripList)
             }
         })
         historyViewModel.swipeLayout.observe(viewLifecycleOwner, Observer {
-            binding.swipeRefresherHistory.isEnabled = !it
+            binding.swipeRefresherTrips.isEnabled = !it
         })
     }
 
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
-        inflater.inflate(R.menu.filter_menu, menu)
+        inflater.inflate(R.menu.filter_trips_menu, menu)
         inflater.inflate(R.menu.settings_menu, menu)
 
     }

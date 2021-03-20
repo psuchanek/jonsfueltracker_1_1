@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         navHostFragment =
             supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
 
-        appBarConfig = AppBarConfiguration(setOf(R.id.dashboardFragment, R.id.historyFragment))
+        appBarConfig = AppBarConfiguration(setOf(R.id.dashboardFragment, R.id.historyCollectionFragment))
         setupActionBarWithNavController(navHostFragment.findNavController(), appBarConfig)
 
         binding.bottomNavigationView.apply {
@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     private fun destinationChangeListener() =
         NavController.OnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.dashboardFragment, R.id.historyFragment -> {
+                R.id.dashboardFragment, R.id.historyCollectionFragment -> {
                     if(isKeyboardVisible) hideKeyboardWhenDisplayed(this)
                     with(binding) {
                         changeMargin(true, binding)

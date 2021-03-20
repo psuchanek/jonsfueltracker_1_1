@@ -9,7 +9,7 @@
             name="viewModel"
             type="dev.psuchanek.jonsfueltracker_v_1_1.ui.history.HistoryViewModel" />
 
-        <import type="android.view.View" />
+        <import type="com.google.android.material.textview.MaterialTextView" />
 
         <variable
             name="trip"
@@ -24,144 +24,139 @@
         android:layout_height="wrap_content"
         app:cardElevation="5dp">
 
-        <LinearLayout
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/tripItemMainLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:padding="@dimen/cardview_padding">
 
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvStationName"
+                style="@style/MainValuesDisplayed"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@{trip.gasStationName}"
+                app:layout_constraintEnd_toStartOf="@+id/stationNameEndGuideline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvDateItem"
+                tools:hint="123" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/tripItemMainLayout"
-                android:layout_width="match_parent"
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvPriceItem"
+                style="@style/MainValuesDisplayed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="@{trip.fillUpCost}"
+                app:layout_constraintBottom_toBottomOf="@+id/tvStationName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tvStationName"
+                tools:hint="$232" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/itemGuidelineLeft"
+                android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:padding="@dimen/cardview_padding">
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.15" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tvStationName"
-                    style="@style/MainValuesDisplayed"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:text="@{trip.gasStationName}"
-                    app:layout_constraintEnd_toStartOf="@+id/stationNameEndGuideline"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvDateItem"
-                    tools:hint="123" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/stationNameEndGuideline"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.75" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tvPriceItem"
-                    style="@style/MainValuesDisplayed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:text="@{trip.fillUpCost}"
-                    app:layout_constraintBottom_toBottomOf="@+id/tvStationName"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/tvStationName"
-                    tools:hint="$232" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/itemGuidelineRight"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.85" />
 
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/itemGuidelineLeft"
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.15" />
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/stationNameEndGuideline"
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.75" />
-
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/itemGuidelineRight"
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.85" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tvDateItem"
-                    style="@style/Labels"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{trip.date}"
-                    android:textAllCaps="false"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:hint="00-00-0000" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvDateItem"
+                style="@style/Labels"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{trip.date}"
+                android:textAllCaps="false"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:hint="00-00-0000" />
 
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tvVehicleNameItem"
-                    style="@style/Labels"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{trip.vehicleName}"
-                    app:layout_constraintEnd_toStartOf="@+id/tvIsSynced"
-                    app:layout_constraintStart_toEndOf="@+id/tvDateItem"
-                    app:layout_constraintTop_toTopOf="@+id/tvDateItem"
-                    tools:hint="Mercedes" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvVehicleNameItem"
+                style="@style/Labels"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@+id/tvIsSynced"
+                app:layout_constraintStart_toEndOf="@+id/tvDateItem"
+                app:layout_constraintTop_toTopOf="@+id/tvDateItem"
+                app:vehicleID="@{trip.vehicleId}"
+                app:vehicleList="@{viewModel.observeVehicleList}"
+                tools:hint="Mercedes" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:src="@{trip.synced ? @drawable/ic_synced : @drawable/ic_unsynced}"
-                    app:layout_constraintBottom_toBottomOf="@+id/tvIsSynced"
-                    app:layout_constraintEnd_toStartOf="@+id/tvIsSynced"
-                    app:layout_constraintTop_toTopOf="@+id/tvIsSynced" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:src="@{trip.synced ? @drawable/ic_synced : @drawable/ic_unsynced}"
+                app:layout_constraintBottom_toBottomOf="@+id/tvIsSynced"
+                app:layout_constraintEnd_toStartOf="@+id/tvIsSynced"
+                app:layout_constraintTop_toTopOf="@+id/tvIsSynced" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tvIsSynced"
-                    style="@style/InfoDataStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:text="@{trip.sync}"
-                    app:layout_constraintBottom_toBottomOf="@id/tvDateItem"
-                    app:layout_constraintEnd_toEndOf="@+id/tvPriceItem"
-                    tools:hint="Synced" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvIsSynced"
+                style="@style/InfoDataStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="@{trip.sync}"
+                app:layout_constraintBottom_toBottomOf="@id/tvDateItem"
+                app:layout_constraintEnd_toEndOf="@+id/tvPriceItem"
+                tools:hint="Synced" />
 
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tvTripDistance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:hint="123"
-                    android:layout_marginTop="4dp"
-                    android:text="@{trip.lastTripDistance}"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvStationName" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvTripDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="4dp"
+                android:hint="123"
+                android:text="@{trip.lastTripDistance}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvStationName" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tvMPG"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:hint="123"
-                    android:text="@{trip.milesPerGallon}"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/tvTripDistance" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvMPG"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:hint="123"
+                android:text="@{trip.milesPerGallon}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tvTripDistance" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tvLitres"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:hint="123"
-                    android:text="@{trip.litres}"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvTripDistance" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvLitres"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:hint="123"
+                android:text="@{trip.litres}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvTripDistance" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tvPPL"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:hint="123"
-                    android:text="@{trip.ppl}"
-                    app:layout_constraintEnd_toEndOf="@+id/tvMPG"
-                    app:layout_constraintTop_toTopOf="@+id/tvLitres" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvPPL"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:hint="123"
+                android:text="@{trip.ppl}"
+                app:layout_constraintEnd_toEndOf="@+id/tvMPG"
+                app:layout_constraintTop_toTopOf="@+id/tvLitres" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

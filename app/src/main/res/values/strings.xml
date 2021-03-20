@@ -11,6 +11,12 @@
     <string name="fields_missing">Please fill in all fields.</string>
     <string name="trip_added_successfully">Trip added successfully.</string>
     <string name="something_went_wrong">Something went wrong! Please try again.</string>
+    <string name="maintenance_record_deleted">Maintenance record deleted</string>
+    <string name="vehicle_added_successfully">Vehicle added successfully</string>
+    <string name="maintenance_added_successfully">Maintenance added successfully</string>
+    <string name="trip_record_deleted">Trip record was successfully deleted.</string>
+    <string name="undo">Undo</string>
+    <string name="fileds_missing">All fields are required.</string>
 
     //Dialog messages
     <string name="delete_alert_dialog_message">Delete selected record?</string>
@@ -39,10 +45,7 @@
     <string name="mercedes_sprinter">Mercedes Sprinter</string>
     <string name="unknown_car">Unknown car</string>
     <string name="sort_by">Sort by:</string>
-    <string name="fileds_missing">All fields are required.</string>
     <string name="no_data">No data</string>
-    <string name="undo">Undo</string>
-    <string name="trip_record_deleted">Trip record was successfully deleted.</string>
 
 
 
@@ -53,6 +56,7 @@
     <string name="all_bar_chart">All</string>
     <string name="vehicles_tab_label">vehicles</string>
     <string name="maintenance_tab_label">maintenance</string>
+    <string name="trips_tab_label">trips</string>
     <string name="distance_label">distance</string>
     <string name="fuel_cost_label">cost</string>
     <string name="fuel_volume_label">volume</string>
@@ -80,11 +84,13 @@
     <string name="price_high_to_low">Price: High to Low</string>
     <string name="mileage_low_to_high">Mileage: Low to High</string>
     <string name="mileage_high_to_low">Mileage: High to Low</string>
+
+
     <string name="version">FuelTracker v1.0</string>
-    <string name="vehicle_added_successfully">Vehicle added successfully</string>
     <string name="new_vehicle_label">New vehicle name</string>
     <string name="workshop_name_label">Workshop name</string>
     <string name="work_done_description_label">Work done description</string>
     <string name="current_mileage_label">Current mileage</string>
+
 
 </resources>

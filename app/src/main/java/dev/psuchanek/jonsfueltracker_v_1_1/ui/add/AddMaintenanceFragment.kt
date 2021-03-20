@@ -16,6 +16,7 @@ import dev.psuchanek.jonsfueltracker_v_1_1.databinding.FragmentAddMaintenanceBin
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.Status
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.createDateString
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.defaultVehicleList
+import timber.log.Timber
 import java.util.*
 
 @AndroidEntryPoint
@@ -80,7 +81,7 @@ class AddMaintenanceFragment : BaseFragment(R.layout.fragment_add_maintenance) {
                 }
                 Status.SUCCESS -> {
                     findNavController().navigate(R.id.action_addFragment_to_dashboardFragment)
-                    showSnackbar(getString(R.string.trip_added_successfully))
+                    showSnackbar(getString(R.string.maintenance_added_successfully))
                 }
                 Status.LOADING -> {
                     /* NO-OP */
@@ -91,13 +92,13 @@ class AddMaintenanceFragment : BaseFragment(R.layout.fragment_add_maintenance) {
         })
 
         addViewModel.observeAllVehicles.observe(viewLifecycleOwner, Observer { vehicleList ->
-            vehicleList.isNotEmpty().let {
+            if(vehicleList.isNotEmpty()) {
                 spinnerVehicleList = List(vehicleList.size, init = {
                     vehicleList[it].vehicleName
                 })
                 initSpinner()
+                Timber.d("DEBUG: vehicleList: $vehicleList")
             }
-
         })
     }
 

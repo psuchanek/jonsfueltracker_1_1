@@ -41,7 +41,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/stationNameEndGuideline"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvDateItem"
-                tools:hint="123" />
+                tools:hint="Station" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvPriceItem"

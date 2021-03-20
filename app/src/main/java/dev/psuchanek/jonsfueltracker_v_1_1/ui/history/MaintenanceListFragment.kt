@@ -20,10 +20,7 @@ import dev.psuchanek.jonsfueltracker_v_1_1.R
 import dev.psuchanek.jonsfueltracker_v_1_1.adapters.FuelTrackerListAdapter
 import dev.psuchanek.jonsfueltracker_v_1_1.databinding.FragmentMaintenaceBinding
 import dev.psuchanek.jonsfueltracker_v_1_1.models.Maintenance
-import dev.psuchanek.jonsfueltracker_v_1_1.utils.CustomItemDecoration
-import dev.psuchanek.jonsfueltracker_v_1_1.utils.DECORATION_SPACING
-import dev.psuchanek.jonsfueltracker_v_1_1.utils.MAINTENANCE
-import dev.psuchanek.jonsfueltracker_v_1_1.utils.SortType
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.*
 
 @AndroidEntryPoint
 class MaintenanceListFragment : BaseFragment(R.layout.fragment_maintenace) {
@@ -66,6 +63,7 @@ class MaintenanceListFragment : BaseFragment(R.layout.fragment_maintenace) {
 
     private fun setupRefresher() {
         binding.swipeRefresherMaintenance.setOnRefreshListener {
+            subscribeSingleObserver()
             historyViewModel.syncAllTrips()
         }
     }
@@ -140,6 +138,34 @@ class MaintenanceListFragment : BaseFragment(R.layout.fragment_maintenace) {
         }
     }
 
+    private fun subscribeSingleObserver() {
+        historyViewModel.getAllTrips.observe(viewLifecycleOwner, Observer { event ->
+            event?.let {
+                val result = it.peekContent()
+                when (result.status) {
+                    Status.SUCCESS -> {
+                        binding.swipeRefresherMaintenance.isRefreshing = false
+
+                    }
+                    Status.ERROR -> {
+                        it.getContentIfNotHandled()?.let { errorResource ->
+                            errorResource.message?.let { errorMessage ->
+                                showSnackbar(errorMessage)
+                            }
+                        }
+
+                        binding.swipeRefresherMaintenance.isRefreshing = false
+
+                    }
+                    Status.LOADING -> {
+                        binding.swipeRefresherMaintenance.isRefreshing = true
+                    }
+                }
+            }
+
+        })
+    }
+
     private fun subscribeObservers() {
         historyViewModel.sortedMaintenanceHistory.observe(
             viewLifecycleOwner,
@@ -199,19 +225,19 @@ class MaintenanceListFragment : BaseFragment(R.layout.fragment_maintenace) {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.sortDateNewToOld -> {
-                historyViewModel.sortTrips(SortType.DATE_DESC)
+                historyViewModel.sortMaintenance(SortType.DATE_DESC)
                 true
             }
             R.id.sortDateOldToNew -> {
-                historyViewModel.sortTrips(SortType.DATE_ASC)
+                historyViewModel.sortMaintenance(SortType.DATE_ASC)
                 true
             }
             R.id.sortPriceLowToHigh -> {
-                historyViewModel.sortTrips(SortType.PRICE_ASC)
+                historyViewModel.sortMaintenance(SortType.PRICE_ASC)
                 true
             }
             R.id.sortPriceHighToLow -> {
-                historyViewModel.sortTrips(SortType.PRICE_DESC)
+                historyViewModel.sortMaintenance(SortType.PRICE_DESC)
                 true
             }
             else -> super.onOptionsItemSelected(item)

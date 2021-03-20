@@ -30,7 +30,6 @@
     <string name="pence_per_litre_label">Pence per litre</string>
     <string name="trip_mileage_label">Trip mileage</string>
     <string name="total_mileage_label">Total mileage</string>
-    <string name="vehicle_label">Vehicle</string>
     <string name="fab_service_label">Service</string>
     <string name="add_trip_label">ADD TRIP</string>
     <string name="add_label">ADD</string>
@@ -54,9 +53,13 @@
     <string name="one_year_bar_chart">1y</string>
     <string name="three_years_bar_chart">3y</string>
     <string name="all_bar_chart">All</string>
+
     <string name="vehicles_tab_label">vehicles</string>
     <string name="maintenance_tab_label">maintenance</string>
     <string name="trips_tab_label">trips</string>
+    <string name="vehicle_tab_label">Vehicle</string>
+    <string name="trip_tab_label">trip</string>
+
     <string name="distance_label">distance</string>
     <string name="fuel_cost_label">cost</string>
     <string name="fuel_volume_label">volume</string>

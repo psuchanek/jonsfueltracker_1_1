@@ -29,4 +29,5 @@ interface MaintenanceDao {
 
     @Query("SELECT * FROM maintenance_table ORDER BY price DESC")
     fun observeAllMaintenanceByPrice(): LiveData<List<Maintenance>>
+
 }

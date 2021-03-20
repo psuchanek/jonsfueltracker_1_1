@@ -61,6 +61,48 @@
                 android:text="@{maintenance.maintenancePrice}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvWorkshopName"
+                style="@style/MainValuesDisplayed"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@{maintenance.workshopName}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvDateItem"
+                tools:hint="Station" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvWorkDoneDescription"
+                style="@style/InfoDataStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{maintenance.workDoneDescription}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvWorkshopName"
+                android:hint="Description"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvODOLabel"
+                style="@style/Labels"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/odo_label"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvWorkDoneDescription"
+                android:hint="ODO:"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvODO"
+                style="@style/Labels"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{maintenance.mileage}"
+                app:layout_constraintStart_toEndOf="@id/tvODOLabel"
+                android:layout_marginStart="8dp"
+                app:layout_constraintTop_toBottomOf="@id/tvWorkDoneDescription"
+                android:hint="123"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>

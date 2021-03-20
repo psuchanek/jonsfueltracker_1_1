@@ -35,13 +35,13 @@ class AddCollectionFragment : BaseFragment(R.layout.fragment_add_collection) {
         TabLayoutMediator(addTabLayout, viewPager) { tab, position ->
             when (position) {
                 0 -> {
-                    tab.text = resources.getString(R.string.trips_tab_label)
+                    tab.text = resources.getString(R.string.trip_tab_label)
                 }
                 1 -> {
                     tab.text = resources.getString(R.string.maintenance_tab_label)
                 }
                 2 -> {
-                    tab.text = resources.getString(R.string.vehicles_tab_label)
+                    tab.text = resources.getString(R.string.vehicle_tab_label)
                 }
             }
         }.attach()

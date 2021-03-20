@@ -121,6 +121,39 @@ class HistoryViewModel @ViewModelInject constructor(private val repository: Fuel
 
     }
 
+    fun sortMaintenance(sortType: SortType) {
+        when (sortType) {
+            SortType.DATE_ASC -> {
+                maintenanceSortedByDate.value?.let {
+                    sortedMaintenanceHistory.value = it.reversed()
+
+                }
+            }
+            SortType.DATE_DESC -> {
+                maintenanceSortedByDate.value?.let {
+                    sortedMaintenanceHistory.value = it
+
+                }
+            }
+
+            SortType.PRICE_ASC -> {
+                maintenanceSortedByPrice.value?.let {
+                    sortedMaintenanceHistory.value = it.reversed()
+                }
+            }
+            SortType.PRICE_DESC -> {
+                maintenanceSortedByPrice.value?.let {
+                    sortedMaintenanceHistory.value = it
+                }
+            }
+            else -> {
+                throw Exception("Unknown sort type")
+            }
+        }.also {
+            this._sortType = sortType
+        }
+    }
+
     fun sortTrips(sortType: SortType) {
         Timber.d("DEBUG: sorting got called with sort type: $sortType")
         when (sortType) {

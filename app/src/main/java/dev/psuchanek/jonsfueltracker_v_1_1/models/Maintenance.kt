@@ -3,7 +3,6 @@ package dev.psuchanek.jonsfueltracker_v_1_1.models
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import dev.psuchanek.jonsfueltracker_v_1_1.R
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.formatDateForUI
 import dev.psuchanek.jonsfueltracker_v_1_1.utils.round
 import java.util.*
@@ -28,10 +27,5 @@ data class Maintenance(
 ) {
     var date = timestamp.formatDateForUI()
     var maintenancePrice = "£${workPrice.round(2)}"
-    var vehicleName = when (vehicleID) {
-        1 -> R.string.nissan_micra
-        2 -> R.string.midget
-        3 -> R.string.mercedes_sprinter
-        else -> R.string.unknown_car
-    }
+    var mileage = currentMileage.toString()
 }

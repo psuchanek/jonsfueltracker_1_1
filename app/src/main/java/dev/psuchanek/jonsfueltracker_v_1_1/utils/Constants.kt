@@ -1,5 +1,7 @@
 package dev.psuchanek.jonsfueltracker_v_1_1.utils
 
+import dev.psuchanek.jonsfueltracker_v_1_1.BuildConfig
+
 //SharedPref
 const val FIRST_LAUNCH = "FIRST_LAUNCH"
 
@@ -13,11 +15,10 @@ const val FRAGMENT_ADD_TAB_COUNT = 3
 const val FRAGMENT_HISTORY_TAB_COUNT = 2
 
 //Services
-const val BASE_URL = "http://fuel.tecserv-uk.co.uk/"
-const val GET_FROM_SERVICE = "api.php/history"
-const val POST_TRIP_TO_SERVICE = "api.php?add_record"
-const val POST_VEHICLE_TO_SERVICE = "api.php?add_vehicle"
-const val DELETE_TRIP_FROM_SERVICE = "api.php?delete_record"
+const val GET_FROM_SERVICE = BuildConfig.GetHistory
+const val POST_TRIP_TO_SERVICE = BuildConfig.PostTrip
+const val POST_VEHICLE_TO_SERVICE = BuildConfig.PostVehicle
+const val DELETE_TRIP_FROM_SERVICE = BuildConfig.DeleteTrip
 const val FUEL_TRACKER_DB_NAME = "fuel_tracker_database"
 
 // OkHttpClient timeouts

@@ -12,6 +12,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dev.psuchanek.jonsfueltracker_v_1_1.BuildConfig
 import dev.psuchanek.jonsfueltracker_v_1_1.repositories.FuelTrackerRepository
 import dev.psuchanek.jonsfueltracker_v_1_1.repositories.Repository
 import dev.psuchanek.jonsfueltracker_v_1_1.services.db.FuelTrackerDao
@@ -19,7 +20,10 @@ import dev.psuchanek.jonsfueltracker_v_1_1.services.db.FuelTrackerDatabase
 import dev.psuchanek.jonsfueltracker_v_1_1.services.db.MaintenanceDao
 import dev.psuchanek.jonsfueltracker_v_1_1.services.db.VehicleDao
 import dev.psuchanek.jonsfueltracker_v_1_1.services.network.FuelTrackerService
-import dev.psuchanek.jonsfueltracker_v_1_1.utils.*
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.CALL_TIMEOUT
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.FIRST_LAUNCH
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.FUEL_TRACKER_DB_NAME
+import dev.psuchanek.jonsfueltracker_v_1_1.utils.READ_TIMEOUT
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -51,7 +55,7 @@ object AppModule {
         Retrofit.Builder()
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .client(okHttpClient)
-            .baseUrl(BASE_URL)
+            .baseUrl(BuildConfig.Base_URL)
             .build()
 
     @Singleton

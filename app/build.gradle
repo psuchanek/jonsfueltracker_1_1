@@ -7,6 +7,20 @@ plugins {
     id 'dagger.hilt.android.plugin'
 }
 
+def Base_URL = '"' + FuelTrackerBaseURL + '"' ?: '"Define BASE URL"'
+def GetHistory = '"' + GetHistoryFromService + '"' ?: '"Define GetHistory"'
+def PostTrip = '"' + PostTripToService + '"' ?: '"Define PostTrip"'
+def PostVehicle = '"' + PostVehicleToService + '"' ?: '"Define PostVehicle"'
+def DeleteTrip = '"' + DeleteTripFromService + '"' ?: '"Define DeleteTrip"'
+
+android.buildTypes.each { type ->
+    type.buildConfigField 'String', 'Base_URL', FuelTrackerBaseURL
+    type.buildConfigField 'String', 'GetHistory', GetHistoryFromService
+    type.buildConfigField 'String', 'PostTrip', PostTripToService
+    type.buildConfigField 'String', 'PostVehicle', PostVehicleToService
+    type.buildConfigField 'String', 'DeleteTrip', DeleteTripFromService
+}
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
